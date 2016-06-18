@@ -31,6 +31,10 @@ public class ShipManager extends JFrame {
 	 * Create the frame.
 	 */
 	public ShipManager() {
+		initComponents();
+	}
+	private void initComponents() {
+		setTitle("RadarManager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
