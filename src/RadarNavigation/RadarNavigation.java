@@ -13,15 +13,24 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeListener;
+import java.util.concurrent.Exchanger;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class RadarNavigation extends JFrame {  //登陆主面板
 
 	private String name;   //船舶名称
+	private int range = 6;  //雷达量程  最大24海里，最小3海里, 初始化为6海里
+	private int mode = 0;  //雷达显示模式    北向上  船首向上    /////相对运动  绝对运动
+	private boolean headLine = true;  //开启或关闭船首线
 	
 	private JPanel contentPane;
 	private JPanel radarPanel;
 	private JPanel infoPanel;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -40,9 +49,12 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 
 	/**
 	 * Create the frame.
+	 * 弹出一个输入船舶名称的窗口
+	 * 之后启动套接字线程与服务器进行通信，这里需要写一个线程类，同时设计通信协议
+	 * 界面的初始化，窗口内界面的动态布局
 	 */
 	public RadarNavigation() {
-		//处理用户输入的船舶名称
+		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
 		name = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		while(name == null || name.equals("")){
 			if (name == null) {
@@ -62,31 +74,51 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 	
 	private void initComponents() {
 		//在缩放过程中中界面跟随变化
-		addWindowStateListener(new WindowStateListener() {   //更新过程有些问题
-			public void windowStateChanged(WindowEvent e) {  //这里用setbounds不行，为什么？？
-				radarPanel.setSize(RadarNavigation.this.getWidth()*7/9, RadarNavigation.this.getHeight()-35);
-				radarPanel.setLocation(0, 0);
-				infoPanel.setSize(RadarNavigation.this.getWidth()*2/9, RadarNavigation.this.getHeight()-35);
-				infoPanel.setLocation(radarPanel.getWidth(), 0);
-				revalidate();System.out.println(getWidth() + "," + getHeight());
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {   //更新组建的大小
+				radarPanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
+				infoPanel.setBounds(radarPanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+				revalidate();  //刷新组件
+				//System.out.println(getWidth() + "," + getHeight());
 			}
 		});
+		
 		//初始化其他属性
 		setTitle("RadarNavigation");
 		setBackground(Color.LIGHT_GRAY);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, 908, 635);  //设置面板刚开始的位置和大小
+		setBounds(20, 20, 1008, 735);  //设置面板刚开始的位置和大小
+		
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setForeground(new Color(0, 128, 0));
+		contentPane.setBackground(null);
+		contentPane.setForeground(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		radarPanel = new radarPanel(); //新建雷达显示面板
+		radarPanel = new radarPanel(range, mode, headLine); //新建雷达显示面板
 		radarPanel.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				//改变雷达量程
+				//改变雷达量程,   向上滚动为负值 -1，向下滚动正值  1
+				if (e.getWheelRotation() > 0) {   //减小量程
+					range /= 2;
+					if (range < 1) {
+						range = 1;
+					}
+				}
+				if(e.getWheelRotation() < 0){  //增大量程
+					if (range == 1) {
+						range = 3;
+					}
+					else{
+						range *= 2;
+						if (range > 24) {
+							range = 24;
+						}
+					}
+				}
+				System.out.println(range);
 			}
 		});
 		
@@ -111,7 +143,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			}
 		});
 		
-		radarPanel.setBounds(0, 0, 700, 600);
+		radarPanel.setBounds(0, 0, (getWidth()-8)*7/9, getHeight()-35);
 		contentPane.add(radarPanel);
 		
 		infoPanel = new infoPanel();   //新建信息显示面板
@@ -126,7 +158,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			}
 		});
 		
-		infoPanel.setBounds(radarPanel.getWidth(), 0, 200, 600);
+		infoPanel.setBounds(radarPanel.getWidth(), 0, (getWidth()-8)*2/9, getHeight()-35);
 		contentPane.add(infoPanel);
 		
 	}
