@@ -148,8 +148,9 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 						repaint();
 					}
 				}
-				if(e.getModifiers() == MouseEvent.BUTTON2){
+				if(e.getModifiers() == 4){
 					//实现取消选中功能
+					setTitle("RadarNavigation" + e.getX()  + "," + e.getY());
 				}
 			}
 		});
