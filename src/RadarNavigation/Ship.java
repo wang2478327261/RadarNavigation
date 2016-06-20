@@ -25,6 +25,16 @@ public class Ship {
 		this.speed = speed;
 		this.type = type;
 	}
+	
+	public Ship() {
+		//super();
+		this.name = "Default";
+		this.Px = 0;
+		this.Py = 0;
+		this.course = 0;
+		this.speed = 0;
+		this.type = 0;
+	}
 
 	public float getParameter(int index){   //得到船舶计算相关数据
         switch(index){
@@ -42,7 +52,7 @@ public class Ship {
 	public int getType(){
 		return type;
 	}
-	public void setName(String name){  //船舶的名称不可更改，只能有用户注销重新登录改名
+	public void setName(String name){  //船舶的名称在登陆时确定，只能有用户注销重新登录改名
 		this.name = name;
 	}
 	public String getName() {

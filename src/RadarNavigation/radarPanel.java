@@ -10,21 +10,42 @@ import javax.swing.JPanel;
 
 public class radarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
-	private int range;  //雷达的量程， 单位是海里
-	private int mode;  //雷达模式
-	private boolean headLine;  //雷达船首线
+	//这些属性有默认值         这些是雷达面板的额属性值，应当放在雷达类中
+	private int range = 6;  //雷达的量程， 单位是海里    雷达量程  最大24海里，最小3海里, 初始化为6海里
+	private int mode = 0;  //雷达模式     雷达显示模式    北向上  船首向上    /////相对运动  绝对运动
+	private boolean headLine = true;  //雷达船首线     开启或关闭船首线
+	private boolean rangeLine = true;  //量程划分线dfhggj
 	
-	public radarPanel(int range, int mode, boolean headLine) {
+	public radarPanel() {
 		super();
 		// TODO Auto-generated constructor stub
-		this.range = range;
-		this.mode = mode;
-		this.headLine = headLine;
-		
 		setBorder(null);  //这些属性可以在雷达面板类中改变
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
+	}
+	
+	public void setRange(String option) {
+		if (option.equals("add")) {  //增加量程
+			if (range == 1) {
+				range = 3;
+			}
+			else{
+				range *= 2;
+				if (range > 24) {
+					range = 24;
+				}
+			}
+		}
+		else{   //reduce    减少量程
+			range /= 2;
+			if (range < 1) {
+				range = 1;
+			}
+		}
+	}
+	public int getRange() {
+		return range;
 	}
 	
 	@Override
