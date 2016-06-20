@@ -6,9 +6,9 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class infoPanel extends JPanel{   //点击信息显示面板
+public class InfoPanel extends JPanel{   //点击信息显示面板
 
-	public infoPanel() {
+	public InfoPanel() {
 		super();
 		// TODO Auto-generated constructor stub
 		setBackground(Color.DARK_GRAY);

@@ -5,18 +5,17 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-
 import javax.swing.JPanel;
 
-public class radarPanel extends JPanel{   //雷达面板的显示，更新信息
+public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	//这些属性有默认值         这些是雷达面板的额属性值，应当放在雷达类中
 	private int range = 6;  //雷达的量程， 单位是海里    雷达量程  最大24海里，最小3海里, 初始化为6海里
 	private int mode = 0;  //雷达模式     雷达显示模式    北向上  船首向上    /////相对运动  绝对运动
 	private boolean headLine = true;  //雷达船首线     开启或关闭船首线
-	private boolean rangeLine = true;  //量程划分线dfhggj
+	private boolean rangeLine = true;  //量程划分线  分多段，随量程变化
 	
-	public radarPanel() {
+	public RadarPanel() {
 		super();
 		// TODO Auto-generated constructor stub
 		setBorder(null);  //这些属性可以在雷达面板类中改变
@@ -56,12 +55,21 @@ public class radarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		g2.setColor(Color.GREEN);
-		//获得圆心和量程（加入变量使得 可以更改）
-		/*range = getWidth()>getHeight()?getHeight():getWidth();
+		//画出背景圈
+		//计算画面的大小调整
+		if (getWidth()> getHeight()) {
+			float diameter = getHeight() - 100; //直径
+			
+		}
+		else {
+			float diameter = getWidth() - 100;
+		}
+		g2.drawOval(x, y, width, height);
+		//计算画几个圈
 		for(int i = 1; i < range; i++){  //这里需要改进，有许多问题
 			int r = i * 1;
 			g2.drawOval(getWidth()-range, getHeight()-range, range, range);
-		}*/
+		}
 		
 	}
 	

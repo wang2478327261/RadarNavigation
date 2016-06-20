@@ -11,20 +11,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.WindowStateListener;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeListener;
-import java.util.concurrent.Exchanger;
-import java.beans.PropertyChangeEvent;
-import java.awt.event.WindowAdapter;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class RadarNavigation extends JFrame {  //登陆主面板
-	
+	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
 	private JPanel contentPane;
-	private JPanel radarpanel;
-	private JPanel infopanel;
+	private RadarPanel radarpanel;
+	private InfoPanel infopanel;
 	
 	/**
 	 * Launch the application.
@@ -95,17 +89,17 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		radarpanel = new radarPanel(); //新建雷达显示面板
-		radarpanel.addMouseWheelListener(new MouseWheelListener() {
+		radarpanel = new RadarPanel(); //新建雷达显示面板
+		radarpanel.addMouseWheelListener(new MouseWheelListener() {   //这里有强制类型转换的额问题，需要解决
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				//改变雷达量程,   向上滚动为负值 -1，向下滚动正值  1
 				if (e.getWheelRotation() > 0) {   //减小量程
-					radarpanel.setRange("add");
-				}
-				if(e.getWheelRotation() < 0){  //增大量程
 					radarpanel.setRange("reduce");
 				}
-				System.out.println(radarpanel.getRange());
+				if(e.getWheelRotation() < 0){  //增大量程
+					radarpanel.setRange("add");
+				}
+				//System.out.println(((radarPanel) radarpanel).getRange());
 			}
 		});
 		
@@ -133,7 +127,12 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		radarpanel.setBounds(0, 0, (getWidth()-8)*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
 		
-		infopanel = new infoPanel();   //新建信息显示面板
+		infopanel = new InfoPanel();   //新建信息显示面板
+		infopanel.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				//如果数据过多，通过滚动显示不同的页面
+			}
+		});
 		infopanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {

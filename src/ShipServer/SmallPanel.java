@@ -5,9 +5,9 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class smallPanel extends JPanel{
+public class SmallPanel extends JPanel{
 	
-	public smallPanel() {
+	public SmallPanel() {
 		super();
 		// TODO Auto-generated constructor stub
 		setBackground(Color.BLACK);

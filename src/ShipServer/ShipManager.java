@@ -42,7 +42,7 @@ public class ShipManager extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		panel = new smallPanel();
+		panel = new SmallPanel();
 		panel.setBounds(0, 0, 150, 150);
 		contentPane.add(panel);
 	}
