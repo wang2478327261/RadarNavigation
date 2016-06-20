@@ -22,12 +22,5 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		super.paint(g);
 		
 	}
-
-	@Override
-	public void update(Graphics g) {
-		// TODO Auto-generated method stub
-		super.update(g);
-	}
-	
 	
 }

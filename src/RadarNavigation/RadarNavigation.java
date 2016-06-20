@@ -2,7 +2,6 @@ package RadarNavigation;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,10 +18,10 @@ import java.awt.event.ComponentEvent;
 public class RadarNavigation extends JFrame {  //登陆主面板
 	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
 	private JPanel contentPane;
-	private RadarPanel radarpanel;
-	private InfoPanel infopanel;
+	private RadarPanel radarpanel;    //雷达动态显示面板
+	private InfoPanel infopanel;     //信息显示面板
 	
-	private boolean fullScreen = false;
+	private boolean fullScreen = false;  //判断是否在全屏状态
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -108,6 +107,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				if(e.getWheelRotation() < 0){  //增大量程
 					radarpanel.setRange("add");
 				}
+				revalidate();
 				//System.out.println(((radarPanel) radarpanel).getRange());
 			}
 		});
@@ -124,7 +124,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//选中对方船舶或或者取消选中（右键单击）
-				if(e.getModifiers() == 16){   //左键 16，中键 8，右键 4
+				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单机事件
 					if (e.getClickCount() >= 2) {
 						if (!fullScreen) {
@@ -144,11 +144,10 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 							setUndecorated(false);
 							setVisible(true);
 						}
-						
-						repaint();
+						revalidate();
 					}
 				}
-				if(e.getModifiers() == 4){
+				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能
 					setTitle("RadarNavigation" + e.getX()  + "," + e.getY());
 				}

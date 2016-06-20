@@ -9,14 +9,14 @@ package RadarNavigation;
  */
 public class Ship {
 
-	private String name;
-	private float Px;  //船舶纬度       在程序中是   x   值
-	private float Py;  //船舶经度   在程序中是   y   值
-	private float course;  //航向
-	private float speed;  //速度
-	private int type = 0;  //船舶类型
+	private String name = "Default";
+	private float Px = 0;  //船舶纬度       在程序中是   x   值
+	private float Py = 0;  //船舶经度   在程序中是   y   值
+	private float course = 0;  //航向
+	private float speed = 3;  //速度
+	private String type = "Normal";  //船舶类型
 	
-	public Ship(String name, float Px, float Py, float course, float speed, int type) {
+	public Ship(String name, float Px, float Py, float course, float speed, String type) {
 		//super();
 		this.name = name;
 		this.Px = Px;
@@ -32,10 +32,10 @@ public class Ship {
 		this.Px = 0;
 		this.Py = 0;
 		this.course = 0;
-		this.speed = 0;
-		this.type = 0;
+		this.speed = 3;
+		this.type = "Normal";
 	}
-
+	
 	public float getParameter(int index){   //得到船舶计算相关数据
         switch(index){
             case 1 : return Px;
@@ -46,10 +46,10 @@ public class Ship {
         }
     }
 	
-	public void setType(int type) { //这个方法多余，初始化后船舶的类型不可更改
+	public void setType(String type) { //这个方法多余，初始化后船舶的类型不可更改
 		this.type = type;
 	}
-	public int getType(){
+	public String getType(){
 		return type;
 	}
 	public void setName(String name){  //船舶的名称在登陆时确定，只能有用户注销重新登录改名
@@ -72,7 +72,11 @@ public class Ship {
             if(this.course<0) this.course+=360;
             if(this.course>=360) this.course-=360;
         }
-        //这里也需要对速度进行校验
+        //这里也需要对速度进行校验   速度不能大于30节kt
+        if (speed < 0 || speed > 30) {
+			System.err.println("your speed is : " + speed + ".\nPlease get normal speed!");
+			speed = 3;
+		}
     }
 	
 	public void goAhead() {
