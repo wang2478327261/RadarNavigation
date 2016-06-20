@@ -55,20 +55,32 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		g2.setColor(Color.GREEN);
-		//画出背景圈
-		//计算画面的大小调整
-		if (getWidth()> getHeight()) {
-			float diameter = getHeight() - 100; //直径
-			
+		//画出背景圈     计算画面的大小调整
+		int startX, startY, diameter;
+		if (getWidth()> getHeight()) {     //为什么这里不能用三模运算直接判断赋值     a >b ? a: b;
+			diameter = getHeight() - 50; //直径
 		}
 		else {
-			float diameter = getWidth() - 100;
+			diameter = getWidth() - 50;
 		}
-		g2.drawOval(x, y, width, height);
-		//计算画几个圈
-		for(int i = 1; i < range; i++){  //这里需要改进，有许多问题
-			int r = i * 1;
-			g2.drawOval(getWidth()-range, getHeight()-range, range, range);
+		startX = (getWidth() - diameter)/2;  //左上角位置
+		startY = (getHeight() - diameter)/2;
+		g2.drawOval(startX-1, startY-1, diameter+2, diameter+2);
+		g2.setColor(Color.BLACK);
+		g2.fillOval(startX, startY, diameter, diameter);
+		//接下来画边上的刻度，参考指针表的实现方法
+		
+		//计算画几个圈,根据量程来决定
+		for(int i = 0; i < range; i++){  //这里需要改进，有许多问题
+			int diaStep;
+			if (range <= 3) {
+				diaStep = diameter/range;
+				g2.drawOval(startX-diaStep, startY - diaStep, diaStep, diaStep);
+				diaStep *= 2;
+			}
+			else {
+				
+			}
 		}
 		
 	}

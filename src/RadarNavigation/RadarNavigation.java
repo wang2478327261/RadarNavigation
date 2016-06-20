@@ -1,6 +1,8 @@
 package RadarNavigation;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,9 +22,8 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 	private RadarPanel radarpanel;
 	private InfoPanel infopanel;
 	
-	/**
-	 * Launch the application.
-	 */
+	private boolean fullScreen = false;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -69,10 +70,18 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {   //更新组建的大小
-				radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
-				infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-				revalidate();  //刷新组件
-				//System.out.println(getWidth() + "," + getHeight());
+				if (!fullScreen) {
+					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
+					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+					revalidate();  //刷新组件
+					//System.out.println(getWidth() + "," + getHeight());
+				}
+				else {
+					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
+					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
+					revalidate();  //刷新组件
+				}
+				
 			}
 		});
 		
@@ -115,8 +124,29 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//选中对方船舶或或者取消选中（右键单击）
-				if(e.getModifiers() == MouseEvent.BUTTON1){
+				if(e.getModifiers() == 16){   //左键 16，中键 8，右键 4
 					//单机事件
+					if (e.getClickCount() >= 2) {
+						if (!fullScreen) {
+							fullScreen = !fullScreen;
+							setLocation(0, 0);
+							setSize(Toolkit.getDefaultToolkit().getScreenSize());
+							//去除标题栏
+							dispose();
+							setUndecorated(true);
+							setVisible(true);
+						}
+						else {
+							fullScreen = !fullScreen;
+							setBounds(20, 20, 1008, 735);
+							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
+							dispose();
+							setUndecorated(false);
+							setVisible(true);
+						}
+						
+						repaint();
+					}
 				}
 				if(e.getModifiers() == MouseEvent.BUTTON2){
 					//实现取消选中功能
