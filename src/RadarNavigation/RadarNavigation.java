@@ -105,10 +105,11 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 					radarpanel.setRange("reduce");
 				}
 				if(e.getWheelRotation() < 0){  //增大量程
-					radarpanel.setRange("add");
+					radarpanel.setRange("increase");
 				}
 				revalidate();
 				//System.out.println(((radarPanel) radarpanel).getRange());
+				repaint(1000);
 			}
 		});
 		
@@ -149,7 +150,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				}
 				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能
-					setTitle("RadarNavigation" + e.getX()  + "," + e.getY());
+					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
 				}
 			}
 		});
@@ -171,6 +172,10 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			@Override
 			public void mouseExited(MouseEvent e) {
 				infopanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//单机时显示菜单    //左单击显示，右单击退出菜单，重新显示信息
 			}
 		});
 		
