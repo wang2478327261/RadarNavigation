@@ -60,7 +60,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		g2.setColor(Color.GREEN);
-		//画出背景圈     计算画面的大小调整
+		/***************画出背景圈     计算画面的大小调整*****************************/
 		float startX, startY, diameter;
 		if (getWidth()> getHeight()) {     //为什么这里不能用三模运算直接判断赋值     a >b ? a: b;
 			diameter = getHeight() - 50; //直径
@@ -75,20 +75,20 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.drawOval((int)startX-1, (int)startY-1, (int)diameter+2, (int)diameter+2);
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
-		//接下来画边上的刻度，参考指针表的实现方法
+		/**************************接下来画边上的刻度，参考指针表的实现方法***********************/
 		g2.setColor(Color.GREEN);
 		
-		//计算画几个圈,根据量程来决定
+		
+		/**************************计算画几个圈,根据量程来决定*******************************/
 		float diaVar = 0;  //画圈的过程中临时的半径
 		float diaStep = diameter/(range * 2);  //每次增大半径后的步进值, 得到的值是  每海里的像素值
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
+			//判断半径增长率
 			if (range <= 3) {  //一格   0.5  海里
-				//g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 				diaVar += diaStep/2;
 			}
 			else if(range <=6 ){   //一格一海里
-				//g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 				diaVar += diaStep;
 			}
 			else if (range <= 24) {  //一格2海里
@@ -100,5 +100,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 		
 	}
+	
 	
 }

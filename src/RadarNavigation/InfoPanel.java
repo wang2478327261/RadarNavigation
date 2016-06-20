@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 
 public class InfoPanel extends JPanel{   //点击信息显示面板
 
+	//需要显示信息存储的数据
+	
 	public InfoPanel() {
 		super();
 		// TODO Auto-generated constructor stub
