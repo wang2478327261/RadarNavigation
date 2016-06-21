@@ -1,18 +1,10 @@
 package RadarNavigation;
 
 import java.awt.EventQueue;
-import java.awt.Toolkit;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -83,7 +75,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 					//infopanel.setVisible(false);
 					revalidate();  //刷新组件
 				}
-				
+				repaint();
 			}
 		});
 		
@@ -95,13 +87,14 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(null);
-		contentPane.setForeground(null);
+		//contentPane.setForeground(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		radarpanel = new RadarPanel(); //新建雷达显示面板
 		radarpanel.refer(this);   //将主界面的引用传到雷达面板上，控制界面
+		
 		radarpanel.setBounds(0, 0, (getWidth()-8)*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
 		

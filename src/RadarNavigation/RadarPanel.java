@@ -8,8 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
-import java.lang.ref.Reference;
-
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.event.MouseWheelListener;
@@ -42,7 +40,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {   //这里可以加入时间测试，实现功能之间的区别，网上擦还训
 				//选中对方船舶或或者取消选中（右键单击）
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单机事件
@@ -126,7 +124,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		//*************画出背景圈     计算画面的大小调整*****************************
 		float startX, startY, diameter;
-		
+		//画出背景   这部分不变化
 		g2.setColor(Color.GREEN);
 		diameter = (float) (Math.min(getWidth(), getHeight())*0.93);
 		startX = (getWidth() - diameter)/2;  //左上角位置
@@ -148,36 +146,36 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			drawHeadLine(g2, diameter, startX, startY);
 		}
 	}
-	
+	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
 	public void drawScale(Graphics2D g2, float diameter, float startX, float startY){
 		g2.setColor(Color.GREEN);
 		//每个格点为3°
 		float xCircle = startX + diameter/2;  //计算圆心
 		float yCircle = startY + diameter/2;
-		for(int i = 0; i<12; i++){
+		for(int i = 0; i<36; i++){
 			float semi = diameter/2+10;  //半径
 			//数字布局优点问题，以后再改
-			float degree = (float) Math.toRadians(i*30-90);
+			float degree = (float) Math.toRadians(i*10-90);
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
-			int num = i * 30;
+			int num = i * 10;
 			g2.setColor(Color.CYAN);
-			g2.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-			g2.drawString(Integer.toString(num) + "°", x, y);
+			g2.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.025)));
+			g2.drawString(Integer.toString(num) + "°", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
 		
 		//画刻度，可以随着船舶转向转动
 		AffineTransform old = g2.getTransform();
-        //时钟的60个刻度
-        for (int i = 0; i < 60; i++) {
-            int w = i % 5 == 0 ? 5 : 3;
-            g2.fillRect((int) (xCircle - 2), 28, w, 3);
-            g2.rotate(Math.toRadians(6), xCircle, yCircle);  //每一小格转6度, 以圆心为中心点
+        //方向的60个刻度
+        for (int i = 0; i < 360; i++) {   //x  yCircle都是圆心位置
+            int bulge = (int) (i % 10 == 0 ? 0.02*diameter : 0.005*diameter);  //bulge 凸出
+            g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
+            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //每一小格转6度, 以圆心为中心点
         }
         //设置旋转重置
         g2.setTransform(old);
 	}
-	
+	//画出随着量程变化的环形圈，  方便估算对方的位置
 	public void drawRange(Graphics2D g2, float diameter, float startX, float startY) {
 		g2.setColor(Color.GREEN);
 		float diaVar = 0;  //画圈的过程中临时的半径

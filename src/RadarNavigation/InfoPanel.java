@@ -36,6 +36,13 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//单击后显示菜单，变换界面  设置整体属性
+				revalidate();
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					//进入菜单界面
+				}
+				else if (e.getButton() == MouseEvent.BUTTON3) {
+					//退出菜单界面
+				}
 			}
 		});
 		addMouseWheelListener(new MouseWheelListener() {
@@ -54,13 +61,16 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		// TODO Auto-generated method stub
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setFont(new Font(getName(), Font.PLAIN, (int) (getWidth()*0.1)));
+		g2.setFont(new Font(getName(), Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.1)));
 		g2.setColor(Color.CYAN);
 		g2.drawString("hello", 0, getFont().getSize()+10);
 	}
 	
-	public void getShip(Ship ship) {
+	public void addShip(Ship ship) {   //要显示的船舶
 		ships.add(ship);
-		
+	}
+	
+	public void removeShip(Ship ship) {  //也可以名称索引
+		ships.remove(ship);
 	}
 }
