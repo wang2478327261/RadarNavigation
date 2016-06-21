@@ -1,12 +1,17 @@
 package RadarNavigation;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class RadarNavigation extends JFrame {  //登陆主面板
@@ -90,14 +95,75 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.setLayout(null);  //定制布局
 		
 		radarpanel = new RadarPanel(); //新建雷达显示面板
-		radarpanel.refer(this);   //将主界面的引用传到雷达面板上，控制界面
-		
 		radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
+		//雷达单击响应事件
+		radarpanel.addMouseListener(new MouseAdapter() {
+			/*@Override
+			public void mouseEntered(MouseEvent e) {
+				radarpanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				radarpanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			}*/
+			@Override
+			public void mouseClicked(MouseEvent e) {   //这里可以加入时间测试，实现功能之间的区别，网上擦还训
+				//选中对方船舶或或者取消选中（右键单击）
+				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
+					//单击事件
+					if (e.getClickCount() >= 2) {
+						if (!isUndecorated()) {
+							setLocation(0, 0);
+							setSize(Toolkit.getDefaultToolkit().getScreenSize());
+							//去除标题栏
+							dispose();
+							setUndecorated(true);
+							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+							setVisible(true);
+						}
+						else {
+							setBounds(20, 20, 1008, 735);
+							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
+							dispose();
+							setUndecorated(false);
+							setVisible(true);
+						}
+						revalidate();
+					}
+				}
+				if(e.getButton() == MouseEvent.BUTTON3){
+					//实现取消选中功能
+					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
+				}
+			}
+		});
 		
 		infopanel = new InfoPanel();   //新建信息显示面板
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 		contentPane.add(infopanel);
+		//信息面板响应
+		infopanel.addMouseListener(new MouseAdapter() {
+			/*@Override
+			public void mouseEntered(MouseEvent e) {
+				infopanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				infopanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			}*/
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//单击后显示菜单，变换界面  设置整体属性
+				revalidate();
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					//进入菜单界面
+				}
+				else if (e.getButton() == MouseEvent.BUTTON3) {
+					//退出菜单界面
+				}
+			}
+		});
 		
 	}
 }

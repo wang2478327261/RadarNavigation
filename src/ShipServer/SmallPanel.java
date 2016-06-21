@@ -33,11 +33,6 @@ public class SmallPanel extends JPanel{
 				setBorder(BorderFactory.createEmptyBorder());
 				setOpaque(false);   //设置成透明
 			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setBounds(0, 0, shipmanager.getWidth()-8, shipmanager.getHeight()-35);
-				revalidate();
-			}
 		});
 		// TODO Auto-generated constructor stub
 		
@@ -47,13 +42,11 @@ public class SmallPanel extends JPanel{
 	}
 	
 	/**************通用程序区*********************************************/
-	public void getShips(List<Ship> ships) {
-		this.ships = ships;
+	public void addShip(Ship ship) {
+		ships.add(ship);
 	}
-
-	ShipManager shipmanager;
-	public void refer(ShipManager shipmanager) {
-		this.shipmanager = shipmanager;
+	public void removeShip(Ship ship){
+		ships.remove(ship);
 	}
 	
 	/*********************图形画画区**********************************/

@@ -8,7 +8,7 @@ package RadarNavigation;
  *
  */
 public class Ship {
-
+	
 	private String name = "Default";
 	private float Px = 0;  //船舶纬度       在程序中是   x   值
 	private float Py = 0;  //船舶经度   在程序中是   y   值

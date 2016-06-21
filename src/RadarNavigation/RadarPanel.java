@@ -40,36 +40,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
-			@Override
-			public void mouseClicked(MouseEvent e) {   //这里可以加入时间测试，实现功能之间的区别，网上擦还训
-				//选中对方船舶或或者取消选中（右键单击）
-				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
-					//单击事件
-					if (e.getClickCount() >= 2) {
-						if (!radarnavigation.isUndecorated()) {
-							radarnavigation.setLocation(0, 0);
-							radarnavigation.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-							//去除标题栏
-							radarnavigation.dispose();
-							radarnavigation.setUndecorated(true);
-							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-							radarnavigation.setVisible(true);
-						}
-						else {
-							radarnavigation.setBounds(20, 20, 1008, 735);
-							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
-							radarnavigation.dispose();
-							radarnavigation.setUndecorated(false);
-							radarnavigation.setVisible(true);
-						}
-						radarnavigation.revalidate();
-					}
-				}
-				if(e.getButton() == MouseEvent.BUTTON3){
-					//实现取消选中功能
-					radarnavigation.setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
-				}
-			}
 		});
 		
 		addMouseWheelListener(new MouseWheelListener() {
@@ -92,6 +62,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 	}
+	
 	/***********************普通功能性程序区**********************************************/
 	public void setRange(String option) {   //量程大于3及以上是乘法，小于3除法  0.75,1.5,3,6,12,24,48,96
 		if (option.equals("increase")) {  //增加量程
@@ -110,10 +81,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	public float getRange() {
 		return range;
-	}
-	RadarNavigation radarnavigation;
-	public void refer(RadarNavigation radarnavigation){  //将radarnavigation引入
-		this.radarnavigation = radarnavigation;
 	}
 	
 	/*******************图形绘画区**************************************************************/
