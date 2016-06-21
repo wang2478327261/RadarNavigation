@@ -54,7 +54,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			name = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		}
 		
-		Ship ship = new Ship();
+		Ship ship = new Ship();  //客户端的一个船舶
 		ship.setName(name);
 		
 		//检查服务器并发送相关信息
@@ -69,7 +69,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {   //更新组建的大小
-				if (!fullScreen) {
+				if (!fullScreen) {  //没有全屏
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 					revalidate();  //刷新组件
@@ -78,6 +78,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				else {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
+					//infopanel.setVisible(false);
 					revalidate();  //刷新组件
 				}
 				
@@ -98,30 +99,8 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.setLayout(null);
 		
 		radarpanel = new RadarPanel(); //新建雷达显示面板
-		radarpanel.addMouseWheelListener(new MouseWheelListener() {   //这里有强制类型转换的额问题，需要解决
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				//改变雷达量程,   向上滚动为负值 -1，向下滚动正值  1
-				if (e.getWheelRotation() > 0) {   //减小量程
-					radarpanel.setRange("reduce");
-				}
-				if(e.getWheelRotation() < 0){  //增大量程
-					radarpanel.setRange("increase");
-				}
-				revalidate();
-				//System.out.println(((radarPanel) radarpanel).getRange());
-				repaint(1000);
-			}
-		});
 		
 		radarpanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				radarpanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				radarpanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//选中对方船舶或或者取消选中（右键单击）
@@ -144,6 +123,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
+							//infopanel.setVisible(true);
 						}
 						revalidate();
 					}
@@ -159,26 +139,6 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.add(radarpanel);
 		
 		infopanel = new InfoPanel();   //新建信息显示面板
-		infopanel.addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				//如果数据过多，通过滚动显示不同的页面
-			}
-		});
-		infopanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				infopanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				infopanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//单机时显示菜单    //左单击显示，右单击退出菜单，重新显示信息
-			}
-		});
-		
 		infopanel.setBounds(radarpanel.getWidth(), 0, (getWidth()-8)*2/9, getHeight()-35);
 		contentPane.add(infopanel);
 		

@@ -9,12 +9,17 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JList;
 
 import java.awt.BasicStroke;
 import java.awt.Choice;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
@@ -31,6 +36,31 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		initComponents();
 	}
 	private void initComponents() {
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			}
+		});
+		
+		addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				//改变雷达量程,   向上滚动为负值 -1，向下滚动正值  1
+				if (e.getWheelRotation() > 0) {   //减小量程
+					setRange("reduce");
+				}
+				if(e.getWheelRotation() < 0){  //增大量程
+					setRange("increase");
+				}
+				revalidate();
+				//System.out.println(((radarPanel) radarpanel).getRange());
+				repaint(1000);
+			}
+		});
 		// TODO Auto-generated constructor stub
 		setBorder(null);  //这些属性可以在雷达面板类中改变
 		setBackground(Color.DARK_GRAY);
@@ -79,8 +109,13 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		drawScale(g2, diameter, startX, startY);  //可以随着船舶动态转向
 		
 		/**************************计算画几个圈,根据量程来决定*******************************/
-		drawRange(g2, diameter, startX, startY);
-		
+		//g2.fillOval((int)(startX+diameter/2-2), (int)(startY+diameter/2-2), 4, 4);  //画中心点
+		if (!rangeLine) {
+			drawRange(g2, diameter, startX, startY);
+		}
+		if (headLine) {
+			drawHeadLine(g2, diameter, startX, startY);
+		}
 	}
 	
 	public void drawScale(Graphics2D g2, float diameter, float startX, float startY){
@@ -113,9 +148,10 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	
 	public void drawRange(Graphics2D g2, float diameter, float startX, float startY) {
+		g2.setColor(Color.GREEN);
 		float diaVar = 0;  //画圈的过程中临时的半径
 		float diaStep = diameter/(range * 2);  //每次增大半径后的步进值, 得到的值是  每海里的像素值
-		g2.setColor(Color.GREEN);
+		
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 			//判断半径增长率
@@ -132,6 +168,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				diaVar += diaStep*4;  //一格4海里
 			}
 		}
+	}
+	
+	public void drawHeadLine(Graphics2D g2, float diameter, float startX, float startY) {
+		//在北向上模式中需要获取船舶航向
+		g2.setColor(Color.GREEN);
+		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 	}
 	
 }

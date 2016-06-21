@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class ShipManager extends JFrame {
+public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 
 	private JPanel contentPane;
 	private JPanel panel;
