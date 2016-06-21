@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+@SuppressWarnings("serial")
 public class RadarNavigation extends JFrame {  //登陆主面板
 	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
 	private JPanel contentPane;
@@ -66,15 +67,12 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				if (!isUndecorated()) {  //没有全屏状态下的布局           全局状态是没有装饰的
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-					revalidate();  //刷新组件
-					//System.out.println(getWidth() + "," + getHeight());
 				}
 				else {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
-					//infopanel.setVisible(false);
-					revalidate();  //刷新组件
 				}
+				revalidate();  //布局刷新
 				repaint();
 			}
 		});
@@ -83,23 +81,22 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		setTitle("RadarNavigation");
 		setBackground(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(20, 20, 1008, 735);  //设置面板刚开始的位置和大小
+		setBounds(20, 20, 1008, 735);  //设置面板刚开始的位置和大小   1000  + 700
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(null);
-		//contentPane.setForeground(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(null);  //定制布局
 		
 		radarpanel = new RadarPanel(); //新建雷达显示面板
 		radarpanel.refer(this);   //将主界面的引用传到雷达面板上，控制界面
 		
-		radarpanel.setBounds(0, 0, (getWidth()-8)*7/9, getHeight()-35);
+		radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
 		
 		infopanel = new InfoPanel();   //新建信息显示面板
-		infopanel.setBounds(radarpanel.getWidth(), 0, (getWidth()-8)*2/9, getHeight()-35);
+		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 		contentPane.add(infopanel);
 		
 	}

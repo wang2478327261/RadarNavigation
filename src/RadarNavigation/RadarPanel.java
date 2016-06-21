@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	//这些属性有默认值         这些是雷达面板的额属性值，应当放在雷达类中
@@ -43,7 +44,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			public void mouseClicked(MouseEvent e) {   //这里可以加入时间测试，实现功能之间的区别，网上擦还训
 				//选中对方船舶或或者取消选中（右键单击）
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
-					//单机事件
+					//单击事件
 					if (e.getClickCount() >= 2) {
 						if (!radarnavigation.isUndecorated()) {
 							radarnavigation.setLocation(0, 0);
@@ -111,7 +112,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		return range;
 	}
 	RadarNavigation radarnavigation;
-	public void refer(RadarNavigation radarnavigation){
+	public void refer(RadarNavigation radarnavigation){  //将radarnavigation引入
 		this.radarnavigation = radarnavigation;
 	}
 	
@@ -177,7 +178,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	//画出随着量程变化的环形圈，  方便估算对方的位置
 	public void drawRange(Graphics2D g2, float diameter, float startX, float startY) {
-		g2.setColor(Color.GREEN);
+		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //画圈的过程中临时的半径
 		float diaStep = diameter/(range * 2);  //每次增大半径后的步进值, 得到的值是  每海里的像素值
 		

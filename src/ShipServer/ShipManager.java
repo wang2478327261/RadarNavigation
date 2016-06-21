@@ -5,11 +5,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 
 	private JPanel contentPane;
-	private JPanel panel;
-
+	private SmallPanel smallpanel;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -30,6 +31,9 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	 * Create the frame.
 	 */
 	public ShipManager() {
+		//打开网络通信，接受客户端消息
+		
+		//初始化界面
 		initComponents();
 	}
 	
@@ -38,13 +42,14 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		panel = new SmallPanel();
-		panel.setBounds(0, 0, 150, 150);
-		contentPane.add(panel);
+		smallpanel = new SmallPanel();
+		smallpanel.refer(this);
+		smallpanel.setBounds(0, 0, 150, 150);
+		contentPane.add(smallpanel);
 	}
 	
 }

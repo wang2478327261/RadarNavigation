@@ -15,7 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class InfoPanel extends JPanel{   //点击信息显示面板
-
+	
 	//需要显示信息存储的数据
 	List<Ship> ships = new LinkedList<Ship>();   //存储显示信息的船舶对象
 	
@@ -62,6 +62,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setFont(new Font(getName(), Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.1)));
+		//显示信息
 		g2.setColor(Color.CYAN);
 		g2.drawString("hello", 0, getFont().getSize()+10);
 	}
