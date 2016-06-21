@@ -60,8 +60,8 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 		smallpanel = new SmallPanel();
 		smallpanel.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_C) {
+			public void keyPressed(KeyEvent e) {    //这里怎么没有用？？？？？？？
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE && changed) {
 					smallpanel.setBounds(0, 0, 150, 150);
 					changed = !changed;
 				}
