@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -20,8 +21,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 	private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达动态显示面板
 	private InfoPanel infopanel;     //信息显示面板
-	
-	private boolean fullScreen = false;  //判断是否在全屏状态
+	private Ship ship;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,17 +44,19 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 	 */
 	public RadarNavigation() {
 		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
-		String name = JOptionPane.showInputDialog(this, "Please input Ship name : ");
-		while(name == null || name.equals("")){
-			if (name == null) {
+		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
+		while(customer == null || customer.equals("")){
+			if (customer == null) {
 				this.dispose();
 				System.exit(0);
 			}
-			JOptionPane.showMessageDialog(this, "you should input ship name !", "Warning", JOptionPane.ERROR_MESSAGE);
-			name = JOptionPane.showInputDialog(this, "Please input Ship name : ");
+			JOptionPane.showMessageDialog(this, "you should input ship infoemation !", "Warning", JOptionPane.ERROR_MESSAGE);
+			customer = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		}
+		//将输入数据进行分析操作，分析出名称，位置等信息
+		String name = "Default";
 		
-		Ship ship = new Ship();  //客户端的一个船舶
+		ship = new Ship();  //客户端的一个船舶
 		ship.setName(name);
 		
 		//检查服务器并发送相关信息
@@ -69,7 +71,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {   //更新组建的大小
-				if (!fullScreen) {  //没有全屏
+				if (!isUndecorated()) {  //没有全屏状态下的布局           全局状态是没有装饰的
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 					revalidate();  //刷新组件
@@ -107,23 +109,21 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单机事件
 					if (e.getClickCount() >= 2) {
-						if (!fullScreen) {
-							fullScreen = !fullScreen;
+						if (!isUndecorated()) {
 							setLocation(0, 0);
 							setSize(Toolkit.getDefaultToolkit().getScreenSize());
 							//去除标题栏
 							dispose();
 							setUndecorated(true);
+							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 							setVisible(true);
 						}
 						else {
-							fullScreen = !fullScreen;
 							setBounds(20, 20, 1008, 735);
 							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
-							//infopanel.setVisible(true);
 						}
 						revalidate();
 					}

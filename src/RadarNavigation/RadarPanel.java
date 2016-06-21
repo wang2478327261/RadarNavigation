@@ -7,15 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JList;
-
-import java.awt.BasicStroke;
-import java.awt.Choice;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
@@ -106,11 +99,13 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
 		/**************************接下来画边上的刻度，参考指针表的实现方法***********************/
 		//每个格点为3°
-		drawScale(g2, diameter, startX, startY);  //可以随着船舶动态转向
+		if (mode.equalsIgnoreCase("HeadUp")) {
+			drawScale(g2, diameter, startX, startY);  //可以随着船舶动态转向
+		}
 		
 		/**************************计算画几个圈,根据量程来决定*******************************/
 		//g2.fillOval((int)(startX+diameter/2-2), (int)(startY+diameter/2-2), 4, 4);  //画中心点
-		if (!rangeLine) {
+		if (rangeLine) {
 			drawRange(g2, diameter, startX, startY);
 		}
 		if (headLine) {
@@ -175,5 +170,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 	}
+	
 	
 }
