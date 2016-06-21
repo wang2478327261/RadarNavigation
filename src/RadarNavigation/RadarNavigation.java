@@ -101,40 +101,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.setLayout(null);
 		
 		radarpanel = new RadarPanel(); //新建雷达显示面板
-		
-		radarpanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//选中对方船舶或或者取消选中（右键单击）
-				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
-					//单机事件
-					if (e.getClickCount() >= 2) {
-						if (!isUndecorated()) {
-							setLocation(0, 0);
-							setSize(Toolkit.getDefaultToolkit().getScreenSize());
-							//去除标题栏
-							dispose();
-							setUndecorated(true);
-							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-							setVisible(true);
-						}
-						else {
-							setBounds(20, 20, 1008, 735);
-							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
-							dispose();
-							setUndecorated(false);
-							setVisible(true);
-						}
-						revalidate();
-					}
-				}
-				if(e.getButton() == MouseEvent.BUTTON3){
-					//实现取消选中功能
-					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
-				}
-			}
-		});
-		
+		radarpanel.refer(this);   //将主界面的引用传到雷达面板上，控制界面
 		radarpanel.setBounds(0, 0, (getWidth()-8)*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
 		

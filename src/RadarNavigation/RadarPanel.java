@@ -6,7 +6,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
+import java.lang.ref.Reference;
+
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import java.awt.event.MouseWheelListener;
@@ -38,6 +41,36 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//选中对方船舶或或者取消选中（右键单击）
+				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
+					//单机事件
+					if (e.getClickCount() >= 2) {
+						if (!radarnavigation.isUndecorated()) {
+							radarnavigation.setLocation(0, 0);
+							radarnavigation.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+							//去除标题栏
+							radarnavigation.dispose();
+							radarnavigation.setUndecorated(true);
+							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+							radarnavigation.setVisible(true);
+						}
+						else {
+							radarnavigation.setBounds(20, 20, 1008, 735);
+							//归位,返回原来的尺寸，只能到初始化尺寸，若果要放大前，需要增加变量存储之前的尺寸及位置
+							radarnavigation.dispose();
+							radarnavigation.setUndecorated(false);
+							radarnavigation.setVisible(true);
+						}
+						radarnavigation.revalidate();
+					}
+				}
+				if(e.getButton() == MouseEvent.BUTTON3){
+					//实现取消选中功能
+					radarnavigation.setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
+				}
+			}
 		});
 		
 		addMouseWheelListener(new MouseWheelListener() {
@@ -60,7 +93,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 	}
-	
+	/***********************普通功能性程序区**********************************************/
 	public void setRange(String option) {   //量程大于3及以上是乘法，小于3除法  0.75,1.5,3,6,12,24,48,96
 		if (option.equals("increase")) {  //增加量程
 			range *= 2;
@@ -79,15 +112,19 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	public float getRange() {
 		return range;
 	}
+	RadarNavigation radarnavigation;
+	public void refer(RadarNavigation radarnavigation){
+		this.radarnavigation = radarnavigation;
+	}
 	
+	/*******************图形绘画区**************************************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		/***************画出背景圈     计算画面的大小调整*****************************/
+		//*************画出背景圈     计算画面的大小调整*****************************
 		float startX, startY, diameter;
 		
 		g2.setColor(Color.GREEN);
@@ -97,13 +134,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.drawOval((int)startX-1, (int)startY-1, (int)diameter+2, (int)diameter+2);
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
-		/**************************接下来画边上的刻度，参考指针表的实现方法***********************/
+		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
 		if (mode.equalsIgnoreCase("HeadUp")) {
 			drawScale(g2, diameter, startX, startY);  //可以随着船舶动态转向
 		}
-		
-		/**************************计算画几个圈,根据量程来决定*******************************/
+		//**********************计算画几个圈,根据量程来决定*******************************
 		//g2.fillOval((int)(startX+diameter/2-2), (int)(startY+diameter/2-2), 4, 4);  //画中心点
 		if (rangeLine) {
 			drawRange(g2, diameter, startX, startY);
