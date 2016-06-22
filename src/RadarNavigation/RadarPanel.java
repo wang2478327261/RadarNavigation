@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
@@ -29,10 +30,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private boolean relative = true;  //相对运动  绝对运动
 	
 	float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
-	private JButton showMode;
-	private JButton activeMode;
-	private JButton lineUp;
-	private JButton rangeSwitch;
+	private JLabel showMode;
+	private JLabel activeMode;
+	private JLabel lineUp;
+	private JLabel rangeSwitch;
+	private JLabel showRange;
 	
 	public RadarPanel() {
 		super();
@@ -70,7 +72,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		showMode = new JButton("HEADUP");
+		showMode = new JLabel("HEADUP");
 		showMode.setHorizontalAlignment(SwingConstants.LEADING);
 		showMode.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,10 +100,10 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		showMode.setForeground(Color.GREEN);
 		showMode.setBackground(Color.DARK_GRAY);
 		showMode.setBorder(BorderFactory.createEmptyBorder());
-		showMode.setBounds(4, 55, 100, 25);
+		showMode.setBounds(4, 54, 100, 25);
 		add(showMode);
 		
-		activeMode = new JButton("RELATIVE");
+		activeMode = new JLabel("RELATIVE");
 		activeMode.setHorizontalAlignment(SwingConstants.LEADING);
 		activeMode.addMouseListener(new MouseAdapter() {
 			@Override
@@ -129,10 +131,10 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		activeMode.setForeground(Color.GREEN);
 		activeMode.setBackground(Color.DARK_GRAY);
 		activeMode.setBorder(BorderFactory.createEmptyBorder());
-		activeMode.setBounds(4, 80, 100, 25);
+		activeMode.setBounds(4, 79, 100, 25);
 		add(activeMode);
 		
-		lineUp = new JButton("HEADLINE->ON");
+		lineUp = new JLabel("HEADLINE->ON");
 		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -162,7 +164,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		lineUp.setBounds(4, 4, 150, 25);
 		add(lineUp);
 		
-		rangeSwitch = new JButton("RANGE->ON");
+		rangeSwitch = new JLabel("RANGE->ON");
 		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -191,6 +193,23 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		rangeSwitch.setBackground(Color.DARK_GRAY);
 		rangeSwitch.setBounds(4, 29, 150, 25);
 		add(rangeSwitch);
+		
+		showRange = new JLabel("RANGE :" + range);
+		showRange.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				showRange.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				showRange.setBorder(BorderFactory.createEmptyBorder());
+			}
+		});
+		showRange.setFont(new Font("Consolas", Font.BOLD, 18));
+		showRange.setForeground(Color.GREEN);
+		showRange.setBackground(Color.DARK_GRAY);
+		showRange.setBounds(4, 600, 150, 25);
+		add(showRange);
 	}
 	
 	/***********************普通功能性程序区**********************************************/
