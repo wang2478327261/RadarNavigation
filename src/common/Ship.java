@@ -1,7 +1,7 @@
 /**
  * 
  */
-package RadarNavigation;
+package common;
 
 /**
  * @author Administrator
@@ -10,13 +10,13 @@ package RadarNavigation;
 public class Ship {
 	
 	private String name = "Default";
-	private float Px = 0;  //船舶纬度       在程序中是   x   值
-	private float Py = 0;  //船舶经度   在程序中是   y   值
-	private float course = 0;  //航向
-	private float speed = 3;  //速度
+	private double Px = 0;  //船舶纬度       在程序中是   x   值
+	private double Py = 0;  //船舶经度   在程序中是   y   值
+	private double course = 0;  //航向
+	private double speed = 3;  //速度
 	private String type = "Normal";  //船舶类型
 	
-	public Ship(String name, float Px, float Py, float course, float speed, String type) {
+	public Ship(String name, double Px, double Py, double course, double speed, String type) {
 		//super();
 		this.name = name;
 		this.Px = Px;
@@ -36,7 +36,7 @@ public class Ship {
 		this.type = "Normal";
 	}
 	
-	public float getParameter(int index){   //得到船舶计算相关数据
+	public double getParameter(int index){   //得到船舶计算相关数据
         switch(index){
             case 1 : return Px;
             case 2 : return Py;
@@ -59,7 +59,7 @@ public class Ship {
 		return name;
 	}
 	
-	public synchronized void setValue(int index, float newValue){//change ship's parameter
+	public synchronized void setValue(int index, double newValue){//change ship's parameter
         switch(index){
             case 1: Px = newValue; break;
             case 2: Py = newValue; break;
@@ -81,5 +81,9 @@ public class Ship {
 	
 	public void goAhead() {
 		//使船舶前进一步，更新船舶数据信息
+        double stepx = speed*Math.sin(Math.toRadians(course));
+        double stepy = speed*Math.cos(Math.toRadians(course));
+        setValue(1, Px+stepx);
+        setValue(2, Py-stepy);
 	}
 }

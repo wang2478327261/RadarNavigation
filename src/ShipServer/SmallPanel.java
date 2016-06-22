@@ -5,7 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import RadarNavigation.Ship;
+
+import common.Ship;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
