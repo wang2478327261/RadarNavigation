@@ -14,17 +14,25 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	//这些属性有默认值         这些是雷达面板的额属性值，应当放在雷达类中
 	private float range = 6;  //雷达的量程， 单位是海里    雷达量程  最大12海里，最小1海里, 初始化为6海里
-	private String mode = "HeadUp";  //雷达模式     雷达显示模式    北向上  船首向上    /////相对运动  绝对运动.......
-	private boolean headLine = true;  //雷达船首线     开启或关闭船首线
-	private boolean rangeLine = true;  //量程划分线  分多段，随量程变化
-	//去掉布局标志简化代码，后边直接判断比较
-	//private boolean layout = true;  //布局的变化，宽度与高度的比较值，并根据这个值进行布局
+	//雷达模式     雷达显示模式    北向上  船首向上    /////相对运动  绝对运动.......
+	private boolean headline = true;  //雷达船首线     开启或关闭船首线
+	private boolean rangeline = true;  //量程划分线  分多段，随量程变化
+	private boolean headup = true;   //首向上    北向上 模式
+	private boolean relative = true;  //相对运动  绝对运动
+	
+	float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
+	private JButton showMode;
+	private JButton activeMode;
+	private JButton lineUp;
+	private JButton rangeSwitch;
 	
 	public RadarPanel() {
 		super();
@@ -61,10 +69,135 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
+		
+		showMode = new JButton("HEADUP");
+		showMode.setHorizontalAlignment(SwingConstants.LEADING);
+		showMode.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				showMode.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				showMode.setBorder(BorderFactory.createEmptyBorder());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (headup) {
+					showMode.setText("NORTHUP");
+					headup = !headup;
+				}
+				else {
+					showMode.setText("HEADUP");
+					headup = !headup;
+				}
+				
+			}
+		});
+		showMode.setFont(new Font("Consolas", Font.BOLD, 18));
+		showMode.setForeground(Color.GREEN);
+		showMode.setBackground(Color.DARK_GRAY);
+		showMode.setBorder(BorderFactory.createEmptyBorder());
+		showMode.setBounds(4, 55, 100, 25);
+		add(showMode);
+		
+		activeMode = new JButton("RELATIVE");
+		activeMode.setHorizontalAlignment(SwingConstants.LEADING);
+		activeMode.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				activeMode.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				activeMode.setBorder(BorderFactory.createEmptyBorder());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (relative) {
+					activeMode.setText("ABSOLUTE");
+					relative = !relative;
+				}
+				else{
+					activeMode.setText("RELATIVE");
+					relative = !relative;
+				}
+				
+			}
+		});
+		activeMode.setFont(new Font("Consolas", Font.BOLD, 18));
+		activeMode.setForeground(Color.GREEN);
+		activeMode.setBackground(Color.DARK_GRAY);
+		activeMode.setBorder(BorderFactory.createEmptyBorder());
+		activeMode.setBounds(4, 80, 100, 25);
+		add(activeMode);
+		
+		lineUp = new JButton("HEADLINE->ON");
+		lineUp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lineUp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lineUp.setBorder(BorderFactory.createEmptyBorder());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (headline) {
+					lineUp.setText("HEADLINE->OFF");
+					headline = !headline;
+				}
+				else {
+					lineUp.setText("HEADLINE->ON");
+					headline = !headline;
+				}
+			}
+		});
+		lineUp.setHorizontalAlignment(SwingConstants.LEADING);
+		lineUp.setForeground(Color.GREEN);
+		lineUp.setFont(new Font("Consolas", Font.BOLD, 18));
+		lineUp.setBorder(BorderFactory.createEmptyBorder());
+		lineUp.setBackground(Color.DARK_GRAY);
+		lineUp.setBounds(4, 4, 150, 25);
+		add(lineUp);
+		
+		rangeSwitch = new JButton("RANGE->ON");
+		rangeSwitch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				rangeSwitch.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				rangeSwitch.setBorder(BorderFactory.createEmptyBorder());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rangeline) {
+					rangeSwitch.setText("RANGE->OFF");
+					rangeline = !rangeline;
+				}
+				else {
+					rangeSwitch.setText("RANGE->ON");
+					rangeline = !rangeline;
+				}
+			}
+		});
+		rangeSwitch.setHorizontalAlignment(SwingConstants.LEADING);
+		rangeSwitch.setForeground(Color.GREEN);
+		rangeSwitch.setFont(new Font("Consolas", Font.BOLD, 18));
+		rangeSwitch.setBorder(BorderFactory.createEmptyBorder());
+		rangeSwitch.setBackground(Color.DARK_GRAY);
+		rangeSwitch.setBounds(4, 29, 150, 25);
+		add(rangeSwitch);
 	}
 	
 	/***********************普通功能性程序区**********************************************/
 	public void setRange(String option) {   //量程大于3及以上是乘法，小于3除法  0.75,1.5,3,6,12,24,48,96
+		if (!rangeline) {  //如果量程没有开启，则返回，不进行量程变换
+			return;
+		}
 		if (option.equals("increase")) {  //增加量程
 			range *= 2;
 			if (range >= 96) {
@@ -91,7 +224,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		//*************画出背景圈     计算画面的大小调整*****************************
-		float startX, startY, diameter;
+		
 		//画出背景   这部分不变化
 		g2.setColor(Color.GREEN);
 		diameter = (float) (Math.min(getWidth(), getHeight())*0.93);
@@ -102,20 +235,20 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
-		if (mode.equalsIgnoreCase("HeadUp")) {
-			drawScale(g2, diameter, startX, startY);  //可以随着船舶动态转向
+		if (headup) {
+			drawScale(g2);  //可以随着船舶动态转向
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
 		//g2.fillOval((int)(startX+diameter/2-2), (int)(startY+diameter/2-2), 4, 4);  //画中心点
-		if (rangeLine) {
-			drawRange(g2, diameter, startX, startY);
+		if (rangeline) {
+			drawRange(g2);
 		}
-		if (headLine) {
-			drawHeadLine(g2, diameter, startX, startY);
+		if (headline) {
+			drawHeadLine(g2);
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
-	public void drawScale(Graphics2D g2, float diameter, float startX, float startY){
+	public void drawScale(Graphics2D g2){
 		g2.setColor(Color.GREEN);
 		//每个格点为3°
 		float xCircle = startX + diameter/2;  //计算圆心
@@ -144,7 +277,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
         g2.setTransform(old);
 	}
 	//画出随着量程变化的环形圈，  方便估算对方的位置
-	public void drawRange(Graphics2D g2, float diameter, float startX, float startY) {
+	public void drawRange(Graphics2D g2) {
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //画圈的过程中临时的半径
 		float diaStep = diameter/(range * 2);  //每次增大半径后的步进值, 得到的值是  每海里的像素值
@@ -167,11 +300,9 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 	}
 	
-	public void drawHeadLine(Graphics2D g2, float diameter, float startX, float startY) {
+	public void drawHeadLine(Graphics2D g2) {
 		//在北向上模式中需要获取船舶航向
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 	}
-	
-	
 }

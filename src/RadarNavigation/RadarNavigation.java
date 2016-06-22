@@ -100,14 +100,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.add(radarpanel);
 		//雷达单击响应事件
 		radarpanel.addMouseListener(new MouseAdapter() {
-			/*@Override
-			public void mouseEntered(MouseEvent e) {
-				radarpanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				radarpanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}*/
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {   //这里可以加入时间测试，实现功能之间的区别，网上擦还训
 				//选中对方船舶或或者取消选中（右键单击）
@@ -145,14 +138,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		contentPane.add(infopanel);
 		//信息面板响应
 		infopanel.addMouseListener(new MouseAdapter() {
-			/*@Override
-			public void mouseEntered(MouseEvent e) {
-				infopanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				infopanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}*/
+			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//单击后显示菜单，变换界面  设置整体属性
