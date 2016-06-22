@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
@@ -14,12 +13,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
-
-import ShipServer.ShipManager;
 import common.Ship;
-
 import javax.swing.JLabel;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -328,7 +323,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		return range;
 	}
 	public void getShip(Ship ship){
-		
+		this.ship = ship;
 	}
 	
 	/*******************图形绘画区**************************************************************/
