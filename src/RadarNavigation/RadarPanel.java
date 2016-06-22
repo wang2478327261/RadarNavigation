@@ -16,7 +16,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import ShipServer.ShipManager;
+import common.Ship;
+
 import javax.swing.JLabel;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 @SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
@@ -29,18 +35,30 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private boolean headup = true;   //首向上    北向上 模式
 	private boolean relative = true;  //相对运动  绝对运动
 	
-	float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
+	private float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
+	private Ship ship;  //传入本船的引用
+	
 	private JLabel showMode;
 	private JLabel activeMode;
 	private JLabel lineUp;
 	private JLabel rangeSwitch;
 	private JLabel showRange;
+	private JLabel latitude;
+	private JLabel longitude;
+	private JLabel course;
+	private JLabel speed;
 	
 	public RadarPanel() {
 		super();
 		initComponents();
 	}
 	private void initComponents() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
+				course.setBounds(getWidth() - 150, 4, 150, 25);
+			}
+		});
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -72,7 +90,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		showMode = new JLabel("HEADUP");
+		showMode = new JLabel("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
 		showMode.setHorizontalAlignment(SwingConstants.LEADING);
 		showMode.addMouseListener(new MouseAdapter() {
 			@Override
@@ -210,29 +228,107 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		showRange.setBackground(Color.DARK_GRAY);
 		showRange.setBounds(4, 600, 150, 25);
 		add(showRange);
+		
+		latitude = new JLabel("LAT : ");
+		latitude.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				latitude.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				latitude.setBorder(BorderFactory.createEmptyBorder());
+			}
+		});
+		latitude.setHorizontalAlignment(SwingConstants.LEADING);
+		latitude.setForeground(Color.GREEN);
+		latitude.setFont(new Font("Consolas", Font.BOLD, 18));
+		latitude.setBorder(BorderFactory.createEmptyBorder());
+		latitude.setBackground(Color.DARK_GRAY);
+		latitude.setBounds(600, 4, 180, 25);
+		add(latitude);
+		
+		longitude = new JLabel("LOG : ");
+		longitude.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				longitude.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				longitude.setBorder(BorderFactory.createEmptyBorder());
+			}
+		});
+		longitude.setHorizontalAlignment(SwingConstants.LEADING);
+		longitude.setForeground(Color.GREEN);
+		longitude.setFont(new Font("Consolas", Font.BOLD, 18));
+		longitude.setBorder(BorderFactory.createEmptyBorder());
+		longitude.setBackground(Color.DARK_GRAY);
+		longitude.setBounds(600, 29, 180, 25);
+		add(longitude);
+		
+		course = new JLabel("COS : ");
+		course.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				course.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				course.setBorder(BorderFactory.createEmptyBorder());
+			}
+		});
+		course.setHorizontalAlignment(SwingConstants.LEADING);
+		course.setForeground(Color.GREEN);
+		course.setFont(new Font("Consolas", Font.BOLD, 18));
+		course.setBorder(BorderFactory.createEmptyBorder());
+		course.setBackground(Color.DARK_GRAY);
+		course.setBounds(650, 54, 120, 25);
+		add(course);
+		
+		speed = new JLabel("SPD : ");
+		speed.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				speed.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				speed.setBorder(BorderFactory.createEmptyBorder());
+			}
+		});
+		speed.setHorizontalAlignment(SwingConstants.LEADING);
+		speed.setForeground(Color.GREEN);
+		speed.setFont(new Font("Consolas", Font.BOLD, 18));
+		speed.setBorder(BorderFactory.createEmptyBorder());
+		speed.setBackground(Color.DARK_GRAY);
+		speed.setBounds(650, 79, 120, 25);
+		add(speed);
 	}
 	
 	/***********************普通功能性程序区**********************************************/
 	public void setRange(String option) {   //量程大于3及以上是乘法，小于3除法  0.75,1.5,3,6,12,24,48,96
-		if (!rangeline) {  //如果量程没有开启，则返回，不进行量程变换
-			return;
-		}
-		if (option.equals("increase")) {  //增加量程
-			range *= 2;
-			if (range >= 96) {
-				range = 96;
+		if (rangeline) {  //如果量程没有开启，则返回，不进行量程变换
+			if (option.equals("increase")) {  //增加量程
+				range *= 2;
+				if (range >= 96) {
+					range = 96;
+				}
 			}
-		}
-		else{   //reduce    减少量程
-			range /= 2;
-			if (range <= 0.75) {
-				range = (float) 0.75;
+			else{   //reduce    减少量程
+				range /= 2;
+				if (range <= 0.75) {
+					range = (float) 0.75;
+				}
 			}
+			System.out.println(range);
 		}
-		System.out.println(range);
 	}
 	public float getRange() {
 		return range;
+	}
+	public void getShip(Ship ship){
+		
 	}
 	
 	/*******************图形绘画区**************************************************************/
