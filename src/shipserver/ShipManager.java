@@ -1,4 +1,4 @@
-package ShipServer;
+package shipserver;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;

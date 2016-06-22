@@ -1,4 +1,4 @@
-package RadarNavigation;
+package radarnavigation;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;

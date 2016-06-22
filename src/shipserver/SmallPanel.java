@@ -1,4 +1,4 @@
-package ShipServer;
+package shipserver;
 
 import java.awt.Color;
 import java.awt.Graphics;

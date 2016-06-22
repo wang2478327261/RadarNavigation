@@ -5,4 +5,4 @@
  * @author Administrator
  *
  */
-package ShipServer;
+package radarnavigation;
