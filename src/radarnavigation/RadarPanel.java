@@ -48,7 +48,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		initComponents();
 	}
 	private void initComponents() {
-		addComponentListener(new ComponentAdapter() {
+		addComponentListener(new ComponentAdapter() {  //实现自动布局
 			@Override
 			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
 				course.setBounds(getWidth() - 150, 4, 150, 25);
