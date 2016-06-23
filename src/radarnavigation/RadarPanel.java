@@ -14,6 +14,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
+
+import common.HoverJLable;
 import common.Ship;
 import javax.swing.JLabel;
 import java.awt.event.ComponentAdapter;
@@ -33,15 +35,15 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
 	private Ship ship;  //传入本船的引用
 	
-	private JLabel showMode;
-	private JLabel activeMode;
-	private JLabel lineUp;
-	private JLabel rangeSwitch;
-	private JLabel showRange;
-	private JLabel latitude;
-	private JLabel longitude;
-	private JLabel course;
-	private JLabel speed;
+	private HoverJLable showMode;
+	private HoverJLable activeMode;
+	private HoverJLable lineUp;
+	private HoverJLable rangeSwitch;
+	private HoverJLable showRange;
+	private HoverJLable latitude;
+	private HoverJLable longitude;
+	private HoverJLable course;
+	private HoverJLable speed;
 	
 	public RadarPanel() {
 		super();
@@ -51,7 +53,29 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		addComponentListener(new ComponentAdapter() {  //实现自动布局
 			@Override
 			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
-				course.setBounds(getWidth() - 150, 4, 150, 25);
+				//左上角
+				lineUp.setBounds(4, 4, (int)(diameter*0.25), (int)(diameter*0.04));
+				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
+				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
+				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
+				//左下角
+				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), (int)(diameter*0.04));
+				
+				//右上角
+				latitude.setBounds(getWidth()-(int)(diameter*0.25), 4, (int)(diameter*0.25), (int)(diameter*0.04));
+				longitude.setBounds(getWidth()-(int)(diameter*0.25), latitude.getY()+latitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
+				course.setBounds(getWidth()-(int)(diameter*0.2), longitude.getY()+longitude.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
+				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
+				//设置字体大小
+				lineUp.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				rangeSwitch.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				showMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				activeMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				showRange.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				latitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				longitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				course.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				speed.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
 			}
 		});
 		addMouseListener(new MouseAdapter() {
@@ -85,17 +109,42 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		showMode = new JLabel("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
-		showMode.setHorizontalAlignment(SwingConstants.LEADING);
+		lineUp = new HoverJLable("HEADLINE->ON");
+		lineUp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (headline) {
+					lineUp.setText("HEADLINE->OFF");
+					headline = !headline;
+				}
+				else {
+					lineUp.setText("HEADLINE->ON");
+					headline = !headline;
+				}
+			}
+		});
+		//lineUp.setBounds(4, 4, 150, 25);
+		add(lineUp);
+		
+		rangeSwitch = new HoverJLable("RANGE->ON");
+		rangeSwitch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rangeline) {
+					rangeSwitch.setText("RANGE->OFF");
+					rangeline = !rangeline;
+				}
+				else {
+					rangeSwitch.setText("RANGE->ON");
+					rangeline = !rangeline;
+				}
+			}
+		});
+		//rangeSwitch.setBounds(4, 29, 150, 25);
+		add(rangeSwitch);
+		
+		showMode = new HoverJLable("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
 		showMode.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				showMode.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				showMode.setBorder(BorderFactory.createEmptyBorder());
-			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headup) {
@@ -109,195 +158,43 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				
 			}
 		});
-		showMode.setFont(new Font("Consolas", Font.BOLD, 18));
-		showMode.setForeground(Color.GREEN);
-		showMode.setBackground(Color.DARK_GRAY);
-		showMode.setBorder(BorderFactory.createEmptyBorder());
-		showMode.setBounds(4, 54, 100, 25);
+		//showMode.setBounds(4, 54, 100, 25);
 		add(showMode);
 		
-		activeMode = new JLabel("RELATIVE");
-		activeMode.setHorizontalAlignment(SwingConstants.LEADING);
+		activeMode = new HoverJLable("REL");
 		activeMode.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				activeMode.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				activeMode.setBorder(BorderFactory.createEmptyBorder());
-			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (relative) {
-					activeMode.setText("ABSOLUTE");
+					activeMode.setText("ABS");
 					relative = !relative;
 				}
 				else{
-					activeMode.setText("RELATIVE");
+					activeMode.setText("REL");
 					relative = !relative;
 				}
-				
 			}
 		});
-		activeMode.setFont(new Font("Consolas", Font.BOLD, 18));
-		activeMode.setForeground(Color.GREEN);
-		activeMode.setBackground(Color.DARK_GRAY);
-		activeMode.setBorder(BorderFactory.createEmptyBorder());
-		activeMode.setBounds(4, 79, 100, 25);
+		//activeMode.setBounds(4, 79, 100, 25);
 		add(activeMode);
-		
-		lineUp = new JLabel("HEADLINE->ON");
-		lineUp.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				lineUp.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lineUp.setBorder(BorderFactory.createEmptyBorder());
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (headline) {
-					lineUp.setText("HEADLINE->OFF");
-					headline = !headline;
-				}
-				else {
-					lineUp.setText("HEADLINE->ON");
-					headline = !headline;
-				}
-			}
-		});
-		lineUp.setHorizontalAlignment(SwingConstants.LEADING);
-		lineUp.setForeground(Color.GREEN);
-		lineUp.setFont(new Font("Consolas", Font.BOLD, 18));
-		lineUp.setBorder(BorderFactory.createEmptyBorder());
-		lineUp.setBackground(Color.DARK_GRAY);
-		lineUp.setBounds(4, 4, 150, 25);
-		add(lineUp);
-		
-		rangeSwitch = new JLabel("RANGE->ON");
-		rangeSwitch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				rangeSwitch.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				rangeSwitch.setBorder(BorderFactory.createEmptyBorder());
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (rangeline) {
-					rangeSwitch.setText("RANGE->OFF");
-					rangeline = !rangeline;
-				}
-				else {
-					rangeSwitch.setText("RANGE->ON");
-					rangeline = !rangeline;
-				}
-			}
-		});
-		rangeSwitch.setHorizontalAlignment(SwingConstants.LEADING);
-		rangeSwitch.setForeground(Color.GREEN);
-		rangeSwitch.setFont(new Font("Consolas", Font.BOLD, 18));
-		rangeSwitch.setBorder(BorderFactory.createEmptyBorder());
-		rangeSwitch.setBackground(Color.DARK_GRAY);
-		rangeSwitch.setBounds(4, 29, 150, 25);
-		add(rangeSwitch);
-		
-		showRange = new JLabel("RANGE :" + range);
-		showRange.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				showRange.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				showRange.setBorder(BorderFactory.createEmptyBorder());
-			}
-		});
-		showRange.setFont(new Font("Consolas", Font.BOLD, 18));
-		showRange.setForeground(Color.GREEN);
-		showRange.setBackground(Color.DARK_GRAY);
-		showRange.setBounds(4, 600, 150, 25);
+		//左下角显示当前设置信息
+		showRange = new HoverJLable("RANGE :" + range + " KN ");
 		add(showRange);
-		
-		latitude = new JLabel("LAT : ");
-		latitude.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				latitude.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				latitude.setBorder(BorderFactory.createEmptyBorder());
-			}
-		});
-		latitude.setHorizontalAlignment(SwingConstants.LEADING);
-		latitude.setForeground(Color.GREEN);
-		latitude.setFont(new Font("Consolas", Font.BOLD, 18));
-		latitude.setBorder(BorderFactory.createEmptyBorder());
-		latitude.setBackground(Color.DARK_GRAY);
-		latitude.setBounds(600, 4, 180, 25);
+		//右上方显示数据信息
+		latitude = new HoverJLable("LAT : ");
+		//latitude.setBounds(getWidth()-204, 4, 200, 25);
 		add(latitude);
 		
-		longitude = new JLabel("LOG : ");
-		longitude.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				longitude.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				longitude.setBorder(BorderFactory.createEmptyBorder());
-			}
-		});
-		longitude.setHorizontalAlignment(SwingConstants.LEADING);
-		longitude.setForeground(Color.GREEN);
-		longitude.setFont(new Font("Consolas", Font.BOLD, 18));
-		longitude.setBorder(BorderFactory.createEmptyBorder());
-		longitude.setBackground(Color.DARK_GRAY);
-		longitude.setBounds(600, 29, 180, 25);
+		longitude = new HoverJLable("LOG : ");
+		//longitude.setBounds(getWidth()-204, 29, 200, 25);
 		add(longitude);
 		
-		course = new JLabel("COS : ");
-		course.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				course.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				course.setBorder(BorderFactory.createEmptyBorder());
-			}
-		});
-		course.setHorizontalAlignment(SwingConstants.LEADING);
-		course.setForeground(Color.GREEN);
-		course.setFont(new Font("Consolas", Font.BOLD, 18));
-		course.setBorder(BorderFactory.createEmptyBorder());
-		course.setBackground(Color.DARK_GRAY);
-		course.setBounds(650, 54, 120, 25);
+		course = new HoverJLable("COS : 156° T");
+		//course.setBounds(getWidth()-104, 54, 100, 25);
 		add(course);
 		
-		speed = new JLabel("SPD : ");
-		speed.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				speed.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				speed.setBorder(BorderFactory.createEmptyBorder());
-			}
-		});
-		speed.setHorizontalAlignment(SwingConstants.LEADING);
-		speed.setForeground(Color.GREEN);
-		speed.setFont(new Font("Consolas", Font.BOLD, 18));
-		speed.setBorder(BorderFactory.createEmptyBorder());
-		speed.setBackground(Color.DARK_GRAY);
-		speed.setBounds(650, 79, 120, 25);
+		speed = new HoverJLable("SPD : 95 KT");
+		//speed.setBounds(getWidth()-104, 79, 100, 25);
 		add(speed);
 	}
 	
