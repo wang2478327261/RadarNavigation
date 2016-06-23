@@ -13,11 +13,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.SwingConstants;
-
 import common.HoverJLable;
 import common.Ship;
-import javax.swing.JLabel;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -33,6 +30,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private boolean relative = true;  //相对运动  绝对运动
 	
 	private float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
+	double pc = 1;  //显示每格多少海里
 	private Ship ship;  //传入本船的引用
 	
 	private HoverJLable showMode;
@@ -44,9 +42,13 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private HoverJLable longitude;
 	private HoverJLable course;
 	private HoverJLable speed;
+	private HoverJLable perCircle;
 	
 	public RadarPanel() {
 		super();
+		
+		
+		//初始化界面
 		initComponents();
 	}
 	private void initComponents() {
@@ -60,22 +62,23 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
 				//左下角
 				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), (int)(diameter*0.04));
-				
+				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.4), (int)(diameter*0.04));
 				//右上角
-				latitude.setBounds(getWidth()-(int)(diameter*0.25), 4, (int)(diameter*0.25), (int)(diameter*0.04));
-				longitude.setBounds(getWidth()-(int)(diameter*0.25), latitude.getY()+latitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
-				course.setBounds(getWidth()-(int)(diameter*0.2), longitude.getY()+longitude.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
+				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), (int)(diameter*0.04));
+				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), (int)(diameter*0.04));
+				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
 				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
 				//设置字体大小
-				lineUp.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				rangeSwitch.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				showMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				activeMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				showRange.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				latitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				longitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				course.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
-				speed.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.025)));
+				lineUp.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				rangeSwitch.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				showMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				perCircle.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				activeMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				showRange.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				latitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				longitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				course.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				speed.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
 			}
 		});
 		addMouseListener(new MouseAdapter() {
@@ -100,6 +103,25 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				}
 				revalidate();
 				//System.out.println(((radarPanel) radarpanel).getRange());
+				showRange.setText("RANGE :" + range + " KN ");
+				//判断梅格表示的海里
+				if (range <= 3) {  //一格   0.5  海里
+					//pc = diameter/(range*2)/2;
+					pc = 0.5;
+				}
+				else if(range <=6 ){   //一格1海里
+					//pc = diameter/(range*2);
+					pc = 1;
+				}
+				else if (range <= 24) {  //一格2海里
+					//pc = diameter/(range*2)*2;
+					pc = 2;
+				}
+				else {
+					//pc = diameter/(range*2)*4;  //一格4海里
+					pc = 4;
+				}
+				perCircle.setText("PER CIRCLE: " + pc +" KN/PC");
 				repaint(1000);
 			}
 		});
@@ -109,38 +131,36 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE->ON");
+		lineUp = new HoverJLable("HEADLINE-->ON");
 		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headline) {
-					lineUp.setText("HEADLINE->OFF");
+					lineUp.setText("HEADLINE-->OFF");
 					headline = !headline;
 				}
 				else {
-					lineUp.setText("HEADLINE->ON");
+					lineUp.setText("HEADLINE-->ON");
 					headline = !headline;
 				}
 			}
 		});
-		//lineUp.setBounds(4, 4, 150, 25);
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE->ON");
+		rangeSwitch = new HoverJLable("RANGE-->ON");
 		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
-					rangeSwitch.setText("RANGE->OFF");
+					rangeSwitch.setText("RANGE-->OFF");
 					rangeline = !rangeline;
 				}
 				else {
-					rangeSwitch.setText("RANGE->ON");
+					rangeSwitch.setText("RANGE-->ON");
 					rangeline = !rangeline;
 				}
 			}
 		});
-		//rangeSwitch.setBounds(4, 29, 150, 25);
 		add(rangeSwitch);
 		
 		showMode = new HoverJLable("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
@@ -158,7 +178,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				
 			}
 		});
-		//showMode.setBounds(4, 54, 100, 25);
 		add(showMode);
 		
 		activeMode = new HoverJLable("REL");
@@ -175,27 +194,25 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				}
 			}
 		});
-		//activeMode.setBounds(4, 79, 100, 25);
 		add(activeMode);
 		//左下角显示当前设置信息
 		showRange = new HoverJLable("RANGE :" + range + " KN ");
 		add(showRange);
 		//右上方显示数据信息
-		latitude = new HoverJLable("LAT : ");
-		//latitude.setBounds(getWidth()-204, 4, 200, 25);
+		latitude = new HoverJLable("LAT : 123.345.34.");
 		add(latitude);
 		
-		longitude = new HoverJLable("LOG : ");
-		//longitude.setBounds(getWidth()-204, 29, 200, 25);
+		longitude = new HoverJLable("LOG : 434.243.32");
 		add(longitude);
 		
 		course = new HoverJLable("COS : 156° T");
-		//course.setBounds(getWidth()-104, 54, 100, 25);
 		add(course);
 		
 		speed = new HoverJLable("SPD : 95 KT");
-		//speed.setBounds(getWidth()-104, 79, 100, 25);
 		add(speed);
+		
+		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC");
+		add(perCircle);
 	}
 	
 	/***********************普通功能性程序区**********************************************/
