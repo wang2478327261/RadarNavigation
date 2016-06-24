@@ -8,12 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -47,7 +44,7 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	 * Create the frame.
 	 */
 	public ShipManager() {
-		//打开网络通信，接受客户端消息
+		//打开网络通信，接受客户端消息                                    这里有问题无法执行
 		try {
 			ServerSocket managersocket = new ServerSocket(8888);
 			

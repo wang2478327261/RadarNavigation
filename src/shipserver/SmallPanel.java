@@ -43,7 +43,7 @@ public class SmallPanel extends JPanel{
 	}
 	
 	/**************通用程序区*********************************************/
-	public void addShip(Ship ship) {
+	public void addShip(Ship ship) {  //是通过船舶名称还是对象传入？
 		ships.add(ship);
 	}
 	public void removeShip(Ship ship){
