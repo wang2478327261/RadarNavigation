@@ -3,6 +3,12 @@ package shipserver;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -16,8 +22,7 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	
 	private JPanel contentPane;
 	private SmallPanel smallpanel;
-	private JButton btnNewButton;
-	private JEditorPane editorPane;
+	private List<Socket> sockets = new ArrayList<Socket>();
 	
 	//功能需要     变量区域
 	private boolean changed = false;
@@ -43,7 +48,23 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	 */
 	public ShipManager() {
 		//打开网络通信，接受客户端消息
-		
+		try {
+			ServerSocket managersocket = new ServerSocket(8888);
+			
+			Socket socket = managersocket.accept();
+			sockets.add(socket);
+			
+			for(int i = 0;i<sockets.size();i++){
+				Socket s = sockets.get(i);
+				if (s.isClosed()) {
+					sockets.remove(i);
+					i--;
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//初始化界面
 		initComponents();
 	}
@@ -80,13 +101,5 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 		});
 		smallpanel.setBounds(0, 0, 150, 150);
 		contentPane.add(smallpanel);
-		
-		btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(176, 35, 95, 25);
-		contentPane.add(btnNewButton);
-		
-		editorPane = new JEditorPane();
-		editorPane.setBounds(165, 85, 129, 115);
-		contentPane.add(editorPane);
 	}
 }

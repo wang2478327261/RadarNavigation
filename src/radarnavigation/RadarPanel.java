@@ -46,8 +46,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	public RadarPanel() {
 		super();
-		
-		
 		//初始化界面
 		initComponents();
 	}

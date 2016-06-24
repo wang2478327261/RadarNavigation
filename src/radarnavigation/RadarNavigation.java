@@ -11,6 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.Socket;
 
 @SuppressWarnings("serial")
 public class RadarNavigation extends JFrame {  //登陆主面板
@@ -58,6 +59,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字
+		Socket socket = new Socket();
 		
 		//初始化界面
 		initComponents();
@@ -111,7 +113,6 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 							//去除标题栏
 							dispose();
 							setUndecorated(true);
-							//getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 							setVisible(true);
 						}
 						else {

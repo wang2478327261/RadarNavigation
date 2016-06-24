@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
  * @author Administrator
  *
  */
+@SuppressWarnings("serial")
 public class HoverJLable extends JLabel{
 	
 	public HoverJLable() {
