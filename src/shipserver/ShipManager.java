@@ -3,7 +3,10 @@ package shipserver;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -44,13 +47,15 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	 * Create the frame.
 	 */
 	public ShipManager() {
+		initComponents();
 		//打开网络通信，接受客户端消息                                    这里有问题无法执行
 		try {
-			ServerSocket managersocket = new ServerSocket(8888);
-			
-			Socket socket = managersocket.accept();
-			sockets.add(socket);
-			
+			ServerSocket serversocket = new ServerSocket(8888);
+			Socket connectionsocket = serversocket.accept();
+			BufferedReader bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
+			DataOutputStream dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
+			sockets.add(connectionsocket);
+			dataoutputotream.writeUTF("hrouiuguyvgh");
 			for(int i = 0;i<sockets.size();i++){
 				Socket s = sockets.get(i);
 				if (s.isClosed()) {

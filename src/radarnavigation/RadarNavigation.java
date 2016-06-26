@@ -11,6 +11,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 @SuppressWarnings("serial")
@@ -59,7 +63,16 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字
-		Socket socket = new Socket();
+		try {
+			Socket socket = new Socket("localhost",8888);
+			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
+			String p = bufferedreader.readLine();
+			System.out.println(p);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//初始化界面
 		initComponents();

@@ -60,23 +60,23 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
 				//左下角
 				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), (int)(diameter*0.04));
-				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.4), (int)(diameter*0.04));
+				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), (int)(diameter*0.04));
 				//右上角
 				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), (int)(diameter*0.04));
 				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), (int)(diameter*0.04));
 				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
 				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
 				//设置字体大小
-				lineUp.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				rangeSwitch.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				showMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				perCircle.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				activeMode.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				showRange.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				latitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				longitude.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				course.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
-				speed.setFont(new Font("Consolas", Font.BOLD, (int) (diameter*0.03)));
+				lineUp.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				rangeSwitch.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				showMode.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				perCircle.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				activeMode.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				showRange.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				latitude.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				longitude.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				course.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				speed.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
 			}
 		});
 		addMouseListener(new MouseAdapter() {
@@ -101,7 +101,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				}
 				revalidate();
 				//System.out.println(((radarPanel) radarpanel).getRange());
-				showRange.setText("RANGE :" + range + " KN ");
+				showRange.setText("RANGE : " + range + " KN ");
 				//判断梅格表示的海里
 				if (range <= 3) {  //一格   0.5  海里
 					//pc = diameter/(range*2)/2;
@@ -119,7 +119,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					//pc = diameter/(range*2)*4;  //一格4海里
 					pc = 4;
 				}
-				perCircle.setText("PER CIRCLE: " + pc +" KN/PC");
+				perCircle.setText("PER CIRCLE : " + pc +" KN/PC");
 				repaint(1000);
 			}
 		});
@@ -194,7 +194,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		});
 		add(activeMode);
 		//左下角显示当前设置信息
-		showRange = new HoverJLable("RANGE :" + range + " KN ");
+		showRange = new HoverJLable("RANGE : " + range + " KN ");
 		add(showRange);
 		//右上方显示数据信息
 		latitude = new HoverJLable("LAT : 123.345.34.");
@@ -291,7 +291,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		AffineTransform old = g2.getTransform();
         //方向的60个刻度
         for (int i = 0; i < 360; i++) {   //x  yCircle都是圆心位置
-            int bulge = (int) (i % 10 == 0 ? 0.02*diameter : 0.005*diameter);  //bulge 凸出
+            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge 凸出
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
             g2.rotate(Math.toRadians(1), xCircle, yCircle);  //每一小格转6度, 以圆心为中心点
         }
