@@ -32,6 +32,8 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
 	double pc = 1;  //显示每格多少海里
 	private Ship ship;  //传入本船的引用
+	//Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.03));
+	Font font;
 	
 	private HoverJLable showMode;
 	private HoverJLable activeMode;
@@ -53,6 +55,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		addComponentListener(new ComponentAdapter() {  //实现自动布局
 			@Override
 			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
+				font = new Font("Default", Font.PLAIN, (int) (diameter*0.03));
 				//左上角
 				lineUp.setBounds(4, 4, (int)(diameter*0.25), (int)(diameter*0.04));
 				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
@@ -67,16 +70,16 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
 				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
 				//设置字体大小
-				lineUp.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				rangeSwitch.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				showMode.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				perCircle.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				activeMode.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				showRange.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				latitude.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				longitude.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				course.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
-				speed.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.03)));
+				lineUp.setFont(font);
+				rangeSwitch.setFont(font);
+				showMode.setFont(font);
+				perCircle.setFont(font);
+				activeMode.setFont(font);
+				showRange.setFont(font);
+				latitude.setFont(font);
+				longitude.setFont(font);
+				course.setFont(font);
+				speed.setFont(font);
 			}
 		});
 		addMouseListener(new MouseAdapter() {
@@ -129,8 +132,8 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE-->ON");
-		lineUp.addMouseListener(new MouseAdapter() {
+		lineUp = new HoverJLable("HEADLINE-->ON", "HEADLINE-->OFF");
+		/*lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headline) {
@@ -142,11 +145,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					headline = !headline;
 				}
 			}
-		});
+		});*/
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE-->ON");
-		rangeSwitch.addMouseListener(new MouseAdapter() {
+		rangeSwitch = new HoverJLable("RANGE-->ON", "RANGE-->OFF");
+		/*rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
@@ -158,11 +161,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					rangeline = !rangeline;
 				}
 			}
-		});
+		});*/
 		add(rangeSwitch);
 		
-		showMode = new HoverJLable("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
-		showMode.addMouseListener(new MouseAdapter() {
+		showMode = new HoverJLable("HEADUP", "NORTHUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
+		/*showMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headup) {
@@ -175,11 +178,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				}
 				
 			}
-		});
+		});*/
 		add(showMode);
 		
-		activeMode = new HoverJLable("REL");
-		activeMode.addMouseListener(new MouseAdapter() {
+		activeMode = new HoverJLable("REL", "ABS");
+		/*activeMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (relative) {
@@ -191,7 +194,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					relative = !relative;
 				}
 			}
-		});
+		});*/
 		add(activeMode);
 		//左下角显示当前设置信息
 		showRange = new HoverJLable("RANGE : " + range + " KN ");

@@ -20,6 +20,9 @@ import java.awt.event.MouseEvent;
 @SuppressWarnings("serial")
 public class HoverJLable extends JLabel{
 	
+	String transform1, transform2;
+	private boolean transflag = false;
+	
 	public HoverJLable() {
 		super();
 		initComponents();
@@ -54,10 +57,15 @@ public class HoverJLable extends JLabel{
 		// TODO Auto-generated constructor stub
 		initComponents();
 	}
+	
+	public HoverJLable(String transform1, String transform2) {
+		super();
+		this.transform1 = transform1;
+		this.transform2 = transform2;
+	}
 
 	private void initComponents() {
 		//setToolTipText(getText());
-		//setFont(new Font("Condolas", Font.BOLD, getHeight()));
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -66,6 +74,16 @@ public class HoverJLable extends JLabel{
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder());
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!transflag) {
+					setText(transform2);
+				}
+				else{
+					setText(transform1);
+				}
+				
 			}
 		});
 		setHorizontalAlignment(SwingConstants.LEFT);

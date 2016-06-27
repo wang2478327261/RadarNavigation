@@ -63,7 +63,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字
-		try {
+		/*try {
 			Socket socket = new Socket("localhost",8888);
 			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
@@ -72,7 +72,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		//初始化界面
 		initComponents();
@@ -127,6 +127,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 							dispose();
 							setUndecorated(true);
 							setVisible(true);
+							radarpanel.setSize(getWidth()*7/9, getHeight()-35);
 						}
 						else {
 							setBounds(20, 20, 1008, 735);
@@ -134,9 +135,12 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
+							radarpanel.setSize(getWidth()*7/9, getHeight());
 						}
 						revalidate();
+						
 					}
+					
 				}
 				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能

@@ -64,7 +64,7 @@
 		protected void paintComponent(Graphics arg0){
 			// TODO Auto-generated method stub
 			super.paintComponent(arg0);
-			ImageIcon icon = new ImageIcon("E:\\Picture Book\\San Francisco");//图片的问题，待解决
+			ImageIcon icon = new ImageIcon("E:\\Picture Book\\San Francisco.jpg");//图片的问题，待解决
 			arg0.drawImage(icon.getImage(), 0, 0, panel.getSize().width,panel.getSize().height,panel);
 			
 			for (int i = 0; i < 600; i++) {
@@ -103,3 +103,6 @@
 
 }
 ```
+	出现了字体大小在全屏切换后出现字体变化，无法解决，请高人指点，谢谢  
+
+5. 
