@@ -119,6 +119,12 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				//选中对方船舶或或者取消选中（右键单击）
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单击事件
+					if (e.getClickCount() == 1) {
+						//添加雷达对象到信息面板
+						Ship s = new Ship();
+						infopanel.addShip(s);
+					}
+					//全屏动作
 					if (e.getClickCount() >= 2) {   //这里可以添加时间判断，实现更精确的控制
 						if (!isUndecorated()) {
 							setLocation(0, 0);
@@ -145,6 +151,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能
 					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
+					infopanel.removeShip();    //是用对象引用还是  对象重构     ， 那个更方便？
 				}
 			}
 		});
