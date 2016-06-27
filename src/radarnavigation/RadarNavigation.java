@@ -119,7 +119,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				//选中对方船舶或或者取消选中（右键单击）
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单击事件
-					if (e.getClickCount() >= 2) {
+					if (e.getClickCount() >= 2) {   //这里可以添加时间判断，实现更精确的控制
 						if (!isUndecorated()) {
 							setLocation(0, 0);
 							setSize(Toolkit.getDefaultToolkit().getScreenSize());

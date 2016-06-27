@@ -10,6 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.xml.soap.Text;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -19,9 +21,6 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("serial")
 public class HoverJLable extends JLabel{
-	
-	String transform1, transform2;
-	private boolean transflag = false;
 	
 	public HoverJLable() {
 		super();
@@ -58,11 +57,13 @@ public class HoverJLable extends JLabel{
 		initComponents();
 	}
 	
-	public HoverJLable(String transform1, String transform2) {
-		super();
+	/*public HoverJLable(String transform1, String transform2) {  //初始化后显示的是第一个字符串参数
+		super(transform1);
+		// TODO Auto-generated constructor stub                    //行不通的原因，需要外部识别当前状态
 		this.transform1 = transform1;
 		this.transform2 = transform2;
-	}
+		initComponents();
+	}*/
 
 	private void initComponents() {
 		//setToolTipText(getText());
@@ -75,19 +76,9 @@ public class HoverJLable extends JLabel{
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder());
 			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!transflag) {
-					setText(transform2);
-				}
-				else{
-					setText(transform1);
-				}
-				
-			}
 		});
-		setHorizontalAlignment(SwingConstants.LEFT);
-		setFont(new Font("Consolas", Font.BOLD, 18));
+		//Font font = new Font("Consolas", Font.PLAIN, 20);
+		//setFont(font);
 		setForeground(Color.GREEN);
 		setBackground(Color.DARK_GRAY);
 		setBorder(BorderFactory.createEmptyBorder());

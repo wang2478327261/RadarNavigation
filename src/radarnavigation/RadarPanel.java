@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
@@ -55,7 +56,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		addComponentListener(new ComponentAdapter() {  //实现自动布局
 			@Override
 			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
-				font = new Font("Default", Font.PLAIN, (int) (diameter*0.03));
+				font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 				//左上角
 				lineUp.setBounds(4, 4, (int)(diameter*0.25), (int)(diameter*0.04));
 				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
@@ -102,7 +103,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				if(e.getWheelRotation() < 0){  //增大量程
 					setRange("increase");
 				}
-				revalidate();
 				//System.out.println(((radarPanel) radarpanel).getRange());
 				showRange.setText("RANGE : " + range + " KN ");
 				//判断梅格表示的海里
@@ -122,7 +122,9 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					//pc = diameter/(range*2)*4;  //一格4海里
 					pc = 4;
 				}
+				
 				perCircle.setText("PER CIRCLE : " + pc +" KN/PC");
+				revalidate();
 				repaint(1000);
 			}
 		});
@@ -132,107 +134,106 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE-->ON", "HEADLINE-->OFF");
-		/*lineUp.addMouseListener(new MouseAdapter() {
+		lineUp = new HoverJLable("HEADLINE-->ON");
+		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headline) {
 					lineUp.setText("HEADLINE-->OFF");
-					headline = !headline;
 				}
 				else {
 					lineUp.setText("HEADLINE-->ON");
-					headline = !headline;
 				}
+				headline = !headline;
 			}
-		});*/
+		});
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE-->ON", "RANGE-->OFF");
-		/*rangeSwitch.addMouseListener(new MouseAdapter() {
+		rangeSwitch = new HoverJLable("RANGE-->ON");
+		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
 					rangeSwitch.setText("RANGE-->OFF");
-					rangeline = !rangeline;
+					
 				}
 				else {
 					rangeSwitch.setText("RANGE-->ON");
-					rangeline = !rangeline;
 				}
+				rangeline = !rangeline;
 			}
-		});*/
+		});
 		add(rangeSwitch);
 		
-		showMode = new HoverJLable("HEADUP", "NORTHUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
-		/*showMode.addMouseListener(new MouseAdapter() {
+		showMode = new HoverJLable("HEADUP");   //可以写一个JLable的子类，实现相同的动作，减少代码量
+		showMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headup) {
 					showMode.setText("NORTHUP");
-					headup = !headup;
+					
 				}
 				else {
 					showMode.setText("HEADUP");
-					headup = !headup;
 				}
-				
+				headup = !headup;
 			}
-		});*/
+		});
+		
 		add(showMode);
 		
-		activeMode = new HoverJLable("REL", "ABS");
-		/*activeMode.addMouseListener(new MouseAdapter() {
+		activeMode = new HoverJLable("REL");
+		activeMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (relative) {
 					activeMode.setText("ABS");
-					relative = !relative;
 				}
-				else{
+				else {
 					activeMode.setText("REL");
-					relative = !relative;
 				}
+				relative = !relative;
+				
 			}
-		});*/
+		});
+		
 		add(activeMode);
 		//左下角显示当前设置信息
 		showRange = new HoverJLable("RANGE : " + range + " KN ");
 		add(showRange);
+		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
+		add(perCircle);
 		//右上方显示数据信息
-		latitude = new HoverJLable("LAT : 123.345.34.");
+		latitude = new HoverJLable("LAT : 123.345.34.  ", SwingConstants.RIGHT);
 		add(latitude);
 		
-		longitude = new HoverJLable("LOG : 434.243.32");
+		longitude = new HoverJLable("LOG : 434.243.32  ", SwingConstants.RIGHT);
 		add(longitude);
 		
-		course = new HoverJLable("COS : 156° T");
+		course = new HoverJLable("COS : 156° T  ", SwingConstants.RIGHT);
 		add(course);
 		
-		speed = new HoverJLable("SPD : 95 KT");
+		speed = new HoverJLable("SPD : 95 KT  ", SwingConstants.RIGHT);
 		add(speed);
 		
-		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC");
-		add(perCircle);
 	}
 	
 	/***********************普通功能性程序区**********************************************/
 	public void setRange(String option) {   //量程大于3及以上是乘法，小于3除法  0.75,1.5,3,6,12,24,48,96
-		if (rangeline) {  //如果量程没有开启，则返回，不进行量程变换
-			if (option.equals("increase")) {  //增加量程
-				range *= 2;
-				if (range >= 96) {
-					range = 96;
-				}
+		//如果量程没有开启，则返回，不进行量程变换                    6.27取代哦这项，不人性化
+		if (option.equals("increase")) {  //增加量程
+			range *= 2;
+			if (range >= 96) {
+				range = 96;
 			}
-			else{   //reduce    减少量程
-				range /= 2;
-				if (range <= 0.75) {
-					range = (float) 0.75;
-				}
-			}
-			System.out.println(range);
 		}
+		else{   //reduce    减少量程
+			range /= 2;
+			if (range <= 0.75) {
+				range = (float) 0.75;
+			}
+		}
+		System.out.println(range);
 	}
 	public float getRange() {
 		return range;
