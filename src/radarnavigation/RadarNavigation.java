@@ -16,6 +16,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class RadarNavigation extends JFrame {  //登陆主面板
@@ -23,7 +25,8 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 	private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达动态显示面板
 	private InfoPanel infopanel;     //信息显示面板
-	private Ship ship;
+	private Ship ship;  //本船对象
+	private List<Ship> ships = new LinkedList<Ship>();   //保存现场存在的船舶对象
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -121,8 +124,11 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 					//单击事件
 					if (e.getClickCount() == 1) {
 						//添加雷达对象到信息面板
-						Ship s = new Ship();
-						infopanel.addShip(s);
+						for(int i = 0; i < ships.size(); i++){
+							
+							infopanel.addShip(ships.get(i));
+						}
+						
 					}
 					//全屏动作
 					if (e.getClickCount() >= 2) {   //这里可以添加时间判断，实现更精确的控制
@@ -151,7 +157,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能
 					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
-					infopanel.removeShip();    //是用对象引用还是  对象重构     ， 那个更方便？
+					infopanel.removeShip(ship);    //是用对象引用还是  对象重构     ， 那个更方便？
 				}
 			}
 		});
