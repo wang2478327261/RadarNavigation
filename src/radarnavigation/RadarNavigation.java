@@ -16,6 +16,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 * 弹出一个输入船舶名称的窗口
@@ -95,7 +96,7 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
 				}
 				revalidate();  //布局刷新
-				repaint();
+				//repaint();    //需要repaint吗？
 			}
 		});
 		
@@ -124,9 +125,10 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 					//单击事件
 					if (e.getClickCount() == 1) {
 						//添加雷达对象到信息面板
-						for(int i = 0; i < ships.size(); i++){
-							
-							infopanel.addShip(ships.get(i));
+						Iterator<Ship> index = ships.iterator();  //原因搜索解决
+						while (index.hasNext()) {
+							Ship ship = (Ship) index.next();
+							infopanel.addShip(ship);
 						}
 						
 					}
