@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
@@ -51,6 +53,18 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 	 * 界面的初始化，窗口内界面的动态布局
 	 */
 	public RadarNavigation() {
+		/*addKeyListener(new KeyAdapter() {        //测试方向转换功能
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_P) {
+					ship.setValue(3, ship.getParameter(3)+1);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_Z) {
+					ship.setValue(3, ship.getParameter(3)-1);
+				}
+				repaint();
+			}
+		});*/
 		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
 		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
 		while(customer == null || customer.equals("")){
@@ -71,6 +85,7 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 			System.out.println(source[i]);
 		}
 		*/
+		ship = new Ship();
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字                      新建线程
 		//new Thread(this).start();    //启动信息传送的新线程
@@ -111,6 +126,7 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 		radarpanel = new RadarPanel(); //新建雷达显示面板
 		radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
+		radarpanel.getShip(ship);    //将船舶对象传入加载在这里，可运行
 		//雷达单击响应事件
 		radarpanel.addMouseListener(new MouseAdapter() {
 			

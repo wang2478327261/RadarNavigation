@@ -49,12 +49,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	public RadarPanel() {
 		super();
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-			}
-		});
 		
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -155,6 +149,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					lineUp.setText("HEADLINE --> ON");
 				}
 				headline = !headline;
+				repaint();
 			}
 		});
 		add(lineUp);
@@ -171,6 +166,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					rangeSwitch.setText("RANGE --> ON");
 				}
 				rangeline = !rangeline;
+				repaint();
 			}
 		});
 		add(rangeSwitch);
@@ -186,23 +182,24 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 					showMode.setText("HEADUP");
 				}
 				headup = !headup;
+				repaint();
 			}
 		});
 		
 		add(showMode);
 		
-		activeMode = new HoverJLable("REL");
+		activeMode = new HoverJLable("RELATIVE");
 		activeMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (relative) {
-					activeMode.setText("ABS");
+					activeMode.setText("ABSOLUTE");
 				}
 				else {
-					activeMode.setText("REL");
+					activeMode.setText("RELATIVE");
 				}
 				relative = !relative;
-				
+				repaint();
 			}
 		});
 		
@@ -246,6 +243,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	public void getShip(Ship ship){
 		this.ship = ship;
 	}
+	
 	/*public void fresh(){
 		//刷新右上角的数据
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
@@ -260,6 +258,8 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g.create();   //采用create方法后，如果后边要用到g，同样可行   copy
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Font f = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
+		g2.setFont(f);
 		//*************画出背景圈     计算画面的大小调整*****************************
 		
 		//画出背景   这部分不变化
@@ -277,7 +277,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
 		if (headup) {    //利用船舶的属性参数来设置界面显示
-			drawScale(g2, 0);  //可以随着船舶动态转向      使盘向左转，用负值（——），右转正值（+）
+			drawScale(g2, ship.getParameter(3));  //可以随着船舶动态转向      使盘向左转，用负值（——），右转正值（+）
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
 		if (rangeline) {
@@ -285,7 +285,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 		//********************画线，表示船首向*********************************************
 		if (headline) {
-			drawHeadLine(g2, 45);
+			drawHeadLine(g2, ship.getParameter(3));
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
@@ -295,6 +295,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		float xCircle = startX + diameter/2;  //计算圆心
 		float yCircle = startY + diameter/2;
 		//画数字
+		g2.setColor(Color.CYAN);
 		for(int i = 0; i<36; i++){
 			float semi = diameter/2+10;  //半径
 			//数字布局优点问题，以后再改
@@ -302,8 +303,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
-			g2.setColor(Color.CYAN);
-			g2.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.025)));
 			g2.drawString(Integer.toString(num) + "°", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
 		//画刻度，可以随着船舶转向转动
