@@ -52,6 +52,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				
 			}
 		});
 		
@@ -212,13 +213,13 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
 		add(perCircle);
 		//右上方显示数据信息
-		latitude = new HoverJLable("LAT : 123.345.34.	", SwingConstants.RIGHT);
+		latitude = new HoverJLable("LAT : 0 ", SwingConstants.RIGHT);
 		add(latitude);
-		longitude = new HoverJLable("LOG : 434.243.32	", SwingConstants.RIGHT);
+		longitude = new HoverJLable("LOG : 0 ", SwingConstants.RIGHT);
 		add(longitude);
-		course = new HoverJLable("COS : 156°T	", SwingConstants.RIGHT);
+		course = new HoverJLable("COS : 0 °T ", SwingConstants.RIGHT);
 		add(course);
-		speed = new HoverJLable("SPD : 95 KT	", SwingConstants.RIGHT);
+		speed = new HoverJLable("SPD : 0 KT ", SwingConstants.RIGHT);
 		add(speed);
 	}
 	
@@ -245,7 +246,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	public void getShip(Ship ship){
 		this.ship = ship;
 	}
-	
+	public void fresh(){
+		latitude.setText("LAT : " + ship.getParameter(1) + " ");
+		longitude.setText("LOG : " + ship.getParameter(2) + " ");
+		course.setText("COS : " + ship.getParameter(3) + "°T ");
+		speed.setText("SPD : " + ship.getParameter(4) + "KT");
+	}
 	/*******************图形绘画区**************************************************************/
 	@Override
 	public void paint(Graphics g) {
@@ -261,19 +267,24 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		startX = (getWidth() - diameter)/2;  //左上角位置
 		startY = (getHeight() - diameter)/2;
 		g2.drawOval((int)startX-1, (int)startY-1, (int)diameter+2, (int)diameter+2);
+		//填充黑色背景
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
+		//***************************更新界面数据******************************************
+		fresh();
+		
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
-		if (headup) {
-			drawScale(g2, -54);  //可以随着船舶动态转向
+		if (headup) {    //利用船舶的属性参数来设置界面显示
+			drawScale(g2, 0);  //可以随着船舶动态转向
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
 		if (rangeline) {
 			drawRange(g2);
 		}
+		//********************画线，表示船首向*********************************************
 		if (headline) {
-			drawHeadLine(g2, 0);
+			drawHeadLine(g2, ship.getParameter(3));
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
