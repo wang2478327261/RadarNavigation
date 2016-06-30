@@ -266,14 +266,14 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
 		if (headup) {
-			drawScale(g2, ship.getParameter(3));  //可以随着船舶动态转向
+			drawScale(g2, -54);  //可以随着船舶动态转向
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
 		if (rangeline) {
 			drawRange(g2);
 		}
 		if (headline) {
-			drawHeadLine(g2);
+			drawHeadLine(g2, 0);
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
@@ -282,10 +282,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//每个格点为3°
 		float xCircle = startX + diameter/2;  //计算圆心
 		float yCircle = startY + diameter/2;
+		//画数字
 		for(int i = 0; i<36; i++){
 			float semi = diameter/2+10;  //半径
 			//数字布局优点问题，以后再改
-			float degree = (float) Math.toRadians(i*10-90);
+			float degree = (float) Math.toRadians(i*10-90 + theta);   //在这里添加旋转
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
@@ -293,12 +294,9 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			g2.setFont(new Font("Consolas", Font.PLAIN, (int) (diameter*0.025)));
 			g2.drawString(Integer.toString(num) + "°", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
-		
 		//画刻度，可以随着船舶转向转动
-		//AffineTransform saveAT = g2.getTransform();     //affinetransform   映射变换
         //方向的60个刻度
 		AffineTransform af = g2.getTransform();  //从当前上下文获得
-		
 		g2.rotate(theta, startX+diameter/2, startY+diameter/2);     //在这里更改了
         for (int i = 0; i < 360; i++) {   //x  yCircle都是圆心位置
             int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge 凸出
@@ -332,9 +330,13 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 	}
 	
-	public void drawHeadLine(Graphics2D g2) {
+	public void drawHeadLine(Graphics2D g2, double theta) {
 		//在北向上模式中需要获取船舶航向
+		AffineTransform af = g2.getTransform();  //从当前上下文获得
+		g2.rotate(theta, startX+diameter/2, startY+diameter/2);     //在这里更改了
+		
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
+		g2.setTransform(af);  //恢复原来的状态
 	}
 }
