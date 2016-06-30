@@ -18,7 +18,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
+public class ShipManager extends JFrame implements Runnable{   //服务端需要添加船舶的功能，方便测试
 	
 	private JPanel contentPane;
 	private SmallPanel smallpanel;
@@ -48,25 +48,8 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 	 */
 	public ShipManager() {
 		initComponents();
-		//打开网络通信，接受客户端消息                                    这里有问题无法执行
-		try {
-			ServerSocket serversocket = new ServerSocket(8888);
-			Socket connectionsocket = serversocket.accept();
-			BufferedReader bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
-			DataOutputStream dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
-			sockets.add(connectionsocket);
-			dataoutputotream.writeUTF("hrouiuguyvgh");
-			for(int i = 0;i<sockets.size();i++){
-				Socket s = sockets.get(i);
-				if (s.isClosed()) {
-					sockets.remove(i);
-					i--;
-				}
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//打开网络通信，接受客户端消息                                    这里有问题无法执行      新建线程执行
+		new Thread(this).start();   //开启新线程
 		//初始化界面
 		initComponents();
 	}
@@ -104,4 +87,22 @@ public class ShipManager extends JFrame {   //服务端需要添加船舶的功能，方便测试
 		smallpanel.setBounds(0, 0, 150, 150);
 		contentPane.add(smallpanel);
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+		try {
+			ServerSocket serversocket = new ServerSocket(8888);
+			Socket connectionsocket = serversocket.accept();
+			BufferedReader bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
+			DataOutputStream dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

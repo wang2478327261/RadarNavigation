@@ -19,9 +19,10 @@ import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 @SuppressWarnings("serial")
-public class RadarNavigation extends JFrame {  //登陆主面板
+public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
 	private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达动态显示面板
@@ -59,27 +60,20 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 			JOptionPane.showMessageDialog(this, "you should input ship infoemation !", "Warning", JOptionPane.ERROR_MESSAGE);
 			customer = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		}
-		//将输入数据进行分析操作，分析出名称，位置等信息
-		String name = "Default";
-		
-		ship = new Ship();  //客户端的一个船舶
-		ship.setName(name);
-		
+		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
+		String[] source = customer.split(",");
+		ship = new Ship(source[0], Double.parseDouble(source[1]),
+				Double.parseDouble(source[2]), Double.parseDouble(source[3]), 
+				Double.parseDouble(source[4]), source[5]);  //客户端的一个船舶
+		for(int i = 0; i < source.length; i++){
+			System.out.println(source[i]);
+		}
 		//检查服务器并发送相关信息
-		//这里要进行开启发送信息的套接字
-		/*try {
-			Socket socket = new Socket("localhost",8888);
-			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
-			String p = bufferedreader.readLine();
-			System.out.println(p);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
+		//这里要进行开启发送信息的套接字                      新建线程
+		//new Thread(this).start();    //启动信息传送的新线程
 		//初始化界面
 		initComponents();
+		radarpanel.getShip(ship);  //将本穿对象传入
 	}
 	
 	private void initComponents() {
@@ -184,4 +178,23 @@ public class RadarNavigation extends JFrame {  //登陆主面板
 		});
 		
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		Socket socket;
+		try {
+			socket = new Socket("localhost",8888);
+			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
+			outputstream.writeUTF("hello worls");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }

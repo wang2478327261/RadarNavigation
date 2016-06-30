@@ -18,6 +18,8 @@ import common.HoverJLable;
 import common.Ship;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
@@ -33,8 +35,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	private float startX, startY, diameter;  //显示雷达界面的左上角坐标以及     圆的 --》直径 
 	double pc = 1;  //显示每格多少海里
 	private Ship ship;  //传入本船的引用
-	//Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.03));
-	Font font;
 	
 	private HoverJLable showMode;
 	private HoverJLable activeMode;
@@ -49,40 +49,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	
 	public RadarPanel() {
 		super();
-		//初始化界面
-		initComponents();
-	}
-	private void initComponents() {
-		addComponentListener(new ComponentAdapter() {  //实现自动布局
+		addKeyListener(new KeyAdapter() {
 			@Override
-			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
-				font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
-				//左上角
-				lineUp.setBounds(4, 4, (int)(diameter*0.25), (int)(diameter*0.04));
-				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
-				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
-				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.125), (int)(diameter*0.04));
-				//左下角
-				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), (int)(diameter*0.04));
-				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), (int)(diameter*0.04));
-				//右上角
-				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), (int)(diameter*0.04));
-				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), (int)(diameter*0.04));
-				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), (int)(diameter*0.04));
-				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), (int)(diameter*0.04));
-				//设置字体大小
-				lineUp.setFont(font);
-				rangeSwitch.setFont(font);
-				showMode.setFont(font);
-				perCircle.setFont(font);
-				activeMode.setFont(font);
-				showRange.setFont(font);
-				latitude.setFont(font);
-				longitude.setFont(font);
-				course.setFont(font);
-				speed.setFont(font);
+			public void keyTyped(KeyEvent e) {
 			}
 		});
+		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -128,37 +100,74 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				repaint(1000);
 			}
 		});
+		
+		//初始化界面
+		initComponents();
+	}
+	private void initComponents() {
+		addComponentListener(new ComponentAdapter() {  //实现自动布局
+			@Override
+			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
+				Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
+				int h = (int)(diameter*0.04);
+				//左上角
+				lineUp.setBounds(4, 4, (int)(diameter*0.3), h);
+				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
+				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
+				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
+				//左下角
+				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
+				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
+				//右上角
+				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), h);
+				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), h);
+				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), h);
+				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), h);
+				//设置字体大小
+				lineUp.setFont(font);
+				rangeSwitch.setFont(font);
+				showMode.setFont(font);
+				perCircle.setFont(font);
+				activeMode.setFont(font);
+				showRange.setFont(font);
+				latitude.setFont(font);
+				longitude.setFont(font);
+				course.setFont(font);
+				speed.setFont(font);
+			}
+		});
+		
 		// TODO Auto-generated constructor stub
 		setBorder(null);  //这些属性可以在雷达面板类中改变
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE-->ON");
+		lineUp = new HoverJLable("HEADLINE --> ON");
 		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headline) {
-					lineUp.setText("HEADLINE-->OFF");
+					lineUp.setText("HEADLINE --> OFF");
 				}
 				else {
-					lineUp.setText("HEADLINE-->ON");
+					lineUp.setText("HEADLINE --> ON");
 				}
 				headline = !headline;
 			}
 		});
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE-->ON");
+		rangeSwitch = new HoverJLable("RANGE --> ON");
 		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
-					rangeSwitch.setText("RANGE-->OFF");
+					rangeSwitch.setText("RANGE --> OFF");
 					
 				}
 				else {
-					rangeSwitch.setText("RANGE-->ON");
+					rangeSwitch.setText("RANGE --> ON");
 				}
 				rangeline = !rangeline;
 			}
@@ -171,7 +180,6 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 			public void mouseClicked(MouseEvent e) {
 				if (headup) {
 					showMode.setText("NORTHUP");
-					
 				}
 				else {
 					showMode.setText("HEADUP");
@@ -204,18 +212,14 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
 		add(perCircle);
 		//右上方显示数据信息
-		latitude = new HoverJLable("LAT : 123.345.34.  ", SwingConstants.RIGHT);
+		latitude = new HoverJLable("LAT : 123.345.34.	", SwingConstants.RIGHT);
 		add(latitude);
-		
-		longitude = new HoverJLable("LOG : 434.243.32  ", SwingConstants.RIGHT);
+		longitude = new HoverJLable("LOG : 434.243.32	", SwingConstants.RIGHT);
 		add(longitude);
-		
-		course = new HoverJLable("COS : 156° T  ", SwingConstants.RIGHT);
+		course = new HoverJLable("COS : 156°T	", SwingConstants.RIGHT);
 		add(course);
-		
-		speed = new HoverJLable("SPD : 95 KT  ", SwingConstants.RIGHT);
+		speed = new HoverJLable("SPD : 95 KT	", SwingConstants.RIGHT);
 		add(speed);
-		
 	}
 	
 	/***********************普通功能性程序区**********************************************/
@@ -262,10 +266,9 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
 		if (headup) {
-			drawScale(g2);  //可以随着船舶动态转向
+			drawScale(g2, ship.getParameter(3));  //可以随着船舶动态转向
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
-		//g2.fillOval((int)(startX+diameter/2-2), (int)(startY+diameter/2-2), 4, 4);  //画中心点
 		if (rangeline) {
 			drawRange(g2);
 		}
@@ -274,7 +277,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
-	public void drawScale(Graphics2D g2){
+	public void drawScale(Graphics2D g2, double theta){
 		g2.setColor(Color.GREEN);
 		//每个格点为3°
 		float xCircle = startX + diameter/2;  //计算圆心
@@ -292,15 +295,18 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 		
 		//画刻度，可以随着船舶转向转动
-		AffineTransform old = g2.getTransform();
+		//AffineTransform saveAT = g2.getTransform();     //affinetransform   映射变换
         //方向的60个刻度
+		AffineTransform af = g2.getTransform();  //从当前上下文获得
+		
+		g2.rotate(theta, startX+diameter/2, startY+diameter/2);     //在这里更改了
         for (int i = 0; i < 360; i++) {   //x  yCircle都是圆心位置
             int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge 凸出
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
             g2.rotate(Math.toRadians(1), xCircle, yCircle);  //每一小格转6度, 以圆心为中心点
         }
         //设置旋转重置
-        g2.setTransform(old);
+        g2.setTransform(af);  //恢复原来的状态
 	}
 	//画出随着量程变化的环形圈，  方便估算对方的位置
 	public void drawRange(Graphics2D g2) {
