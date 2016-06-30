@@ -105,7 +105,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//初始化界面
 		initComponents();
 	}
-	private void initComponents() {
+	private void initComponents() {    //将这里改成公共方法，有其他更好的方法吗？望解决
 		addComponentListener(new ComponentAdapter() {  //实现自动布局
 			@Override
 			public void componentResized(ComponentEvent e) {  //这个方法可以对布局进行重新设计，可行
@@ -246,18 +246,19 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	public void getShip(Ship ship){
 		this.ship = ship;
 	}
-	public void fresh(){
+	/*public void fresh(){
+		//刷新右上角的数据
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
 		course.setText("COS : " + ship.getParameter(3) + "°T ");
 		speed.setText("SPD : " + ship.getParameter(4) + "KT");
-	}
+	}*/
 	/*******************图形绘画区**************************************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
-		Graphics2D g2 = (Graphics2D)g;
+		Graphics2D g2 = (Graphics2D)g.create();   //采用create方法后，如果后边要用到g，同样可行   copy
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		//*************画出背景圈     计算画面的大小调整*****************************
 		
@@ -271,12 +272,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
 		//***************************更新界面数据******************************************
-		fresh();
+		//fresh();
 		
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°
 		if (headup) {    //利用船舶的属性参数来设置界面显示
-			drawScale(g2, 0);  //可以随着船舶动态转向
+			drawScale(g2, 0);  //可以随着船舶动态转向      使盘向左转，用负值（——），右转正值（+）
 		}
 		//**********************计算画几个圈,根据量程来决定*******************************
 		if (rangeline) {
@@ -284,7 +285,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		}
 		//********************画线，表示船首向*********************************************
 		if (headline) {
-			drawHeadLine(g2, ship.getParameter(3));
+			drawHeadLine(g2, 45);
 		}
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
@@ -308,11 +309,12 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		//画刻度，可以随着船舶转向转动
         //方向的60个刻度
 		AffineTransform af = g2.getTransform();  //从当前上下文获得
-		g2.rotate(theta, startX+diameter/2, startY+diameter/2);     //在这里更改了
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //在这里更改了
+		
         for (int i = 0; i < 360; i++) {   //x  yCircle都是圆心位置
             int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge 凸出
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
-            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //每一小格转6度, 以圆心为中心点
+            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //每一小格转1度, 以圆心为中心点
         }
         //设置旋转重置
         g2.setTransform(af);  //恢复原来的状态
@@ -344,10 +346,11 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	public void drawHeadLine(Graphics2D g2, double theta) {
 		//在北向上模式中需要获取船舶航向
 		AffineTransform af = g2.getTransform();  //从当前上下文获得
-		g2.rotate(theta, startX+diameter/2, startY+diameter/2);     //在这里更改了
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //在这里更改了
 		
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
+		
 		g2.setTransform(af);  //恢复原来的状态
 	}
 }

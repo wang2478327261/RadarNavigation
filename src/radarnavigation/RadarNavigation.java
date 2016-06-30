@@ -63,18 +63,19 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 		}
 		JOptionPane.showMessageDialog(this, "本软件由**玉龙视觉效果工作室**制作");
 		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
-		String[] source = customer.split(",");
+		/*String[] source = customer.split(",");
 		ship = new Ship(source[0], Double.parseDouble(source[1]),
 				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
 				Double.parseDouble(source[4]), source[5]);  //客户端的一个船舶
-		
+		for(int i = 0; i < source.length; i++){
+			System.out.println(source[i]);
+		}
+		*/
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字                      新建线程
 		//new Thread(this).start();    //启动信息传送的新线程
 		//初始化界面
 		initComponents();
-		
-		
 	}
 	
 	private void initComponents() {
