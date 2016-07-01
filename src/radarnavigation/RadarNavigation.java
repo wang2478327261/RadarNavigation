@@ -145,8 +145,14 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 						//添加雷达对象到信息面板
 						Iterator<Ship> index = ships.iterator();  //原因搜索解决
 						while (index.hasNext()) {
-							Ship ship = (Ship) index.next();
-							infopanel.addShip(ship);
+							Ship b = index.next();
+							if (Math.abs(e.getX()-b.getParameter(1))<10 && 
+									Math.abs(e.getY()-b.getParameter(2))<10) {
+								infopanel.addShip(ship);
+							}
+							else {
+								System.out.println("mei you");
+							}
 						}
 						
 					}
@@ -170,7 +176,6 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 							radarpanel.setSize(getWidth()*7/9, getHeight());
 						}
 						revalidate();
-						
 					}
 					
 				}

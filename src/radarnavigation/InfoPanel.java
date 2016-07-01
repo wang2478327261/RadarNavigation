@@ -9,9 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-
 import common.Ship;
-
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
@@ -60,7 +58,9 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		g2.setColor(Color.CYAN);
 		g2.drawString("hello", 0, getFont().getSize()+10);
 	}
-	
+	public void dataFormate(Graphics2D g2, String name, double Px, double Py,double course, double speed){
+		
+	}
 	/********普通方法区域**************************************************/
 	//向船舶获取列表上更新对象
 	public void addShip(Ship ship) {   //要显示的船舶
