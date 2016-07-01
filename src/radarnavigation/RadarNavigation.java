@@ -141,13 +141,13 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 				//选中对方船舶或或者取消选中（右键单击）
 				if(e.getButton() == MouseEvent.BUTTON1){   //左键 16，中键 8，右键 4    e.getModifiers() == 16
 					//单击事件
-					if (e.getClickCount() == 1) {
+					if (e.getClickCount() == 1) {    //左键 单击一次
 						//添加雷达对象到信息面板
 						Iterator<Ship> index = ships.iterator();  //原因搜索解决
 						while (index.hasNext()) {
-							Ship b = index.next();
-							if (Math.abs(e.getX()-b.getParameter(1))<10 && 
-									Math.abs(e.getY()-b.getParameter(2))<10) {
+							Ship boat = index.next();
+							if (Math.abs(e.getX()-boat.getParameter(1))<10 && 
+									Math.abs(e.getY()-boat.getParameter(2))<10) {
 								infopanel.addShip(ship);
 							}
 							else {
@@ -182,7 +182,6 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 				if(e.getButton() == MouseEvent.BUTTON3){
 					//实现取消选中功能
 					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
-					infopanel.removeShip(ship);    //是用对象引用还是  对象重构     ， 那个更方便？
 				}
 			}
 		});
