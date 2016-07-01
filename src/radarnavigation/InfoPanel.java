@@ -97,9 +97,11 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	public void addShip(Ship ship) {   //要显示的船舶
 		ships.add(ship);
 		//更新界面
+		repaint();
 	}
 	public void removeShip(Ship ship) {  //也可以名称索引
 		ships.remove(ship);
 		//需要更新界面
+		repaint();
 	}
 }
