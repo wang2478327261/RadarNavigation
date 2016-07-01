@@ -4,8 +4,9 @@
 package common;
 
 /**
- * @author Administrator
- *
+ * 建立船舶对象类，控制船舶属性变化   初始化后生成船舶对象
+ *@author ERON
+ *@param name--名称, Px--纬度,Py--经度, course--船舶方向, speed--速度, type--类型
  */
 public class Ship {
 	
@@ -35,7 +36,11 @@ public class Ship {
 		this.speed = 3;
 		this.type = "Normal";
 	}
-	
+	/**
+	 * <p>通过索引得到船舶参数，1--横向位置， 2--纵向位置， 3--方向， 4--速度</p>
+	 * @param index
+	 * @return Px(横向位置), Py(纵向位置), course(方向), speed(速度)
+	 */
 	public double getParameter(int index){   //得到船舶计算相关数据
         switch(index){
             case 1 : return Px;
@@ -58,8 +63,12 @@ public class Ship {
 	public String getName() {
 		return name;
 	}
-	
-	public synchronized void setValue(int index, double newValue){//change ship's parameter
+	/**
+	 * 同步方法   对船舶属性重新赋值
+	 * @param index
+	 * @param newValue
+	 */
+	public synchronized void setValue(int index, double newValue){
         switch(index){
             case 1: Px = newValue; break;
             case 2: Py = newValue; break;

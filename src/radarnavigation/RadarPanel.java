@@ -138,15 +138,15 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE --> ON");
+		lineUp = new HoverJLable("HEADLINE < ON > ");
 		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (headline) {
-					lineUp.setText("HEADLINE --> OFF");
+					lineUp.setText("HEADLINE < OFF > ");
 				}
 				else {
-					lineUp.setText("HEADLINE --> ON");
+					lineUp.setText("HEADLINE < ON > ");
 				}
 				headline = !headline;
 				repaint();
@@ -154,16 +154,16 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		});
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE --> ON");
+		rangeSwitch = new HoverJLable("RANGE < ON > ");
 		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
-					rangeSwitch.setText("RANGE --> OFF");
+					rangeSwitch.setText("RANGE < OFF > ");
 					
 				}
 				else {
-					rangeSwitch.setText("RANGE --> ON");
+					rangeSwitch.setText("RANGE < ON > ");
 				}
 				rangeline = !rangeline;
 				repaint();
@@ -244,13 +244,14 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		this.ship = ship;
 	}
 	
-	/*public void fresh(){
+	public void dataFresh(){
 		//刷新右上角的数据
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
 		course.setText("COS : " + ship.getParameter(3) + "°T ");
-		speed.setText("SPD : " + ship.getParameter(4) + "KT");
-	}*/
+		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
+		
+	}
 	/*******************图形绘画区**************************************************************/
 	@Override
 	public void paint(Graphics g) {
@@ -272,7 +273,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
 		//***************************更新界面数据******************************************
-		//fresh();
+		dataFresh();
 		
 		//**************接下来画边上的刻度，参考指针表的实现方法***********************
 		//每个格点为3°

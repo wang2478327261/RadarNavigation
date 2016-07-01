@@ -53,18 +53,24 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 	 * 界面的初始化，窗口内界面的动态布局
 	 */
 	public RadarNavigation() {
-		/*addKeyListener(new KeyAdapter() {        //测试方向转换功能
+		addKeyListener(new KeyAdapter() {        //测试方向转换功能
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_P) {
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					ship.setValue(3, ship.getParameter(3)+1);
 				}
-				if (e.getKeyCode() == KeyEvent.VK_Z) {
+				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					ship.setValue(3, ship.getParameter(3)-1);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					ship.setValue(4, ship.getParameter(4)+1);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					ship.setValue(4, ship.getParameter(4)-1);
 				}
 				repaint();
 			}
-		});*/
+		});
 		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
 		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
 		while(customer == null || customer.equals("")){
