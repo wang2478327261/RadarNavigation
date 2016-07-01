@@ -5,16 +5,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-
 import common.Ship;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class SmallPanel extends JPanel{
+public class SmallPanel extends JPanel{    //这个类不需要了， 采用原来的设计
 	
 	List<Ship> ships = new LinkedList<Ship>();
 	
@@ -27,12 +25,12 @@ public class SmallPanel extends JPanel{
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
-				setOpaque(true);  //设置成不透明
+				//setOpaque(true);  //设置成不透明
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder());
-				setOpaque(false);   //设置成透明
+				//setOpaque(false);   //设置成透明
 			}
 		});
 		// TODO Auto-generated constructor stub

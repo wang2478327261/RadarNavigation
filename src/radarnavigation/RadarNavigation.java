@@ -167,7 +167,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 							dispose();
 							setUndecorated(true);
 							setVisible(true);
-							radarpanel.setSize(getWidth()*7/9, getHeight()-35);
+							//radarpanel.setSize(getWidth()*7/9, getHeight()-35);
 						}
 						else {
 							setBounds(20, 20, 1008, 735);
@@ -175,7 +175,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
-							radarpanel.setSize(getWidth()*7/9, getHeight());
+							//radarpanel.setSize(getWidth()*7/9, getHeight());
 						}
 						revalidate();
 					}

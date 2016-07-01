@@ -1,6 +1,8 @@
 package shipserver;
 
+import java.awt.Button;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -10,25 +12,29 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import common.ServerThread;
-
+import common.Ship;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 @SuppressWarnings("serial")
 public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 	
 	private JPanel contentPane;
-	private SmallPanel smallpanel;
-	private List<Socket> sockets = new ArrayList<Socket>();
+	private List<Socket> sockets = new LinkedList<Socket>();  //连接的套接字对象
+	private List<Ship> ships = new LinkedList<Ship>();   //所有客户端和服务端产生的船舶维护对象
 	
 	//功能需要     变量区域
-	private boolean changed = false;
+	private boolean fullScreen = false;
 	
 	/**
 	 * Launch the application.
@@ -51,7 +57,7 @@ public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 	 */
 	public ShipManager() {
 		initComponents();
-		//打开网络通信，接受客户端消息                                    这里有问题无法执行      新建线程执行
+		//打开网络通信，接受客户端消息
 		//ServerThread server = new ServerThread();
 		//初始化界面
 		initComponents();
@@ -62,33 +68,11 @@ public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
+		contentPane.setBorder(BorderFactory.createEmptyBorder());
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 		
-		smallpanel = new SmallPanel();
-		smallpanel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {    //这里怎么没有用？？？？？？？
-				if (e.getKeyCode() == KeyEvent.VK_ESCAPE && changed) {
-					smallpanel.setBounds(0, 0, 150, 150);
-					changed = !changed;
-				}
-			}
-		});
-		smallpanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!changed) {
-					smallpanel.setBounds(0, 0, getWidth()-8, getHeight()-35);
-					revalidate();
-					changed = !changed;
-				}
-				
-			}
-		});
-		smallpanel.setBounds(0, 0, 150, 150);
-		contentPane.add(smallpanel);
+		
 	}
 	
 }

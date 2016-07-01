@@ -9,15 +9,19 @@ import java.net.Socket;
 
 public class ServerThread extends Thread{
 
+	ServerSocket serversocket;
+	Socket connectionsocket;
+	BufferedReader bufferedoeader;
+	DataOutputStream dataoutputotream;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
 		try {
-			ServerSocket serversocket = new ServerSocket(8888);
-			Socket connectionsocket = serversocket.accept();
-			BufferedReader bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
-			DataOutputStream dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
+			serversocket = new ServerSocket(8888);
+			connectionsocket = serversocket.accept();
+			bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
+			dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

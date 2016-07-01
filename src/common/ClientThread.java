@@ -8,6 +8,9 @@ import java.net.Socket;
 
 public class ClientThread extends Thread{
 
+	Socket socket;
+	BufferedReader bufferedreader;
+	DataOutputStream outputstream;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -15,8 +18,8 @@ public class ClientThread extends Thread{
 		Socket socket;
 		try {
 			socket = new Socket("localhost",8888);
-			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
+			bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			outputstream = new DataOutputStream(socket.getOutputStream());
 			outputstream.writeUTF("hello worls");
 			
 		} catch (IOException e) {

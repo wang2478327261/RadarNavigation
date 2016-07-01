@@ -46,10 +46,10 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 			public void mouseWheelMoved(MouseWheelEvent e) {    //以后可以改进滚动控制
 				//滚动翻页
 				if (e.getWheelRotation() > 0) {   //鼠标滚轮向下滚动       让字    向上走
-					scroll_Y -= 20;
+					scroll_Y -= 40;
 				}
 				else if(e.getWheelRotation() < 0){
-					scroll_Y += 20;
+					scroll_Y += 40;
 				}
 				repaint();
 			}
@@ -73,7 +73,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		// TODO Auto-generated method stub
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g.create();
-		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.08)));
+		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.07)));
 		g2.setColor(Color.CYAN);
 		//******************************************************************************
 		//显示增加的船舶信息
