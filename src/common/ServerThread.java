@@ -13,6 +13,7 @@ public class ServerThread extends Thread{
 	Socket connectionsocket;
 	BufferedReader bufferedoeader;
 	DataOutputStream dataoutputotream;
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

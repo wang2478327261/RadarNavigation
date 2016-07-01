@@ -11,6 +11,7 @@ public class ClientThread extends Thread{
 	Socket socket;
 	BufferedReader bufferedreader;
 	DataOutputStream outputstream;
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
