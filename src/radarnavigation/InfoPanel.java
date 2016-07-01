@@ -3,6 +3,7 @@ package radarnavigation;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Iterator;
@@ -20,15 +21,17 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	
 	//需要显示信息存储的数据
 	List<Ship> ships = new LinkedList<Ship>();   //存储显示信息的船舶对象
-	//List<DataFormat> datashow = new LinkedList<DataFormat>();
+	private int scroll_Y = 0;     //滚轮滚动     高度的变化值
+	//private int scrollStart;
 	
 	public InfoPanel() {
 		super();
 		
 		initComponents();
 	}
+	
 	private void initComponents() {
-		addMouseListener(new MouseAdapter() {
+		/*addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
@@ -38,16 +41,30 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
 		});
-		
+		*/
 		addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {
+			public void mouseWheelMoved(MouseWheelEvent e) {    //以后可以改进滚动控制
 				//滚动翻页
+				if (e.getWheelRotation() > 0) {   //鼠标滚轮向下滚动       让字    向上走
+					scroll_Y -= 20;
+				}
+				else if(e.getWheelRotation() < 0){
+					scroll_Y += 20;
+				}
+				repaint();
 			}
 		});
 		// TODO Auto-generated constructor stub
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		setLayout(null);
+		setLayout(null);    //测试用例
+		ships.add(new Ship("huawei",123,23,34,13,"normal"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 	}
 	
 	/*********绘图区域********************************************************/
@@ -55,13 +72,24 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.1)));
-		//显示信息
+		Graphics2D g2 = (Graphics2D)g.create();
+		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.08)));
 		g2.setColor(Color.CYAN);
-		//g2.drawString("hello", 0, getFont().getSize()+10);
+		//******************************************************************************
 		//显示增加的船舶信息
-		
+		int h = g2.getFont().getSize();   //字体高度
+		int locate = 1;     //画出字符的行数
+		//scrollStart = (int) (locate*h*1.3) + scroll_Y;
+		for (Ship vessel : ships) {
+			g2.drawString(vessel.getName()+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
+			g2.drawString(vessel.getParameter(1)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
+			g2.drawString(vessel.getParameter(2)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
+			g2.drawString(vessel.getParameter(3)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
+			g2.drawString(vessel.getParameter(3)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
+			g2.drawString(vessel.getType(), 2, (int) (locate*h*1.3)+scroll_Y);      locate++;
+			g2.drawLine(2, (int) (locate*h*1.3)+scroll_Y, getWidth()-2, (int) (locate*h*1.3)+scroll_Y);
+			locate++;
+		}
 	}
 	
 	/********普通方法区域**************************************************/

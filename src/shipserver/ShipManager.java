@@ -14,11 +14,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import common.ServerThread;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class ShipManager extends JFrame implements Runnable{   //·şÎñ¶ËĞèÒªÌí¼Ó´¬²°µÄ¹¦ÄÜ£¬·½±ã²âÊÔ
+public class ShipManager extends JFrame{   //·şÎñ¶ËĞèÒªÌí¼Ó´¬²°µÄ¹¦ÄÜ£¬·½±ã²âÊÔ
 	
 	private JPanel contentPane;
 	private SmallPanel smallpanel;
@@ -42,14 +45,14 @@ public class ShipManager extends JFrame implements Runnable{   //·şÎñ¶ËĞèÒªÌí¼Ó´
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public ShipManager() {
 		initComponents();
 		//´ò¿ªÍøÂçÍ¨ĞÅ£¬½ÓÊÜ¿Í»§¶ËÏûÏ¢                                    ÕâÀïÓĞÎÊÌâÎŞ·¨Ö´ĞĞ      ĞÂ½¨Ïß³ÌÖ´ĞĞ
-		new Thread(this).start();   //¿ªÆôĞÂÏß³Ì
+		//ServerThread server = new ServerThread();
 		//³õÊ¼»¯½çÃæ
 		initComponents();
 	}
@@ -86,23 +89,6 @@ public class ShipManager extends JFrame implements Runnable{   //·şÎñ¶ËĞèÒªÌí¼Ó´
 		});
 		smallpanel.setBounds(0, 0, 150, 150);
 		contentPane.add(smallpanel);
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-		try {
-			ServerSocket serversocket = new ServerSocket(8888);
-			Socket connectionsocket = serversocket.accept();
-			BufferedReader bufferedoeader = new BufferedReader(new InputStreamReader(connectionsocket.getInputStream()));
-			DataOutputStream dataoutputotream = new DataOutputStream(connectionsocket.getOutputStream());
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 }

@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import common.ClientThread;
 import common.Ship;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -24,7 +26,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
+public class RadarNavigation extends JFrame{  //登陆主面板
 	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
 	private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达动态显示面板
@@ -93,8 +95,8 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 		*/
 		ship = new Ship();
 		//检查服务器并发送相关信息
-		//这里要进行开启发送信息的套接字                      新建线程
-		//new Thread(this).start();    //启动信息传送的新线程
+		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
+		//ClientThread click = new ClientThread();
 		//初始化界面
 		initComponents();
 	}
@@ -204,23 +206,6 @@ public class RadarNavigation extends JFrame implements Runnable{  //登陆主面板
 				}
 			}
 		});
-		
-	}
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		Socket socket;
-		try {
-			socket = new Socket("localhost",8888);
-			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			DataOutputStream outputstream = new DataOutputStream(socket.getOutputStream());
-			outputstream.writeUTF("hello worls");
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	
