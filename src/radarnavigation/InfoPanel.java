@@ -87,8 +87,10 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 			g2.drawString(vessel.getParameter(3)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
 			g2.drawString(vessel.getParameter(3)+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
 			g2.drawString(vessel.getType(), 2, (int) (locate*h*1.3)+scroll_Y);      locate++;
+			g2.setColor(Color.ORANGE);
 			g2.drawLine(2, (int) (locate*h*1.3)+scroll_Y, getWidth()-2, (int) (locate*h*1.3)+scroll_Y);
 			locate++;
+			g2.setColor(Color.CYAN);
 		}
 	}
 	

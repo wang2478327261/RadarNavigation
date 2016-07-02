@@ -30,7 +30,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
     private double newx, newy;    //松开鼠标   坐标
     private double delx, dely;   //删除时鼠标的坐标
     private String type = "Normal";            //船舶类型以后可以添加
-    //在界面上现实的额帮助说明
+    //在界面上显示帮助说明
     String helpStr = "";
     String nameStr = "", positionStr = "", speedStr = "", courseStr = "", typeShow = "";
 	

@@ -1,4 +1,4 @@
-package common;
+package shipserver;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
