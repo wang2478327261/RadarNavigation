@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,8 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
     private String type = "Normal";            //船舶类型以后可以添加
     //在界面上显示帮助说明
     String helpStr = "";
-    String nameStr = "", positionStr = "", speedStr = "", courseStr = "", typeShow = "";
+    String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeShow = "";
+    private boolean press = false;
 	
 	private List<Socket> sockets = new LinkedList<Socket>(); // 连接的套接字对象
 	private List<Ship> clientShips = new LinkedList<Ship>(); // 所有客户端和服务端产生的船舶维护对象
@@ -45,7 +47,14 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				setCursor(new Cursor(Cursor.MOVE_CURSOR));  //移动光标
-				
+				if (e.getWheelRotation() > 0) {   //滚轮向下滚动      》0
+					//缩小显示尺寸，但是实际船舶属性不变
+				}
+				else if(e.getWheelRotation() < 0){
+					//放大尺寸
+				}
+				helpStr = "Scroll to Scale";
+				repaint();
 			}
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -54,32 +63,62 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				mousex = e.getX();
 				mousey = e.getY();
-				helpStr = "'Left Click & Drag' Create Ships, 'Right Click' Delete, 'C' Button Change Type";
+				helpStr = "'Left Click & Drag' Create Ships, 'Right Click' Delete, 'Right Double Click' Delete All Ship";
 				repaint();
 			}
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				dragx = e.getX();
-				dragy = e.getY();
-				//用paint进行重新绘制
-				helpStr = "Drag to Create Moving Ship, 'Right Double Click' Delete All Ship";
-				repaint();
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					dragx = e.getX();
+					dragy = e.getY();
+					press = true;
+					repaint();
+				}
+				
 			}
 		});
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					oldx = e.getX();
-					oldy = e.getY();
-				}
+				//实现删除功能
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					delx = e.getX();
 					dely = e.getY();
+					double disx, disy;
+			        double dis;
+			        //只能删除服务器产生的对象，不能操纵客户端
+					if(e.getClickCount() >= 2){
+		                serverShips.clear();
+		                for (Ship vessel : serverShips) {
+		                    track.get(vessel).clear();     //清除本船路径信息
+		                }
+		                helpStr = "Delete All Ships";
+		            }
+		            else{
+		                Iterator<Ship> shIt = serverShips.iterator();
+		                while(shIt.hasNext()){
+		                    Ship vessel = shIt.next();
+		                    disx = Math.abs(delx-vessel.getParameter(1));
+		                    disy = Math.abs(dely-vessel.getParameter(2));
+		                    dis = Math.sqrt(Math.pow(disx, 2)+Math.pow(disy, 2));
+		                    if(dis <= 20){
+		                        helpStr = "Deleted a Ship <Done>";
+		                        shIt.remove();
+		                        track.remove(vessel);     //一处对应船舶的路径信息
+		                    }
+		                }
+		            }
 				}
+				repaint();
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					oldx = e.getX();
+					oldy = e.getY();
+					helpStr = "Drag to Create Moving Ship ";
+				}
+				repaint();
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -95,7 +134,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 		            if (name == null) {   //如果返回空值，则不进行动作
 						return;
 					}
-		            Ship ship = new Ship(name, mousex, mousey, speed, course, type);
+		            Ship ship = new Ship(name, mousex, mousey, course, speed, type);
 		            serverShips.add(ship);
 		            switch(ship.getType()){
 		                /*case 0: typeShow = "Normal";break;
@@ -105,13 +144,11 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 		                case 4: typeShow = "Limit by Control";break;
 		                case 5: typeShow = "Limit by Draft";break;*/
 		            }
-		            //在下方显示的帮助文字
-		            helpStr = "A Ship Exist";
 		            //右上方，显示的当前船舶信息
 		            nameStr = "Ship name : "+name;
 		            positionStr = "Position : "+mousex+","+mousey;
-		            speedStr = "Speed : "+(int)speed;
 		            courseStr = "Course : "+(int)course;
+		            speedStr = "Speed : "+(int)speed;
 		            typeShow = "Type : "+typeShow;
 		        }
 				new Thread(SmallPanel.this).start();
@@ -182,7 +219,17 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 	public void paintShips(Graphics2D g2) {
 		
 		double Px, Py, course, speed;
-		g2.setColor(Color.BLACK);
+		if (press) {          //如何能动态显示？
+			g2.setColor(Color.RED);
+			Px = oldx;
+			Py = oldy;
+			course = CaculateRatio(oldx, oldy, dragx, dragy);
+			double differentx = dragx - oldx;
+            double differenty = dragy - oldy;
+            speed = Math.sqrt(Math.pow(differentx, 2) + Math.pow(differenty, 2))/10;
+            normalShip(g2, Px, Py, course, speed);
+		}
+		g2.setColor(Color.BLUE);
 		for (Ship vessel : clientShips) {
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
@@ -195,11 +242,13 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 			normalShip(g2, Px, Py, course, speed);
 			
 		}
+		g2.setColor(Color.MAGENTA);
 		for (Ship vessel : serverShips) {
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));
 			speed = vessel.getParameter(4);
+			normalShip(g2, Px, Py, course, speed);
 		}
 		
 	}
@@ -226,25 +275,27 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 	
 	public void printString(Graphics g2){
         g2.setColor(Color.BLACK);
-        //auto hide
-        g2.drawString(mousex + " , " + mousey, 20, getHeight()-30);//mouse position 820,  680
+        //g2.drawString(mousex + " , " + mousey, 20, getHeight()-30);//mouse position 820,  680
         g2.drawString(helpStr, 170, getHeight()-30);//help position
         
         g2.drawString(nameStr, 850, 25);
         g2.drawString(positionStr, 850, 50);
-        g2.drawString(speedStr, 850, 75);
-        g2.drawString(courseStr, 850, 100);
+        g2.drawString(courseStr, 850, 75);
+        g2.drawString(speedStr, 850, 100);
+        //Type
     }
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			Thread.sleep(1000);      //调整显示时间
+			Thread.sleep(5000);      //调整显示时间
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
+		helpStr = "";
+		
 		nameStr = "";
 		positionStr = "";
 		speedStr = "";

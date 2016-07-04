@@ -12,6 +12,13 @@ public class ClientThread extends Thread{
 	BufferedReader bufferedreader;
 	DataOutputStream outputstream;
 	
+	public ClientThread(Socket socket, BufferedReader bufferedreader, DataOutputStream outputstream) {
+		super();
+		this.socket = socket;
+		this.bufferedreader = bufferedreader;
+		this.outputstream = outputstream;
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

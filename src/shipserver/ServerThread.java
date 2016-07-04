@@ -14,6 +14,15 @@ public class ServerThread extends Thread{
 	BufferedReader bufferedoeader;
 	DataOutputStream dataoutputotream;
 	
+	public ServerThread(ServerSocket serversocket, Socket connectionsocket, BufferedReader bufferedoeader,
+			DataOutputStream dataoutputotream) {
+		super();
+		this.serversocket = serversocket;
+		this.connectionsocket = connectionsocket;
+		this.bufferedoeader = bufferedoeader;
+		this.dataoutputotream = dataoutputotream;
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
