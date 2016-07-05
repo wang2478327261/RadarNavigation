@@ -75,7 +75,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 			JOptionPane.showMessageDialog(this, "you should input ship infoemation !", "Warning", JOptionPane.ERROR_MESSAGE);
 			customer = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		}
-		JOptionPane.showMessageDialog(this, "本软件由\n@玉龙视觉效果工作室@\n制作\nPOWERED BY ERON STUDIO");
+		//JOptionPane.showMessageDialog(this, "本软件由\n@玉龙视觉效果工作室@\n制作\nPOWERED BY ERON STUDIO");
 		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
 		/*String[] source = customer.split(",");
 		ship = new Ship(source[0], Double.parseDouble(source[1]),
