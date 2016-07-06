@@ -7,18 +7,18 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class ClientThread extends Thread{
-
+	
 	Socket socket;
 	BufferedReader bufferedreader;
 	DataOutputStream outputstream;
 	
-	public ClientThread(Socket socket, BufferedReader bufferedreader, DataOutputStream outputstream) {
+	/*public ClientThread(Socket socket, BufferedReader bufferedreader, DataOutputStream outputstream) {
 		super();
 		this.socket = socket;
 		this.bufferedreader = bufferedreader;
 		this.outputstream = outputstream;
-	}
-
+	}*/
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -36,5 +36,20 @@ public class ClientThread extends Thread{
 		}
 	}
 	
+	public void sendData(StringBuilder data) {
+		// TODO Auto-generated method stub
+		
+	}
 	
+	public StringBuilder[] getData(){
+		// TODO 
+		StringBuilder[] data = new StringBuilder[3];
+		
+		return data;
+	}
+	
+	public void Logout(){
+		//TODO ÍË³ö¿Í»§¶Ë
+		
+	}
 }

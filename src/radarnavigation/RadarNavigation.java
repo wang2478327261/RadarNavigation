@@ -26,6 +26,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 	private Ship ship;              //本船对象
 	
 	private List<Ship> ships = new LinkedList<Ship>();   //保存现场存在的船舶对象
+	ClientThread client;            //发送信息的新线程
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -47,20 +48,25 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 	 * 界面的初始化，窗口内界面的动态布局
 	 */
 	public RadarNavigation() {
-		addKeyListener(new KeyAdapter() {        //测试方向转换功能
+		addKeyListener(new KeyAdapter() {        //测试方向转换功能                本船的状态改变
 			@Override
 			public void keyPressed(KeyEvent e) {
+				//TODO 当本船状态改变时，需要向服务端发送信息，同步显示状态
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					ship.setValue(3, ship.getParameter(3)+1);
+					client.sendData(new StringBuilder());
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					ship.setValue(3, ship.getParameter(3)-1);
+					client.sendData(new StringBuilder());
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					ship.setValue(4, ship.getParameter(4)+1);
+					client.sendData(new StringBuilder());
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					ship.setValue(4, ship.getParameter(4)-1);
+					client.sendData(new StringBuilder());
 				}
 				repaint();
 			}
@@ -88,7 +94,8 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		ship = new Ship();
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
-		//ClientThread click = new ClientThread();
+		client = new ClientThread();
+		client.start();    //开启线程，这时才实际运行
 		//初始化界面
 		initComponents();
 	}

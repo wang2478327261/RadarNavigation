@@ -18,7 +18,6 @@ public class Ship {
 	private String type = "Normal";  //船舶类型
 	
 	public Ship(String name, double Px, double Py, double course, double speed, String type) {
-		//super();
 		this.name = name;
 		this.Px = Px;
 		this.Py = Py;
@@ -28,7 +27,6 @@ public class Ship {
 	}
 	
 	public Ship() {
-		//super();
 		this.name = "Default";
 		this.Px = 0;
 		this.Py = 0;
@@ -64,9 +62,9 @@ public class Ship {
 		return name;
 	}
 	/**
-	 * 同步方法   对船舶属性重新赋值
-	 * @param index
-	 * @param newValue
+	 * synchronized同步方法   对船舶属性重新赋值
+	 * @param index    1--》Px， 2--》Py， 3--》方向， 4--》速度
+	 * @param newValue   将对应的属性赋值为  newValue
 	 */
 	public synchronized void setValue(int index, double newValue){
         switch(index){
