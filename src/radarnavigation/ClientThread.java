@@ -6,19 +6,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import common.Ship;
+
 public class ClientThread extends Thread{
 	
-	Socket socket;
-	BufferedReader bufferedreader;
-	DataOutputStream outputstream;
+	private Socket socket;
+	private BufferedReader bufferedreader;
+	private DataOutputStream outputstream;
+	private Ship ship;
 	
-	/*public ClientThread(Socket socket, BufferedReader bufferedreader, DataOutputStream outputstream) {
+	public ClientThread(Ship ship) {
 		super();
-		this.socket = socket;
-		this.bufferedreader = bufferedreader;
-		this.outputstream = outputstream;
-	}*/
-	
+		this.ship = ship;
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
