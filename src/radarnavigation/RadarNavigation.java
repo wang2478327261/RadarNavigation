@@ -25,7 +25,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 	private InfoPanel infopanel;     //信息显示面板
 	private Ship ship;              //本船对象
 	
-	private List<Ship> ships = new LinkedList<Ship>();   //保存现场存在的船舶对象
+	private List<Ship> ships;// = new LinkedList<Ship>();   //保存现场存在的船舶对象
 	ClientThread client;            //发送信息的新线程
 	
 	public static void main(String[] args) {
@@ -85,17 +85,17 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
 		String[] source = customer.split(",");
 		//这里需要继续处理只输入一部分参数的情况
-		ship = new Ship(source[0], Double.parseDouble(source[1]),
+		/*ship = new Ship(source[0], Double.parseDouble(source[1]),
 				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
 				Double.parseDouble(source[4]), source[5]);  //客户端的一个船舶
 		for(int i = 0; i < source.length; i++){
 			System.out.println(source[i]);
-		}
+		}*/
 		
 		ship = new Ship();             //需要将ship对象传入，以更新本船信息
 		//检查服务器并发送相关信息
 		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
-		client = new ClientThread(ship);
+		client = new ClientThread(ships);
 		client.start();    //开启线程，这时才实际运行
 		//初始化界面
 		initComponents();
@@ -180,10 +180,6 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 						revalidate();
 					}
 					
-				}
-				if(e.getButton() == MouseEvent.BUTTON3){
-					//实现取消选中功能
-					setTitle("RadarNavigation -->" + e.getX()  + "," + e.getY());
 				}
 			}
 		});

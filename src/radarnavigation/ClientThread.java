@@ -1,49 +1,55 @@
 package radarnavigation;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 
 import common.Ship;
 
 public class ClientThread extends Thread{
 	
 	private Socket socket;
-	private BufferedReader bufferedreader;
-	private DataOutputStream outputstream;
-	private Ship ship;
+	private ObjectInputStream input;
+	private ObjectOutputStream output;
+	private List<Ship> ships;
 	
-	public ClientThread(Ship ship) {
+	public ClientThread(List<Ship> ships) {
 		super();
-		this.ship = ship;
+		this.ships = ships;
 	}
-
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
-		Socket socket;
+		Socket socket = null;
 		try {
 			socket = new Socket("localhost",8888);
-			bufferedreader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			outputstream = new DataOutputStream(socket.getOutputStream());
-			outputstream.writeUTF("hello worls");
+			//打开两条数据流
+			input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+			output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 			
+			ships = new LinkedList<Ship>();  //初始化对象
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Server is not Exist OR is not Connection!");
+			//System.exit(1);
 		}
 	}
 	
 	public void sendData(StringBuilder data) {
-		// TODO Auto-generated method stub
+		// TODO 发送字符串控制信息
 		
 	}
 	
 	public StringBuilder[] getData(){
-		// TODO 
+		// TODO 从服务端接受其他客户端或者是服务器的变化信息
 		StringBuilder[] data = new StringBuilder[3];
 		
 		return data;
@@ -51,6 +57,5 @@ public class ClientThread extends Thread{
 	
 	public void Logout(){
 		//TODO 退出客户端
-		
 	}
 }
