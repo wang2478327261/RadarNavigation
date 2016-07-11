@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 	private InfoPanel infopanel;     //信息显示面板
 	private Ship ship;              //本船对象
 	
-	private List<Ship> ships;// = new LinkedList<Ship>();   //保存现场存在的船舶对象
+	private List<Ship> ships = new LinkedList<Ship>();   //保存现场存在的船舶对象
 	ClientThread client;            //发送信息的新线程
 	
 	public static void main(String[] args) {
@@ -52,21 +53,32 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 			@Override
 			public void keyPressed(KeyEvent e) {
 				//TODO 当本船状态改变时，需要向服务端发送信息，同步显示状态
+				String command = null;
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					ship.setValue(3, ship.getParameter(3)+1);
-					client.sendData(new StringBuilder());    //发出指令
+					command = ship.getName() + " course " + "starboard"
+							+ ship.getParameter(1) + " " + ship.getParameter(2);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					ship.setValue(3, ship.getParameter(3)-1);
-					client.sendData(new StringBuilder());
+					command = ship.getName() + "course" + "port"
+							+ ship.getParameter(1) + " " + ship.getParameter(2);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					ship.setValue(4, ship.getParameter(4)+1);
-					client.sendData(new StringBuilder());
+					command = ship.getName() + "speed" + "increase"
+							+ ship.getParameter(1) + " " + ship.getParameter(2);
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					ship.setValue(4, ship.getParameter(4)-1);
-					client.sendData(new StringBuilder());
+					command = ship.getName() + "speed"  + "reduce"
+							+ ship.getParameter(1) + " " + ship.getParameter(2);
+				}
+				try {
+					client.sendData(command);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				repaint();
 			}
@@ -84,6 +96,12 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		//JOptionPane.showMessageDialog(this, "本软件由\n@玉龙视觉效果工作室@\n制作\nPOWERED BY ERON STUDIO");
 		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
 		String[] source = customer.split(",");
+		/**********************************************************************/
+		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
+		client = new ClientThread(ship, ships);
+		client.start();    //开启线程，这时才实际运行
+		//检查服务器并发送相关信息
+		/*********************************************************************/
 		//这里需要继续处理只输入一部分参数的情况
 		/*ship = new Ship(source[0], Double.parseDouble(source[1]),
 				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
@@ -91,12 +109,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		for(int i = 0; i < source.length; i++){
 			System.out.println(source[i]);
 		}*/
-		
 		ship = new Ship();             //需要将ship对象传入，以更新本船信息
-		//检查服务器并发送相关信息
-		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
-		client = new ClientThread(ships);
-		client.start();    //开启线程，这时才实际运行
 		//初始化界面
 		initComponents();
 	}
@@ -167,7 +180,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 							dispose();
 							setUndecorated(true);
 							setVisible(true);
-							//radarpanel.setSize(getWidth()*7/9, getHeight()-35);
+							radarpanel.setSize(getWidth()*7/9, getHeight()-35);  //解决缩小后全屏时字体的变化问题
 						}
 						else {
 							setBounds(20, 20, 1008, 735);
@@ -175,11 +188,10 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
-							//radarpanel.setSize(getWidth()*7/9, getHeight());
+							radarpanel.setSize(getWidth()*7/9, getHeight());
 						}
 						revalidate();
 					}
-					
 				}
 			}
 		});
@@ -204,6 +216,5 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		});
 		
 	}
-	
 	
 }

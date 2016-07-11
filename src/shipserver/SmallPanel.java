@@ -2,27 +2,25 @@ package shipserver;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Transparency;
-
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import common.Ship;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import java.awt.Font;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
+import javax.swing.JPanel;
+import common.Ship;
 
 @SuppressWarnings("serial")
 public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 采用原来的设计
@@ -38,11 +36,12 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
     String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
     private boolean pressed = false;
 	
-	private List<Socket> sockets = new LinkedList<Socket>(); // 连接的套接字对象
 	private List<Ship> clientShips = new LinkedList<Ship>(); // 所有客户端和服务端产生的船舶维护对象
 	private List<Ship> serverShips = new LinkedList<Ship>(); // 服务端生成的对象
+	//存储套接字对象
+	private Map<String, Socket> sockets = new HashMap<String, Socket>();
 	//存储船舶轨迹
-	private Map<Ship, List<Point>> track = new HashMap<Ship, List<Point>>();   //一条船对应一条轨迹链
+	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //一条船对应一条轨迹链
 	
 	public SmallPanel() {
 		super();
@@ -98,14 +97,14 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 			        //只能删除服务器产生的对象，不能操纵客户端
 					if(e.getClickCount() >= 2){
 						if (serverShips.isEmpty()) {
-							helpStr = "No ship to Clear";
+							helpStr = "No ship to Clear --> Left Drag to Create";
 						}
 						else {
 							serverShips.clear();
 			                for (Ship vessel : serverShips) {
 			                    track.get(vessel).clear();     //清除本船路径信息
 			                }
-			                helpStr = "Delete All Ships";
+			                helpStr = "Clear All Ships --> No server ships";
 						}
 		            }
 		            else{
@@ -118,7 +117,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 		                    if(dis <= 20){
 		                        shIt.remove();
 		                        track.remove(vessel);     //一处对应船舶的路径信息
-		                        helpStr = "Deleted a Ship <Done>";
+		                        helpStr = "Deleted a Ship --> Done";
 		                    }
 		                }
 		            }
@@ -136,7 +135,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 		            double speed = Math.sqrt(Math.pow(differentx, 2) + Math.pow(differenty, 2))/10;
 		            //弹出参数填充窗口
 		            String name = JOptionPane.showInputDialog("请输入船名 ： ");
-		            if (name != null) {   //如果返回空值，则不进行动作
+		            if (name != null && !name.equals("")) {   //如果返回空值，则不进行动作
 		            	Ship ship = new Ship(name, mousex, mousey, course, speed, type);
 			            serverShips.add(ship);
 			            //右上方，显示的当前船舶信息
@@ -145,19 +144,20 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 			            courseStr = "Course : "+(int)course;
 			            speedStr = "Speed : "+(int)speed;
 			            typeStr = "Type : "+type;
+			            
+			            new Thread(SmallPanel.this).start();
 					}
 		        }
-				new Thread(SmallPanel.this).start();
 				pressed = false;
-				//repaint();
+				repaint();
 			}
 		});
-		
 		initComponents();
-		//测试
+		//打开接收线程
+		ServerThread server = new ServerThread(clientShips, serverShips, sockets, track);
+		server.start();
 	}
 	private void initComponents() {
-		// TODO Auto-generated constructor stub
 		setBorder(BorderFactory.createEmptyBorder());
 		//setOpaque(false); // 设置成透明的 opaque不透明
 		setBackground(Color.WHITE);
@@ -226,6 +226,8 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
             g2.drawLine((int)oldx, (int)oldy, (int)dragx, (int)dragy);
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
+            
+            normalShip(g2, oldx, oldy, 0, 0);  //显示一个船舶形态
 		}
 		g2.setColor(Color.BLUE);
 		for (Ship vessel : clientShips) {     //绘制客户端产生的船舶对象
