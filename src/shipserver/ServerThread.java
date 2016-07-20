@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import common.Ship;
@@ -33,20 +32,32 @@ public class ServerThread extends Thread{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
 		super.run();
 		try {
-			serversocket = new ServerSocket(8888);
-			Socket connectionsocket = serversocket.accept();
+			serversocket = new ServerSocket(3333);
 			
-			input = new ObjectInputStream(new BufferedInputStream(connectionsocket.getInputStream()));
-			output = new ObjectOutputStream(new BufferedOutputStream(connectionsocket.getOutputStream()));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(!logOut){
+		new Thread(){   //收到客户端的注册信息，新建新套接字
+			public void run(){
+				Socket connectionsocket;
+				try {
+					connectionsocket = serversocket.accept();
+					input = new ObjectInputStream(new BufferedInputStream(connectionsocket.getInputStream()));
+					output = new ObjectOutputStream(new BufferedOutputStream(connectionsocket.getOutputStream()));
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}.start();
+		while(!logOut){  //同步
 			try {
 				sleep(1000);
 				

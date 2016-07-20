@@ -42,7 +42,7 @@ public class ClientThread extends Thread{
 		// TODO 新建套接字并打开两条数据流
 		super.run();
 		try {
-			socket = new Socket(InetAddress.getLocalHost(),8888);
+			socket = new Socket(InetAddress.getLocalHost(),3333);
 			//打开两条数据流
 			input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -50,16 +50,35 @@ public class ClientThread extends Thread{
 		} catch (IOException e) {
 			// TODO 连接不上服务器的处理
 			//e.printStackTrace();
-			System.out.println("Server is not Exist OR is not Connection!");
+			System.out.println("Server is not Exist OR is not Connected!");
 			//System.exit(1);
 		}
-		while(!logOut){
+		new Thread(){  //打开接收线程,接收数据
+			public void run() {
+				while(!logOut){
+					try {
+						String data = getData();
+						String[] change = data.split("s");
+						if (change[0].equals("change")) {
+							System.out.println("");
+						}
+						else {  //ship modify
+							System.out.println("");
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			}
+		}.start();
+		while(!logOut){   //同步数据，发送信息到服务端
 			try {
 				System.out.println("logout loops");
 				sleep(1000);
 				ship.goAhead();  //船舶向前走一步
 				goAhead();  //向服务端发送同步信号
-				getData();  //检查需要执行的命令
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -87,18 +106,13 @@ public class ClientThread extends Thread{
 		System.out.println("sendData");
 	}
 	
-	public void getData() throws IOException{
+	public String getData() throws IOException{
 		// TODO 从服务端接受其他客户端或者是服务器的变化信息
 		String data = null;
 		data = input.readUTF();   //以UTF的格式接受字符串
-		String[] change = data.split("s");
-		if (change[0].equals("change")) {
-			System.out.println("");
-		}
-		else {  //ship modify
-			System.out.println("");
-		}
+		
 		System.out.println("getData");
+		return data;
 	}
 	
 	public void goAhead() throws IOException{  //每走一步同步一次

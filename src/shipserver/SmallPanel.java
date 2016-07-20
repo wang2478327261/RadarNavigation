@@ -153,14 +153,14 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 			}
 		});
 		initComponents();
-		//打开接收线程
-		ServerThread server = new ServerThread(clientShips, serverShips, sockets, track);
-		server.start();
+		
 	}
 	private void initComponents() {
 		setBorder(BorderFactory.createEmptyBorder());
 		//setOpaque(false); // 设置成透明的 opaque不透明
 		setBackground(Color.WHITE);
+		ServerThread server = new ServerThread(clientShips, serverShips, sockets, track);
+		server.start();
 	}
 	
 	/************** 通用程序区 *********************************************/
