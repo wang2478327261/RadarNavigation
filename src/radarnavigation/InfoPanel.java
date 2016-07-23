@@ -1,28 +1,22 @@
 package radarnavigation;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.Iterator;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import common.Ship;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class InfoPanel extends JPanel{   //点击信息显示面板
 	
 	//需要显示信息存储的数据
 	List<Ship> ships = new LinkedList<Ship>();   //存储显示信息的船舶对象
 	private int scroll_Y = 0;     //滚轮滚动     高度的变化值
-	//private int scrollStart;
 	
 	public InfoPanel() {
 		super();
@@ -31,17 +25,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	}
 	
 	private void initComponents() {
-		/*addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}
-		});
-		*/
+		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {    //以后可以改进滚动控制
 				//滚动翻页
@@ -106,4 +90,5 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		//需要更新界面
 		repaint();
 	}
+	
 }

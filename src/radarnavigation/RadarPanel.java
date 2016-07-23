@@ -6,20 +6,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.BorderFactory;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import common.HoverJLable;
-import common.Ship;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import common.HoverJLable;
+import common.Ship;
 
 @SuppressWarnings("serial")
 public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息

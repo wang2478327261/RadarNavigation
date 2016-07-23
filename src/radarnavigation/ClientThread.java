@@ -21,7 +21,7 @@ public class ClientThread extends Thread{
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private Ship ship;
-	private List<Ship> ships;
+	private List<Ship> ships;   //这里存储的是对方的船舶对象列表
 	
 	public boolean logOut = false;
 	
@@ -42,7 +42,7 @@ public class ClientThread extends Thread{
 		// TODO 新建套接字并打开两条数据流
 		super.run();
 		try {
-			socket = new Socket(InetAddress.getLocalHost(),3333);
+			socket = new Socket(InetAddress.getLocalHost(),3333);  //打开一个端口号3333的套接字
 			//打开两条数据流
 			input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -55,7 +55,7 @@ public class ClientThread extends Thread{
 		}
 		new Thread(){  //打开接收线程,接收数据
 			public void run() {
-				while(!logOut){
+				while(!logOut){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
 						String[] change = data.split("s");
@@ -117,13 +117,13 @@ public class ClientThread extends Thread{
 	
 	public void goAhead() throws IOException{  //每走一步同步一次
 		// TODO 登陆服务端
-		String command = ship.getName() + "goAhead";
+		String command = ship.getName() + " goAhead";
 		sendData(command);
 	}
 	
 	public void logOut(String info) throws IOException{
 		//TODO 退出客户端
-		String command = ship.getName() + "logOut";
+		String command = ship.getName() + " logOut";
 		sendData(command);
 	}
 }
