@@ -91,4 +91,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		repaint();
 	}
 	
+	public void changeMode(){
+		
+	}
 }
