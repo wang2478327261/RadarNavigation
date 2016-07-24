@@ -22,87 +22,71 @@
 3. 2016.6.24： 通信方面没有进展，需要学习，通信同步没有思路  
 没有办法，暂停一段时间，以后有时间在慢慢完善  
 4. 2016.6.26 mark:  可以作为雷达对象模糊显示的参考代码
-	```java
-		public class Snow extends JFrame{//图片路径问题待解决
-	
-		Random rd = new Random();
-		MyPanel panel = null;
-		int[] x = new int[600];
-		int[] y = new int[600];
-		
-		public static void main(String[] args){
-			Snow nn = new Snow();
-		}
-		
-		Snow(){
-			slevin();
-			this.setTitle("雪");
-			this.setSize(800,800);
-			this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-			this.setVisible(true);
-		}
-		
-		void slevin(){
-			
-			
-			for (int i = 0; i < 600; i++) {
-				x[i] = rd.nextInt(800);
-				y[i] = rd.nextInt(800);
-			}
-			
-			MyThread thread = new MyThread();
-			Thread t = new Thread(thread);
-			t.start();
-			
-			panel = new MyPanel();
-			
-			this.add(panel);
-		}
-		
-		class MyPanel extends JPanel{
-			@Override
-			protected void paintComponent(Graphics arg0){
-				// TODO Auto-generated method stub
-				super.paintComponent(arg0);
-				ImageIcon icon = new ImageIcon("E:\\Picture Book\\San Francisco.jpg");//图片的问题，待解决
-				arg0.drawImage(icon.getImage(), 0, 0, panel.getSize().width,panel.getSize().height,panel);
-				
-				for (int i = 0; i < 600; i++) {
-					y[i] += 1;
-					x[i] += 1;
-					
-					if(y[i] > 800){
-						y[i] -=800;
-					}
-					if(x[i] > 800){
-						x[i] -=800;
-					}
-					arg0.setColor(Color.WHITE);
-					arg0.fillOval(x[i], y[i], rd.nextInt(4) + 1, rd.nextInt(4) + 1);
-				}
-			}
-		}
-		
-		class MyThread implements Runnable{
-	
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				while(true){
-					try {
-						Thread.sleep(50);
-						repaint();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-			
-		}
-	
+```java
+public class Snow extends JFrame{//图片路径问题待解决
+	Random rd = new Random();
+	MyPanel panel = null;
+	int[] x = new int[600];
+	int[] y = new int[600];
+	public static void main(String[] args){
+		Snow nn = new Snow();
 	}
-	```
+	Snow(){
+		slevin();
+		this.setTitle("雪");
+		this.setSize(800,800);
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+	void slevin(){
+		for (int i = 0; i < 600; i++) {
+			x[i] = rd.nextInt(800);
+			y[i] = rd.nextInt(800);
+		}
+		MyThread thread = new MyThread();
+		Thread t = new Thread(thread);
+		t.start();
+		panel = new MyPanel();
+		this.add(panel);
+	}
+	class MyPanel extends JPanel{
+		@Override
+		protected void paintComponent(Graphics arg0){
+			// TODO Auto-generated method stub
+			super.paintComponent(arg0);
+			ImageIcon icon = new ImageIcon("E:\\Picture Book\\San Francisco.jpg");//图片的问题，待解决
+			arg0.drawImage(icon.getImage(), 0, 0, panel.getSize().width,panel.getSize().height,panel);
+			for (int i = 0; i < 600; i++) {
+				y[i] += 1;
+				x[i] += 1;
+				if(y[i] > 800){
+					y[i] -=800;
+				}
+				if(x[i] > 800){
+					x[i] -=800;
+				}
+				arg0.setColor(Color.WHITE);
+				arg0.fillOval(x[i], y[i], rd.nextInt(4) + 1, rd.nextInt(4) + 1);
+			}
+		}
+	}
+	class MyThread implements Runnable{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while(true){
+				try {
+					Thread.sleep(50);
+					repaint();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}
+```
 出现了字体大小在全屏切换后出现字体变化，无法解决，请高人指点，谢谢    
 
 5. 6.27记： 字体大小动态变化问题解决    
@@ -142,7 +126,13 @@
 	......
 ```
 同步问题，总体布局问题需要解决  , 如果将发送的的信息变为二进制码，1、0序列，对其分析，是否会更快一些？？    
-13. 
+13. 通信协议的设计：  
+	一、客户端发送数据：  
+		1、速度、方向变化 ---》 船名 + 属性（speed/course） + 变化量；  
+		2、登陆/登出 ---》  船名 + login/logout；
+		3、同步，向前走一步  ---》 船名 + go；
+	二、服务端接收数据：  
+		1、速度、方向变化---》
 
 
 
