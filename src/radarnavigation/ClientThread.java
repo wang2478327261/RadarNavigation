@@ -58,12 +58,66 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 				while(!logOut){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
-						String[] change = data.split("s");  //分隔符
-						if (change[1].equals("change")) {
-							System.out.println("");
+						String[] change = data.split(" ");  //分隔符
+						if (change[0].equals(ship.getName())) {
+							System.out.println("本船信息直接过滤，不动作！");
+							continue;
 						}
-						else {  //ship modify
-							System.out.println("");
+						else{
+							switch(change[1]){
+								case "logIn":{  //有新船登入系统
+									ships.add(new Ship(change[0], Double.parseDouble(change[2]), 
+											Double.parseDouble(change[3]), Double.parseDouble(change[4]),
+											Double.parseDouble(change[5]), change[6]));
+									break;
+								}
+								case "logOut":{  //他船登出系统
+									for(Ship vessel : ships){
+										if (vessel.getName().equals(change[0])) {
+											ships.remove(vessel);
+											break;
+										}
+									}
+									break;
+								}
+								case "speed":{
+									for (Ship vessel : ships) {
+										if (vessel.getName().equals(change[0])) {
+											if (change[2].equals("increase")) {
+												vessel.setValue(4, vessel.getParameter(4)+1);
+											}
+											else {
+												vessel.setValue(4, vessel.getParameter(4)-1);
+											}
+											break;
+										}
+									}
+									break;
+								}
+								case "course":{
+									for (Ship vessel : ships) {
+										if (vessel.getName().equals(change[0])) {
+											if (change[2].equals("port")) {
+												vessel.setValue(3, vessel.getParameter(3)-1);
+											}
+											else {
+												vessel.setValue(3, vessel.getParameter(3)+1);
+											}
+											break;
+										}
+									}
+									break;
+								}
+								case "go":{
+									for (Ship vessel : ships) {
+										if (vessel.getName().equals(change[0])) {
+											vessel.goAhead();
+											break;
+										}
+									}
+									break;
+								}
+							}
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -96,7 +150,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	 * <p>接收--》 changeType判断是变化还是创建销毁 </p>
 	 * <p>		接收他船状态变化        changeType 船名， 状态，值  </p>
 	 * <p>		接受创建或登出船舶信息      changeType 船名，创建还是删除  </p>
-	 * @return
+	 * @return null
 	 * @throws IOException
 	 */
 	public synchronized void sendData(String data) throws IOException{  //船舶名称重复问题先暂时不解决
@@ -123,7 +177,8 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	
 	public void logIn() throws IOException{
 		//TODO 登陆客户端
-		String command = ship.getName() + " logIn";
+		String command = ship.getName() + " logIn " + ship.getParameter(1) +" "+ ship.getParameter(2)
+						+ " " +ship.getParameter(3) +" "+ ship.getParameter(4) +" "+ ship.getType();
 		sendData(command);
 	}
 	
