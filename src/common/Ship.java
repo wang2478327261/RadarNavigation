@@ -59,6 +59,7 @@ public class Ship {
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	 * synchronized同步方法   对船舶属性重新赋值
 	 * @param index    1--》Px， 2--》Py， 3--》方向， 4--》速度
@@ -79,7 +80,7 @@ public class Ship {
         }
         //这里也需要对速度进行校验   速度不能大于30节kt
         if (speed < 0 || speed > 30) {
-			System.err.println("your speed is : " + speed + ".\nPlease get normal speed!");
+			System.err.println("your speed is : " + speed + "\nPlease get normal speed!");
 			speed = 3;
 		}
     }

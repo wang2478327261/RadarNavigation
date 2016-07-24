@@ -15,7 +15,7 @@ import common.Ship;
  * @author ERON  
  * @see RadarNavigation  
  */
-public class ClientThread extends Thread{
+public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更新对方船舶的信息
 	
 	private Socket socket;
 	private ObjectInputStream input;
@@ -53,13 +53,13 @@ public class ClientThread extends Thread{
 			System.out.println("Server is not Exist OR is not Connected!");
 			//System.exit(1);
 		}
-		new Thread(){  //打开接收线程,接收数据
+		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<打开接收线程,接收数据
 			public void run() {
 				while(!logOut){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
-						String[] change = data.split("s");
-						if (change[0].equals("change")) {
+						String[] change = data.split("s");  //分隔符
+						if (change[1].equals("change")) {
 							System.out.println("");
 						}
 						else {  //ship modify
@@ -73,12 +73,12 @@ public class ClientThread extends Thread{
 				}
 			}
 		}.start();
-		while(!logOut){   //同步数据，发送信息到服务端
+		while(!logOut){   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>同步数据，发送信息到服务端
 			try {
 				System.out.println("logout loops");
 				sleep(1000);
 				ship.goAhead();  //船舶向前走一步
-				goAhead();  //向服务端发送同步信号
+				sync();  //向服务端发送同步信号
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,9 +115,15 @@ public class ClientThread extends Thread{
 		return data;
 	}
 	
-	public void goAhead() throws IOException{  //每走一步同步一次
+	public void sync() throws IOException{  //每走一步同步一次
 		// TODO 登陆服务端
-		String command = ship.getName() + " goAhead";
+		String command = ship.getName() + " go";
+		sendData(command);
+	}
+	
+	public void logIn() throws IOException{
+		//TODO 登陆客户端
+		String command = ship.getName() + " logIn";
 		sendData(command);
 	}
 	

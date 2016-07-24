@@ -155,7 +155,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 					if (e.getClickCount() == 1) {    //左键 单击一次
 						//添加雷达对象到信息面板
 						Iterator<Ship> index = ships.iterator();  //原因搜索解决
-						while (index.hasNext()) {
+						while (index.hasNext()) {   //当点击对象后应该更改显示效果，更改船舶属性标志 ， 追踪模式。。。。。
 							Ship boat = index.next();
 							if (Math.abs(e.getX()-boat.getParameter(1))<10 && 
 									Math.abs(e.getY()-boat.getParameter(2))<10) {
@@ -202,7 +202,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 			public void mouseClicked(MouseEvent e) {
 				//单击后显示菜单，变换界面  设置整体属性
 				revalidate();
-				if (e.getButton() == MouseEvent.BUTTON1) {
+				if (e.getButton() == MouseEvent.BUTTON1) {  //菜单模式需要天界模式标志，1 代表显示信息，0 代表 显示菜单，重新布局
 					//进入菜单界面
 				}
 				else if (e.getButton() == MouseEvent.BUTTON3) {
