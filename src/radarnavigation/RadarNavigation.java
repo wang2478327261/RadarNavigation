@@ -8,6 +8,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -47,8 +49,9 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 	 * 弹出一个输入船舶名称的窗口
 	 * 之后启动套接字线程与服务器进行通信，这里需要写一个线程类，同时设计通信协议
 	 * 界面的初始化，窗口内界面的动态布局
+	 * @throws IOException 
 	 */
-	public RadarNavigation() {
+	public RadarNavigation() throws IOException {
 		addKeyListener(new KeyAdapter() {        //测试方向转换功能                本船的状态改变
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -79,6 +82,12 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 				repaint();
 			}
 		});
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				
+			}
+		});
 		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
 		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
 		while(customer == null || customer.equals("")){
@@ -104,7 +113,8 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
 		client = new ClientThread(ship, ships);  //传入ship对象为了能够在新线程中控制本船向前进，同步
 		client.start();    //开启线程，这时才实际运行
-		//检查服务器并发送相关信息
+		//检查服务器并发送相关信息        -------------登录信息
+		client.logIn();
 		/*********************************************************************/
 		//初始化界面
 		initComponents();

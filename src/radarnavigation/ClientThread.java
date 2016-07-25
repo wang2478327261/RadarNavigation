@@ -17,7 +17,7 @@ import common.Ship;
  */
 public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更新对方船舶的信息
 	
-	private Socket socket;
+	private Socket socket;  //本客户端的套接字
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private Ship ship;
@@ -60,7 +60,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 						String data = getData();
 						String[] change = data.split(" ");  //分隔符
 						if (change[0].equals(ship.getName())) {
-							System.out.println("本船信息直接过滤，不动作！");
+							
 							continue;
 						}
 						else{
@@ -162,8 +162,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	
 	public String getData() throws IOException{
 		// TODO 从服务端接受其他客户端或者是服务器的变化信息
-		String data = null;
-		data = input.readUTF();   //以UTF的格式接受字符串
+		String data = input.readUTF();   //以UTF的格式接受字符串
 		
 		System.out.println("getData");
 		return data;
@@ -182,9 +181,10 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		sendData(command);
 	}
 	
-	public void logOut(String info) throws IOException{
+	public void logOut() throws IOException{
 		//TODO 退出客户端
 		String command = ship.getName() + " logOut";
 		sendData(command);
+		socket.close();
 	}
 }

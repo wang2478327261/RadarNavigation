@@ -40,7 +40,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 	private List<Ship> serverShips = new LinkedList<Ship>(); // 服务端生成的对象
 	//存储套接字对象
 	private Map<String, Socket> sockets = new HashMap<String, Socket>();
-	//存储船舶轨迹
+	//存储船舶轨迹  ------------->实现比较困难，暂时先不实现
 	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //一条船对应一条轨迹链
 	
 	public SmallPanel() {
