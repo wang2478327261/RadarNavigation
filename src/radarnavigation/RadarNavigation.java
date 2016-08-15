@@ -58,18 +58,22 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 				//TODO 当本船状态改变时，需要向服务端发送信息，同步显示状态
 				String command = "";
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					ship.setValue(3, ship.getParameter(3)-1);
 					ship.setValue(3, ship.getParameter(3)+1);
 					command = ship.getName() + " course " + "starboard";  //使用空格进行分割
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					ship.setValue(3, ship.getParameter(3)+1);
 					ship.setValue(3, ship.getParameter(3)-1);
 					command = ship.getName() + " course " + "port";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					ship.setValue(4, ship.getParameter(4)+1);
+					ship.setValue(4, ship.getParameter(4)+1);
 					command = ship.getName() + " speed " + "increase";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					ship.setValue(4, ship.getParameter(4));
 					ship.setValue(4, ship.getParameter(4)-1);
 					command = ship.getName() + " speed "  + "reduce";
 				}
@@ -85,6 +89,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				//在关闭客户端的时候发送注销信息
 				
 			}
 		});
