@@ -45,7 +45,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 	
 	public SmallPanel() {
 		super();
-		addMouseWheelListener(new MouseWheelListener() {
+		/*addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				setCursor(new Cursor(Cursor.MOVE_CURSOR));  //移动光标
 				if (e.getWheelRotation() > 0) {   //滚轮向下滚动      》0
@@ -58,7 +58,7 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 				}
 				repaint();
 			}
-		});
+		});*/
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {

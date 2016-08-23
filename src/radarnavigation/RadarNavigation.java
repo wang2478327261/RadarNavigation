@@ -1,6 +1,7 @@
 package radarnavigation;
 
 import java.awt.EventQueue;
+import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -58,22 +59,18 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 				//TODO 当本船状态改变时，需要向服务端发送信息，同步显示状态
 				String command = "";
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					ship.setValue(3, ship.getParameter(3)-1);
 					ship.setValue(3, ship.getParameter(3)+1);
 					command = ship.getName() + " course " + "starboard";  //使用空格进行分割
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					ship.setValue(3, ship.getParameter(3)+1);
 					ship.setValue(3, ship.getParameter(3)-1);
 					command = ship.getName() + " course " + "port";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					ship.setValue(4, ship.getParameter(4)+1);
-					ship.setValue(4, ship.getParameter(4)+1);
 					command = ship.getName() + " speed " + "increase";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					ship.setValue(4, ship.getParameter(4));
 					ship.setValue(4, ship.getParameter(4)-1);
 					command = ship.getName() + " speed "  + "reduce";
 				}
@@ -90,7 +87,12 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 			@Override
 			public void windowClosing(WindowEvent e) {
 				//在关闭客户端的时候发送注销信息
-				
+				try {
+					client.logOut();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		//处理用户输入的船舶名称,可以在名字中加入位置信息，后期再处理切片出来，全局地图放在服务器上
@@ -206,10 +208,13 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 				}
 			}
 		});
-		
+		//------------------------------------>改动以使得界面可以滚动
 		infopanel = new InfoPanel();   //新建信息显示面板
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		contentPane.add(infopanel);
+		ScrollPane sp = new ScrollPane();
+		sp.add(infopanel);
+		//contentPane.add(infopanel);
+		contentPane.add(sp);
 		//信息面板响应
 		infopanel.addMouseListener(new MouseAdapter() {
 			

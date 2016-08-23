@@ -1,8 +1,13 @@
 package shipserver;
 
 import java.awt.EventQueue;
+import java.awt.Point;
+import java.net.Socket;
+import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import common.Ship;
 
 @SuppressWarnings("serial")
 public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
@@ -28,13 +33,8 @@ public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 	/**
 	 * Create the frame.
 	 */
-	public ShipManager() {
+	public ShipManager() {  //smallpanel中新建server线程，传入参数，进行控制，所以主类只是一个壳子
 		initComponents();
-		//打开网络通信，接受客户端消息
-		//ServerThread server = new ServerThread();
-		//初始化界面
-		initComponents();
-		//repaint();
 	}
 	
 	private void initComponents() {

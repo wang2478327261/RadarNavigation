@@ -24,6 +24,11 @@ public class ServerThread extends Thread{
 	private Map<String, Socket> sockets;
 	private Map<String, List<Point>> track;
 	
+	public ServerThread() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+	
 	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, Map<String, Socket> sockets, Map<String, List<Point>> track) {
 		super();
 		this.clientShips = clientShips;

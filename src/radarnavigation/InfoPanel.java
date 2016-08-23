@@ -26,7 +26,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	
 	private void initComponents() {
 		
-		addMouseWheelListener(new MouseWheelListener() {
+		/*addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {    //以后可以改进滚动控制
 				//滚动翻页
 				if (e.getWheelRotation() > 0) {   //鼠标滚轮向下滚动       让字    向上走
@@ -37,7 +37,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 				}
 				repaint();
 			}
-		});
+		});*/
 		// TODO Auto-generated constructor stub
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

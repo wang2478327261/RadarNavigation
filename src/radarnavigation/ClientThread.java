@@ -60,7 +60,6 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 						String data = getData();
 						String[] change = data.split(" ");  //分隔符
 						if (change[0].equals(ship.getName())) {
-							
 							continue;
 						}
 						else{
