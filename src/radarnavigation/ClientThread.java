@@ -1,13 +1,13 @@
 package radarnavigation;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+
 import common.Ship;
 
 /**
@@ -18,8 +18,8 @@ import common.Ship;
 public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更新对方船舶的信息
 	
 	private Socket socket;  //本客户端的套接字
-	private ObjectInputStream input;
-	private ObjectOutputStream output;
+	private BufferedReader input;
+	private PrintWriter output;
 	private Ship ship;
 	private List<Ship> ships;   //这里存储的是对方的船舶对象列表
 	
@@ -40,25 +40,27 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	@Override
 	public void run() {
 		// TODO 新建套接字并打开两条数据流
-		super.run();
+		//super.run();
 		try {
 			socket = new Socket(InetAddress.getLocalHost(),8888);  //打开一个端口号3333的套接字
+			System.out.println(socket);
 			//打开两条数据流
-			input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-			output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			output = new PrintWriter(socket.getOutputStream());
 			
+			logIn();  //发送登录信息
 		} catch (IOException e) {
 			// TODO 连接不上服务器的处理
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
-			//System.exit(1);
+			System.exit(1);
 		}
 		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<打开接收线程,接收数据
 			public void run() {
 				while(!logOut){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
-						String[] change = data.split(" ");  //分隔符
+						String[] change = data.split(",");  //分隔符
 						if (change[0].equals(ship.getName())) {
 							continue;
 						}
@@ -131,6 +133,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 				System.out.println("logout loops");
 				sleep(1000);
 				ship.goAhead();  //船舶向前走一步
+					ship.printShip();
 				sync();  //向服务端发送同步信号
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -154,14 +157,14 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	 */
 	public synchronized void sendData(String data) throws IOException{  //船舶名称重复问题先暂时不解决
 		// TODO 发送字符串控制信息
-		output.writeUTF(data);
+		output.println(data);;
 		output.flush();
 		System.out.println("sendData");
 	}
 	
 	public String getData() throws IOException{
 		// TODO 从服务端接受其他客户端或者是服务器的变化信息
-		String data = input.readUTF();   //以UTF的格式接受字符串
+		String data = input.readLine();   //以UTF的格式接受字符串
 		
 		System.out.println("getData");
 		return data;
@@ -169,21 +172,24 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	
 	public void sync() throws IOException{  //每走一步同步一次
 		// TODO 登陆服务端
-		String command = ship.getName() + " go";
+		String command = ship.getName() + ",go";
 		sendData(command);
+		System.out.println("sycn");
 	}
 	
 	public void logIn() throws IOException{
 		//TODO 登陆客户端
-		String command = ship.getName() + " logIn " + ship.getParameter(1) +" "+ ship.getParameter(2)
-						+ " " +ship.getParameter(3) +" "+ ship.getParameter(4) +" "+ ship.getType();
+		String command = ship.getName() + ",logIn," + ship.getParameter(1) +","+ ship.getParameter(2)
+						+ "," +ship.getParameter(3) +","+ ship.getParameter(4) +","+ ship.getType();
 		sendData(command);
+		System.out.println("logIn");
 	}
 	
 	public void logOut() throws IOException{
 		//TODO 退出客户端
-		String command = ship.getName() + " logOut";
+		String command = ship.getName() + ",logOut";
 		sendData(command);
+		System.out.println("logOut");
 		socket.close();
 	}
 }

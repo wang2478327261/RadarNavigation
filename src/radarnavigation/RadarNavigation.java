@@ -60,19 +60,19 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 				String command = "";
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					ship.setValue(3, ship.getParameter(3)+1);
-					command = ship.getName() + " course " + "starboard";  //使用空格进行分割
+					command = ship.getName() + ",course," + "starboard";  //使用空格进行分割
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					ship.setValue(3, ship.getParameter(3)-1);
-					command = ship.getName() + " course " + "port";
+					command = ship.getName() + ",course," + "port";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					ship.setValue(4, ship.getParameter(4)+1);
-					command = ship.getName() + " speed " + "increase";
+					command = ship.getName() + ",speed," + "increase";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					ship.setValue(4, ship.getParameter(4)-1);
-					command = ship.getName() + " speed "  + "reduce";
+					command = ship.getName() + ",speed,"  + "reduce";
 				}
 				try {
 					client.sendData(command);
@@ -107,7 +107,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		}
 		//JOptionPane.showMessageDialog(this, "本软件由\n@玉龙视觉效果工作室@\n制作\nPOWERED BY ERON STUDIO");
 		//将输入数据进行分析操作，分析出名称，位置等信息     ----->**  依次输入船名、位置x y、方向、速度
-		String[] source = customer.split(",");
+		//String[] source = customer.split(",");
 		//这里需要继续处理只输入一部分参数的情况
 		/*ship = new Ship(source[0], Double.parseDouble(source[1]),
 				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
@@ -120,8 +120,6 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		//这里要进行开启发送信息的套接字                      新建线程                     启动信息传送的新线程
 		client = new ClientThread(ship, ships);  //传入ship对象为了能够在新线程中控制本船向前进，同步
 		client.start();    //开启线程，这时才实际运行
-		//检查服务器并发送相关信息        -------------登录信息
-		client.logIn();
 		/*********************************************************************/
 		//初始化界面
 		initComponents();

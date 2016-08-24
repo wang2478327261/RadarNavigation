@@ -60,6 +60,15 @@ public class Ship {
 		return name;
 	}
 	
+	public void printShip() {  //用于测试船舶状态改变
+		System.out.println(getName());
+		System.out.println(getParameter(1));
+		System.out.println(getParameter(2));
+		System.out.println(getParameter(3));
+		System.out.println(getParameter(4));
+		System.out.println(getType());
+	}
+	
 	/**
 	 * synchronized同步方法   对船舶属性重新赋值
 	 * @param index    1--》Px， 2--》Py， 3--》方向， 4--》速度
