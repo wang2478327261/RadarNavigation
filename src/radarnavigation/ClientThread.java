@@ -22,8 +22,8 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	private PrintWriter output;
 	private Ship ship;
 	private List<Ship> ships;   //这里存储的是对方的船舶对象列表
-	
-	public boolean logOut = false;
+	//通过判断套接字决定循环的继续
+	//public boolean logOut = false;
 	
 	/**
 	 * <p>传播指令集的设计  </p>
@@ -58,7 +58,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		}
 		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<打开接收线程,接收数据
 			public void run() {
-				while(!logOut){ //如果没有登出，则循环进行同步
+				while(!socket.isClosed()){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
 						String[] change = data.split(",");  //分隔符
@@ -129,12 +129,12 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 				}
 			}
 		}.start();
-		while(!logOut){   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>同步数据，发送信息到服务端
+		while(!socket.isClosed()){   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>同步数据，发送信息到服务端
 			try {
 				System.out.println("logout loops");
 				sleep(1000);
 				ship.goAhead();  //船舶向前走一步
-					ship.printShip();
+				//	ship.printShip();
 				sync();  //向服务端发送同步信号
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
