@@ -18,16 +18,12 @@ public class ServerThread extends Thread{
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private boolean logOut = false;
+	
 	//传递参数，对对象进行操作
 	private List<Ship> clientShips;
 	private List<Ship> serverShips;
 	private Map<String, Socket> sockets;
 	private Map<String, List<Point>> track;
-	
-	public ServerThread() {
-		// TODO Auto-generated constructor stub
-		super();
-	}
 	
 	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, Map<String, Socket> sockets, Map<String, List<Point>> track) {
 		super();
@@ -39,41 +35,47 @@ public class ServerThread extends Thread{
 	
 	@Override
 	public void run() {
-		
-		super.run();
-		try {
-			serversocket = new ServerSocket(3333);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		new Thread(){   //收到客户端的注册信息，新建新套接字
-			public void run(){
-				/*Socket connectionsocket;
-				try {
-					connectionsocket = serversocket.accept();
-					input = new ObjectInputStream(new BufferedInputStream(connectionsocket.getInputStream()));
-					output = new ObjectOutputStream(new BufferedOutputStream(connectionsocket.getOutputStream()));
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
-			}
-		}.start();
-		while(!logOut){  //同步
+		//super.run();
+		while(!logOut){
 			try {
-				sleep(1000);
-			} catch (InterruptedException e) {
+				serversocket = new ServerSocket(8888);
+				Socket newsocket = serversocket.accept();
+				input = new ObjectInputStream(new BufferedInputStream(newsocket.getInputStream()));
+				output = new ObjectOutputStream(new BufferedOutputStream(newsocket.getOutputStream()));
+				
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		for (Socket socket : sockets.values()) {
+			//发送关闭信息到客户端
+			
+		}
+		/*Thread receive = new Thread(){   //接收客户端信息  更改本地数据后对客户端及逆行同步
+			public void run(){
+				while(!logOut){
+					try {
+						Socket newsocket = serversocket.accept();
+						input = new ObjectInputStream(new BufferedInputStream(newsocket.getInputStream()));
+						output = new ObjectOutputStream(new BufferedOutputStream(newsocket.getOutputStream()));
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				for (Socket socket : sockets.values()) {
+					//发送关闭信息到客户端
+					
+				}
+			}
+		};
+		receive.start();*/
+		
 	}
 	
-	public void sendData(Socket socket, String data) throws IOException{   //对某一个套接字发送信息，更新数据
+	public void sendData(String data) throws IOException{   //对某一个套接字发送信息，更新数据
 		output.writeUTF(data);
 		output.flush();
 		System.out.println("ServerThread.sendData()");

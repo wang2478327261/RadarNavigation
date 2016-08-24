@@ -42,7 +42,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		// TODO 新建套接字并打开两条数据流
 		super.run();
 		try {
-			socket = new Socket(InetAddress.getLocalHost(),3333);  //打开一个端口号3333的套接字
+			socket = new Socket(InetAddress.getLocalHost(),8888);  //打开一个端口号3333的套接字
 			//打开两条数据流
 			input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));

@@ -9,8 +9,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,7 +21,7 @@ import javax.swing.JPanel;
 import common.Ship;
 
 @SuppressWarnings("serial")
-public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 采用原来的设计
+public class SmallPanel extends JPanel implements Runnable{
     
     private double mousex, mousey;  //移动鼠标的坐标
     private double dragx, dragy;    //拖动未松开时鼠标坐标
@@ -157,8 +155,10 @@ public class SmallPanel extends JPanel implements Runnable{ // 这个类不需要了， 
 	}
 	private void initComponents() {
 		setBorder(BorderFactory.createEmptyBorder());
+		setLayout(null);
 		//setOpaque(false); // 设置成透明的 opaque不透明
 		setBackground(Color.WHITE);
+		
 		ServerThread server = new ServerThread(clientShips, serverShips, sockets, track);
 		server.start();
 	}

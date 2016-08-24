@@ -1,13 +1,8 @@
 package shipserver;
 
 import java.awt.EventQueue;
-import java.awt.Point;
-import java.net.Socket;
-import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import common.Ship;
 
 @SuppressWarnings("serial")
 public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
@@ -42,8 +37,8 @@ public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(20, 20, 1208, 735);
 		smallpanel = new SmallPanel();
-		smallpanel.setBorder(BorderFactory.createEmptyBorder());
-		smallpanel.setLayout(null);
+		//smallpanel.setBorder(BorderFactory.createEmptyBorder());
+		//smallpanel.setLayout(null);
 		setContentPane(smallpanel);
 	}
 	
