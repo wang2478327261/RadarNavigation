@@ -49,6 +49,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 			output = new PrintWriter(socket.getOutputStream());
 			
 			logIn();  //发送登录信息
+			
 		} catch (IOException e) {
 			// TODO 连接不上服务器的处理
 			//e.printStackTrace();
@@ -157,7 +158,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 	 */
 	public synchronized void sendData(String data) throws IOException{  //船舶名称重复问题先暂时不解决
 		// TODO 发送字符串控制信息
-		output.println(data);;
+		output.println(data);
 		output.flush();
 		System.out.println("sendData");
 	}
@@ -190,6 +191,9 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		String command = ship.getName() + ",logOut";
 		sendData(command);
 		System.out.println("logOut");
+		
+		input.close();
+		output.close();
 		socket.close();
 	}
 }

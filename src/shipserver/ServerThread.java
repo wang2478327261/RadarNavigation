@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
-
 import common.Ship;
 
 public class ServerThread extends Thread{
@@ -34,7 +33,7 @@ public class ServerThread extends Thread{
 	}
 	
 	@Override
-	public void run() {
+	public void run() {  //接受客户端数据
 		//super.run();
 		try {
 			serversocket = new ServerSocket(8888);
@@ -46,7 +45,7 @@ public class ServerThread extends Thread{
 			try {
 				Socket newsocket = serversocket.accept();
 				System.out.println("Get a newsocket!!");
-				System.out.println(newsocket);
+				
 				input = new BufferedReader(new InputStreamReader(newsocket.getInputStream()));
 				String newName = input.readLine().split(",")[0];  //得到该线程的船名
 				
@@ -96,7 +95,7 @@ public class ServerThread extends Thread{
 			sendData(command);
 		}
 	}
-	
+	//一下这两个方法用在管理客户端中，暂不实现具体功能
 	public void kickOut(Ship ship) throws IOException {  //踢出某个客户端
 		sendData(ship.getName() + ",kickOut");
 	}
