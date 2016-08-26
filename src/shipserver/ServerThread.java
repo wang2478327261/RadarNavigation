@@ -22,10 +22,10 @@ public class ServerThread extends Thread{
 	//传递参数，对对象进行操作
 	private List<Ship> clientShips;
 	private List<Ship> serverShips;
-	private Map<String, Socket> sockets;
+	private List<Socket> sockets;
 	private Map<String, List<Point>> track;
 	
-	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, Map<String, Socket> sockets, Map<String, List<Point>> track) {
+	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, Map<String, List<Point>> track) {
 		super();
 		this.clientShips = clientShips;
 		this.serverShips = serverShips;
@@ -42,22 +42,38 @@ public class ServerThread extends Thread{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		//对服务器创建的对象进行同步前进
+		new Thread(){
+			@Override
+			public void run() {
+				for(Ship ship : serverShips){
+					ship.goAhead();
+					for (Socket sk : sockets) {
+						try {
+							sync(sk, ship.getName());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+		}.start();
 		while(!logOut){
 			try {
 				Socket newsocket = serversocket.accept();
 				System.out.println("Get a newsocket!!");
 				//数据存储处理
-				BufferedReader input = new BufferedReader(new InputStreamReader(newsocket.getInputStream()));
+				/*BufferedReader input = new BufferedReader(new InputStreamReader(newsocket.getInputStream()));
 				String[] login = input.readLine().split(",");
 				if (login[1].equals("logIn")) {
-					sockets.put(login[0], newsocket);
+					sockets.add(newsocket);
 					//存储船舶对象
 					clientShips.add(new Ship(login[0], Double.parseDouble(login[2]), Double.parseDouble(login[3]),
 							Double.parseDouble(login[4]), Double.parseDouble(login[5]), login[6]));
 				}else{
 					continue;
-				}
+				}*/
 				
 				new Thread(){   //这里怎么处理？？没办法，再次停止
 					@Override
@@ -79,9 +95,11 @@ public class ServerThread extends Thread{
 				e.printStackTrace();
 			}
 		}
-		for (Socket sk : sockets.values()) {    //关闭所有的客户端
+		for (Socket sk : sockets) {    //关闭所有的客户端
 			try {
-				sk.close();
+				if(!sk.isClosed()){
+					sk.close();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -103,16 +121,18 @@ public class ServerThread extends Thread{
 		return data;
 	}
 	
-	public void sync() throws IOException{  //每走一步同步一次
+	public void sync(Socket socket, String name) throws IOException{  //每走一步同步一次
 		// TODO sync
-		for (Ship vessel : clientShips) {
+		/*for (Ship vessel : clientShips) {
 			String command = vessel.getName() + ",go";
 			sendData(sockets.get(vessel.getName()), command);
 		}
 		for (Ship vessel : serverShips) {
 			String command = vessel.getName() + ",go";
 			sendData(sockets.get(vessel.getName()), command);
-		}
+		}*/
+		String command = name + "go";
+		sendData(socket, command);
 	}
 	
 	//一下这两个方法用在管理客户端中，暂不实现具体功能

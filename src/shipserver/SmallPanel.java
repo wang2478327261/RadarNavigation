@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,11 +34,13 @@ public class SmallPanel extends JPanel implements Runnable{
     String helpStr = "";
     String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
     private boolean pressed = false;
+    ServerThread server;
 	
 	private List<Ship> clientShips = new LinkedList<Ship>(); // 所有客户端和服务端产生的船舶维护对象
 	private List<Ship> serverShips = new LinkedList<Ship>(); // 服务端生成的对象
 	//存储套接字对象
-	private Map<String, Socket> sockets = new HashMap<String, Socket>();
+	//private Map<String, Socket> sockets = new HashMap<String, Socket>();
+	private List<Socket> sockets = new LinkedList<Socket>();
 	//存储船舶轨迹  ------------->实现比较困难，暂时先不实现
 	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //一条船对应一条轨迹链
 	
@@ -135,6 +138,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		            String name = JOptionPane.showInputDialog("请输入船名 ： ");
 		            if (name != null && !name.equals("")) {   //如果返回空值，则不进行动作
 		            	Ship ship = new Ship(name, mousex, mousey, course, speed, type);
+		            	//将新建的对象加入队列
 			            serverShips.add(ship);
 			            //右上方，显示的当前船舶信息
 			            nameStr = "Ship name : "+name;
@@ -144,6 +148,16 @@ public class SmallPanel extends JPanel implements Runnable{
 			            typeStr = "Type : "+type;
 			            
 			            new Thread(SmallPanel.this).start();
+			            //向网络发送创建船舶的同步信号
+						for (Socket sk : sockets) {
+							String command = name + "logIn" + mousex + mousey + course + speed + type;
+							try {
+								server.sendData(sk, command);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
 		        }
 				pressed = false;
@@ -159,7 +173,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		//setOpaque(false); // 设置成透明的 opaque不透明
 		setBackground(Color.WHITE);
 		
-		ServerThread server = new ServerThread(clientShips, serverShips, sockets, track);
+		server = new ServerThread(clientShips, serverShips, sockets, track);
 		server.start();
 	}
 	
