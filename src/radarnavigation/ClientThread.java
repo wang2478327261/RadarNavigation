@@ -35,6 +35,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		super();
 		this.ship = ship;
 		this.ships = ships;
+		System.out.println("ClientThread->clientthread");
 	}
 	
 	@Override
@@ -47,6 +48,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 			//打开两条数据流
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream());
+			System.out.println("ClientThread->run");
 			
 			logIn();  //发送登录信息
 			
@@ -58,6 +60,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		}
 		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<打开接收线程,接收数据
 			public void run() {
+				System.out.println("ClientThread-->Create new thread --> received data, and sendData");
 				while(!socket.isClosed()){ //如果没有登出，则循环进行同步
 					try {
 						String data = getData();
@@ -131,10 +134,9 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		}.start();
 		while(!socket.isClosed()){   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>同步数据，发送信息到服务端
 			try {
-				System.out.println("logout loops");
+				System.out.println("ClientThread->Data receiveThread");
 				sleep(1000);
 				ship.goAhead();  //船舶向前走一步
-				//	ship.printShip();
 				sync();  //向服务端发送同步信号
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -160,14 +162,14 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		// TODO 发送字符串控制信息
 		output.println(data);
 		output.flush();
-		System.out.println("sendData");
+		System.out.println("ClientThread->sendData");
 	}
 	
 	public String getData() throws IOException{   //这个方法多余，好处是如果对其
 		// TODO 从服务端接受其他客户端或者是服务器的变化信息
 		String data = input.readLine();   //以UTF的格式接受字符串
 		
-		System.out.println("getData");
+		System.out.println("ClientThread ->getData");
 		return data;
 	}
 	
@@ -175,7 +177,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		// TODO 登陆服务端
 		String command = ship.getName() + ",go";
 		sendData(command);
-		System.out.println("sycn");
+		System.out.println("ClientThread->sycn");
 	}
 	
 	public void logIn() throws IOException{
@@ -183,14 +185,14 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		String command = ship.getName() + ",logIn," + ship.getParameter(1) +","+ ship.getParameter(2)
 						+ "," +ship.getParameter(3) +","+ ship.getParameter(4) +","+ ship.getType();
 		sendData(command);
-		System.out.println("logIn");
+		System.out.println("ClientThread->logIn");
 	}
 	
 	public void logOut() throws IOException{
 		//TODO 退出客户端
 		String command = ship.getName() + ",logOut";
 		sendData(command);
-		System.out.println("logOut");
+		System.out.println("ClientThread->logOut");
 		
 		input.close();
 		output.close();

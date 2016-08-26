@@ -7,10 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes.Name;
 
 import common.Ship;
 
@@ -34,6 +32,7 @@ public class ServerThread extends Thread{
 		this.sockets = sockets;
 		this.track = track;
 		this.smallpanel = smallpanel;  //刷新界面
+		System.out.println("ServerThread -> @overidethread");
 	}
 	
 	@Override
@@ -49,6 +48,7 @@ public class ServerThread extends Thread{
 		new Thread(){        //对服务器创建的对象进行同步前进
 			@Override
 			public void run() {
+				System.out.println("对服务端创建的对象进行同步");
 				while(!logOut){
 					for(Ship ship : serverShips){
 						ship.goAhead();
@@ -90,6 +90,7 @@ public class ServerThread extends Thread{
 						// TODO Auto-generated method stub
 						//super.run();    //调用父类的run方法是什么意思？
 						Socket socket = sockets.get(sockets.size() - 1);  //得到新建的套接字
+						System.out.println("收到信的客户端建立新线程");
 						
 						String[] change = null;
 						String name = null;
@@ -112,7 +113,7 @@ public class ServerThread extends Thread{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						while(true){
+						while(true){  //服务器像一个反射器，对新金星识别并返回特定的信息
 							if (change[1].equals("logOut")) {
 								for(Socket sk : sockets){
 									String command = name + ",logOut";
@@ -201,6 +202,7 @@ public class ServerThread extends Thread{
 	
 	public void sync(Socket socket, String name) throws IOException{  //每走一步同步一次
 		// TODO sync
+		System.out.println("ServerThread -> sycn");
 		String command = name + ",go";
 		sendData(socket, command);
 	}

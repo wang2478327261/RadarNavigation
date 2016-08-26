@@ -233,7 +233,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 				range = (float) 0.75;
 			}
 		}
-		System.out.println(range);
+		System.out.println("RadarPanel -> setRange");
 	}
 	public float getRange() {
 		return range;
@@ -243,6 +243,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	
 	public void dataFresh(){
+		System.out.println("RadarPanel -> dataFresh");
 		//刷新右上角的数据
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
@@ -289,6 +290,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	//画出雷达界面上的数字 ，可以随着船舶航向的变化而变化            还有刻度，方便辨识方向
 	public void drawScale(Graphics2D g2, double theta){
+		System.out.println("RadarPanel -> drawScale");
 		g2.setColor(Color.GREEN);
 		//每个格点为3°
 		float xCircle = startX + diameter/2;  //计算圆心
@@ -319,6 +321,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	//画出随着量程变化的环形圈，  方便估算对方的位置
 	public void drawRange(Graphics2D g2) {
+		System.out.println("RadarPanel -> drawRange");
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //画圈的过程中临时的半径
 		float diaStep = diameter/(range * 2);  //每次增大半径后的步进值, 得到的值是  每海里的像素值
@@ -342,6 +345,7 @@ public class RadarPanel extends JPanel{   //雷达面板的显示，更新信息
 	}
 	
 	public void drawHeadLine(Graphics2D g2, double theta) {
+		System.out.println("RadarPanel -> drawHeadline");
 		//在北向上模式中需要获取船舶航向
 		AffineTransform af = g2.getTransform();  //从当前上下文获得
 		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //在这里更改了

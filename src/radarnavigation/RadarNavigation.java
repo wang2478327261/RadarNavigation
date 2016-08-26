@@ -81,6 +81,7 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 					e1.printStackTrace();
 				}
 				repaint();
+				System.out.println("RadarNavigation -> keyPress" + command);
 			}
 		});
 		addWindowListener(new WindowAdapter() {
@@ -209,10 +210,10 @@ public class RadarNavigation extends JFrame{  //登陆主面板
 		//------------------------------------>改动以使得界面可以滚动
 		infopanel = new InfoPanel();   //新建信息显示面板
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		ScrollPane sp = new ScrollPane();
-		sp.add(infopanel);
-		//contentPane.add(infopanel);
-		contentPane.add(sp);
+		//ScrollPane sp = new ScrollPane();
+		//sp.add(infopanel);
+		contentPane.add(infopanel);
+		//contentPane.add(sp);
 		//信息面板响应
 		infopanel.addMouseListener(new MouseAdapter() {
 			
