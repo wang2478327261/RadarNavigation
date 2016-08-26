@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
+import radarnavigation.RadarPanel;
+
 @SuppressWarnings("serial")
 public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 	

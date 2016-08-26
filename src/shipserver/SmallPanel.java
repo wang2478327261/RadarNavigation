@@ -173,7 +173,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		//setOpaque(false); // 设置成透明的 opaque不透明
 		setBackground(Color.WHITE);
 		
-		server = new ServerThread(clientShips, serverShips, sockets, track);
+		server = new ServerThread(clientShips, serverShips, sockets, track, this);
 		server.start();
 	}
 	

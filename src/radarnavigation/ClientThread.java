@@ -163,7 +163,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 		System.out.println("sendData");
 	}
 	
-	public String getData() throws IOException{
+	public String getData() throws IOException{   //这个方法多余，好处是如果对其
 		// TODO 从服务端接受其他客户端或者是服务器的变化信息
 		String data = input.readLine();   //以UTF的格式接受字符串
 		
