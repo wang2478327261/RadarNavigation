@@ -100,7 +100,7 @@ public class ServerThread extends Thread{
 							name = change[0];
 							
 							for(Socket sk : sockets){
-								String command = name + ",logIn"+","+change[1]+change[2]+change[3]+change[4]+change[5];
+								String command = name + ",logIn"+","+change[2]+change[3]+change[4]+change[5]+change[6];
 								try {
 									sendData(sk, command);
 								} catch (IOException e) {
@@ -138,7 +138,7 @@ public class ServerThread extends Thread{
 							}
 							else if (change[1].equals("course")) {
 								for(Socket sk : sockets){
-									String command = name + ",speed" + change[2];
+									String command = name + ",course" + ","+change[2];
 									try {
 										sendData(sk, command);
 									} catch (IOException e) {
@@ -149,7 +149,7 @@ public class ServerThread extends Thread{
 							}
 							else if (change[1].equals("go")) {
 								for(Socket sk : sockets){
-									String command = name + ",speed" + change[2];
+									String command = name + ",go";
 									try {
 										sendData(sk, command);
 									} catch (IOException e) {
