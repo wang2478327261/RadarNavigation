@@ -60,8 +60,8 @@ public class ServerThread extends Thread{
 								e.printStackTrace();
 							}
 						}
-						smallpanel.repaint();
 					}
+					smallpanel.repaint();
 					try {
 						sleep(200);
 					} catch (InterruptedException e) {
@@ -71,12 +71,12 @@ public class ServerThread extends Thread{
 				}
 			};
 		}.start();
-		while(!logOut){
+		while(!logOut){  //对客户端进行处理，接收到一个客户端的套接字，创建一个线程，对其循环处理
 			try {
 				Socket newsocket = serversocket.accept();
 				System.out.println("Get a newsocket!!");
 				
-				//数据存储处理
+				//数据存储处理,将新的客户端对象加入处理队列
 				sockets.add(newsocket);
 				for (int i = 0; i < sockets.size(); i++) {    //检查已经关闭的套接字
 					if (sockets.get(i).isClosed()) {
@@ -84,7 +84,7 @@ public class ServerThread extends Thread{
 						i--;
 					}
 				}
-				new Thread(){   //这里怎么处理？？没办法，再次停止  8.24
+				new Thread(){   //这里怎么处理？？没办法，再次停止  2016.8.24
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -92,18 +92,21 @@ public class ServerThread extends Thread{
 						Socket socket = sockets.get(sockets.size() - 1);  //得到新建的套接字
 						System.out.println("收到信的客户端建立新线程");
 						
+						String getData = null;
 						String[] change = null;
 						String name = null;
 						try {
 							BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 							PrintWriter output = new PrintWriter(socket.getOutputStream());
-							change = input.readLine().split(",");
+							getData = input.readLine();
+							change = getData.split(",");
 							name = change[0];
-							
+							//更新服务器本地数据
+							clientShips.add(new Ship(name, Double.parseDouble(change[2]), Double.parseDouble(change[3]), Double.parseDouble(change[4]), Double.parseDouble(change[5]), change[6]));
 							for(Socket sk : sockets){
-								String command = name + ",logIn"+","+change[2]+change[3]+change[4]+change[5]+change[6];
+								//String command = name + ",logIn"+","+change[2]+change[3]+change[4]+change[5]+change[6];
 								try {
-									sendData(sk, command);
+									sendData(sk, getData);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -113,24 +116,25 @@ public class ServerThread extends Thread{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						while(true){  //服务器像一个反射器，对新金星识别并返回特定的信息
+						while(!socket.isClosed()){  //服务器像一个反射器，对编码识别并返回特定的信息***********************
 							if (change[1].equals("logOut")) {
 								for(Socket sk : sockets){
-									String command = name + ",logOut";
+									//String command = name + ",logOut";
 									try {
-										sendData(sk, command);
+										sendData(sk, getData);
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 								}
+								
 								break;
 							}
 							else if (change[1].equals("speed")) {
 								for(Socket sk : sockets){
-									String command = name + ",speed" + "," +change[2];
+									//String command = name + ",speed" + "," +change[2];
 									try {
-										sendData(sk, command);
+										sendData(sk, getData);
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -139,9 +143,9 @@ public class ServerThread extends Thread{
 							}
 							else if (change[1].equals("course")) {
 								for(Socket sk : sockets){
-									String command = name + ",course" + ","+change[2];
+									//String command = name + ",course" + ","+change[2];
 									try {
-										sendData(sk, command);
+										sendData(sk, getData);
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -150,15 +154,16 @@ public class ServerThread extends Thread{
 							}
 							else if (change[1].equals("go")) {
 								for(Socket sk : sockets){
-									String command = name + ",go";
+									//String command = name + ",go";
 									try {
-										sendData(sk, command);
+										sendData(sk, getData);
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 								}
 							}
+							
 						}
 					}
 				}.start();
