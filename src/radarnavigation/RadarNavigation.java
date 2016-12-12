@@ -23,7 +23,7 @@ import common.Ship;
 
 @SuppressWarnings("serial")
 public class RadarNavigation extends JFrame{  //登陆主面板
-	                                            //注意：以后类名用大写开头,方法名前小写后大写，变量用小写
+	                                            //注意：以后类名用大写开头,方法名先小写后大写，变量用小写
 	private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达动态显示面板
 	private InfoPanel infopanel;     //信息显示面板

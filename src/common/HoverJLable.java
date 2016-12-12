@@ -8,15 +8,19 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 /**
  * @author Administrator
  *
  */
 @SuppressWarnings("serial")
-public class HoverJLable extends JLabel{
+public class HoverJLable extends JLabel implements Serializable{
 	
 	public HoverJLable() {
 		super();
@@ -58,11 +62,13 @@ public class HoverJLable extends JLabel{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+				//setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));   //应该是borderfactory返回一个border对象
+				setBorder(new LineBorder(Color.GREEN, 1));    //不用工厂一样的效果
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				setBorder(BorderFactory.createEmptyBorder());
+				//setBorder(BorderFactory.createEmptyBorder());
+				setBorder(new EmptyBorder(null));
 			}
 		});
 		//Font font = new Font("Consolas", Font.PLAIN, 20);

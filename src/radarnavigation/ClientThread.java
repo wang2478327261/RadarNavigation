@@ -56,7 +56,7 @@ public class ClientThread extends Thread{  //本船发出变化信息  ---》从外界接受更
 			// TODO 连接不上服务器的处理
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
-			System.exit(1);
+			//System.exit(1);
 		}
 		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<打开接收线程,接收数据
 			public void run() {
