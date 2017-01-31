@@ -20,19 +20,19 @@ import common.HoverJLable;
 import common.Ship;
 
 @SuppressWarnings("serial")
-public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
+public class RadarPanel extends JPanel{   //ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	
-	//ÕâĞ©ÊôĞÔÓĞÄ¬ÈÏÖµ         ÕâĞ©ÊÇÀ×´ïÃæ°åµÄ¶îÊôĞÔÖµ£¬Ó¦µ±·ÅÔÚÀ×´ïÀàÖĞ
-	private float range = 6;  //À×´ïµÄÁ¿³Ì£¬ µ¥Î»ÊÇº£Àï    À×´ïÁ¿³Ì  ×î´ó12º£Àï£¬×îĞ¡1º£Àï, ³õÊ¼»¯Îª6º£Àï
-	//À×´ïÄ£Ê½     À×´ïÏÔÊ¾Ä£Ê½    ±±ÏòÉÏ  ´¬Ê×ÏòÉÏ    /////Ïà¶ÔÔË¶¯  ¾ø¶ÔÔË¶¯.......
-	private boolean headline = true;  //À×´ï´¬Ê×Ïß     ¿ªÆô»ò¹Ø±Õ´¬Ê×Ïß
-	private boolean rangeline = true;  //Á¿³Ì»®·ÖÏß  ·Ö¶à¶Î£¬ËæÁ¿³Ì±ä»¯
-	private boolean headup = true;   //Ê×ÏòÉÏ    ±±ÏòÉÏ Ä£Ê½
-	private boolean relative = true;  //Ïà¶ÔÔË¶¯  ¾ø¶ÔÔË¶¯
+	//ï¿½ï¿½Ğ©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Öµ         ï¿½ï¿½Ğ©ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½
+	private float range = 6;  //ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ ï¿½ï¿½Î»ï¿½Çºï¿½ï¿½ï¿½    ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½12ï¿½ï¿½ï¿½ï£¬ï¿½ï¿½Ğ¡1ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ê¼ï¿½ï¿½Îª6ï¿½ï¿½ï¿½ï¿½
+	//ï¿½×´ï¿½Ä£Ê½     ï¿½×´ï¿½ï¿½ï¿½Ê¾Ä£Ê½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    /////ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½.......
+	private boolean headline = true;  //ï¿½×´ï´¬ï¿½ï¿½ï¿½ï¿½     ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø±Õ´ï¿½ï¿½ï¿½ï¿½ï¿½
+	private boolean rangeline = true;  //ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½Ö¶ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ä»¯
+	private boolean headup = true;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä£Ê½
+	private boolean relative = true;  //ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½
 	
-	private float startX, startY, diameter;  //ÏÔÊ¾À×´ï½çÃæµÄ×óÉÏ½Ç×ø±êÒÔ¼°     Ô²µÄ --¡·Ö±¾¶ 
-	double pc = 1;  //ÏÔÊ¾Ã¿¸ñ¶àÉÙº£Àï
-	private Ship ship;  //´«Èë±¾´¬µÄÒıÓÃ
+	private float startX, startY, diameter;  //ï¿½ï¿½Ê¾ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½     Ô²ï¿½ï¿½ --ï¿½ï¿½Ö±ï¿½ï¿½ 
+	double pc = 1;  //ï¿½ï¿½Ê¾Ã¿ï¿½ï¿½ï¿½ï¿½Ùºï¿½ï¿½ï¿½
+	private Ship ship;  //ï¿½ï¿½ï¿½ë±¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	private HoverJLable showMode;
 	private HoverJLable activeMode;
@@ -61,30 +61,30 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				//¸Ä±äÀ×´ïÁ¿³Ì,   ÏòÉÏ¹ö¶¯Îª¸ºÖµ -1£¬ÏòÏÂ¹ö¶¯ÕıÖµ  1
-				if (e.getWheelRotation() > 0) {   //¼õĞ¡Á¿³Ì
+				//ï¿½Ä±ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½,   ï¿½ï¿½ï¿½Ï¹ï¿½ï¿½ï¿½Îªï¿½ï¿½Öµ -1ï¿½ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ï¿½ï¿½Öµ  1
+				if (e.getWheelRotation() > 0) {   //ï¿½ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½
 					setRange("reduce");
 				}
-				if(e.getWheelRotation() < 0){  //Ôö´óÁ¿³Ì
+				if(e.getWheelRotation() < 0){  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					setRange("increase");
 				}
 				//System.out.println(((radarPanel) radarpanel).getRange());
 				showRange.setText("RANGE : " + range + " KN ");
-				//ÅĞ¶ÏÃ·¸ñ±íÊ¾µÄº£Àï
-				if (range <= 3) {  //Ò»¸ñ   0.5  º£Àï
+				//ï¿½Ğ¶ï¿½Ã·ï¿½ï¿½ï¿½Ê¾ï¿½Äºï¿½ï¿½ï¿½
+				if (range <= 3) {  //Ò»ï¿½ï¿½   0.5  ï¿½ï¿½ï¿½ï¿½
 					//pc = diameter/(range*2)/2;
 					pc = 0.5;
 				}
-				else if(range <=6 ){   //Ò»¸ñ1º£Àï
+				else if(range <=6 ){   //Ò»ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½
 					//pc = diameter/(range*2);
 					pc = 1;
 				}
-				else if (range <= 24) {  //Ò»¸ñ2º£Àï
+				else if (range <= 24) {  //Ò»ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½
 					//pc = diameter/(range*2)*2;
 					pc = 2;
 				}
 				else {
-					//pc = diameter/(range*2)*4;  //Ò»¸ñ4º£Àï
+					//pc = diameter/(range*2)*4;  //Ò»ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½
 					pc = 4;
 				}
 				
@@ -94,29 +94,29 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 			}
 		});
 		
-		//³õÊ¼»¯½çÃæ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		initComponents();
 	}
-	private void initComponents() {    //½«ÕâÀï¸Ä³É¹«¹²·½·¨£¬ÓĞÆäËû¸üºÃµÄ·½·¨Âğ£¿Íû½â¾ö
-		addComponentListener(new ComponentAdapter() {  //ÊµÏÖ×Ô¶¯²¼¾Ö
+	private void initComponents() {    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		addComponentListener(new ComponentAdapter() {  //Êµï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 			@Override
-			public void componentResized(ComponentEvent e) {  //Õâ¸ö·½·¨¿ÉÒÔ¶Ô²¼¾Ö½øĞĞÖØĞÂÉè¼Æ£¬¿ÉĞĞ
+			public void componentResized(ComponentEvent e) {  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶Ô²ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½
 				Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 				int h = (int)(diameter*0.04);
-				//×óÉÏ½Ç
+				//ï¿½ï¿½ï¿½Ï½ï¿½
 				lineUp.setBounds(4, 4, (int)(diameter*0.3), h);
 				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
 				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
 				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
-				//×óÏÂ½Ç
+				//ï¿½ï¿½ï¿½Â½ï¿½
 				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
 				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
-				//ÓÒÉÏ½Ç
+				//ï¿½ï¿½ï¿½Ï½ï¿½
 				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), h);
 				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), h);
 				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), h);
 				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), h);
-				//ÉèÖÃ×ÖÌå´óĞ¡
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡
 				lineUp.setFont(font);
 				rangeSwitch.setFont(font);
 				showMode.setFont(font);
@@ -131,7 +131,7 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 		});
 		
 		// TODO Auto-generated constructor stub
-		setBorder(null);  //ÕâĞ©ÊôĞÔ¿ÉÒÔÔÚÀ×´ïÃæ°åÀàÖĞ¸Ä±ä
+		setBorder(null);  //ï¿½ï¿½Ğ©ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¸Ä±ï¿½
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
@@ -169,7 +169,7 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 		});
 		add(rangeSwitch);
 		
-		showMode = new HoverJLable("HEADUP");   //¿ÉÒÔĞ´Ò»¸öJLableµÄ×ÓÀà£¬ÊµÏÖÏàÍ¬µÄ¶¯×÷£¬¼õÉÙ´úÂëÁ¿
+		showMode = new HoverJLable("HEADUP");   //ï¿½ï¿½ï¿½ï¿½Ğ´Ò»ï¿½ï¿½JLableï¿½ï¿½ï¿½ï¿½ï¿½à£¬Êµï¿½ï¿½ï¿½ï¿½Í¬ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½
 		showMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -202,32 +202,32 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 		});
 		
 		add(activeMode);
-		//×óÏÂ½ÇÏÔÊ¾µ±Ç°ÉèÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		showRange = new HoverJLable("RANGE : " + range + " KN ");
 		add(showRange);
 		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
 		add(perCircle);
-		//ÓÒÉÏ·½ÏÔÊ¾Êı¾İĞÅÏ¢
+		//ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		latitude = new HoverJLable("LAT : 0 ", SwingConstants.RIGHT);
 		add(latitude);
 		longitude = new HoverJLable("LOG : 0 ", SwingConstants.RIGHT);
 		add(longitude);
-		course = new HoverJLable("COS : 0 ¡ãT ", SwingConstants.RIGHT);
+		course = new HoverJLable("COS : 0 ï¿½ï¿½T ", SwingConstants.RIGHT);
 		add(course);
 		speed = new HoverJLable("SPD : 0 KT ", SwingConstants.RIGHT);
 		add(speed);
 	}
 	
-	/***********************ÆÕÍ¨¹¦ÄÜĞÔ³ÌĞòÇø**********************************************/
-	public void setRange(String option) {   //Á¿³Ì´óÓÚ3¼°ÒÔÉÏÊÇ³Ë·¨£¬Ğ¡ÓÚ3³ı·¨  0.75,1.5,3,6,12,24,48,96
-		//Èç¹ûÁ¿³ÌÃ»ÓĞ¿ªÆô£¬Ôò·µ»Ø£¬²»½øĞĞÁ¿³Ì±ä»»                    6.27È¡´úÅ¶ÕâÏî£¬²»ÈËĞÔ»¯
-		if (option.equals("increase")) {  //Ôö¼ÓÁ¿³Ì
+	/***********************ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ô³ï¿½ï¿½ï¿½ï¿½ï¿½**********************************************/
+	public void setRange(String option) {   //ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç³Ë·ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½  0.75,1.5,3,6,12,24,48,96
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ğ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ä»»                    6.27È¡ï¿½ï¿½Å¶ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½
+		if (option.equals("increase")) {  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			range *= 2;
 			if (range >= 96) {
 				range = 96;
 			}
 		}
-		else{   //reduce    ¼õÉÙÁ¿³Ì
+		else{   //reduce    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			range /= 2;
 			if (range <= 0.75) {
 				range = (float) 0.75;
@@ -244,115 +244,115 @@ public class RadarPanel extends JPanel{   //À×´ïÃæ°åµÄÏÔÊ¾£¬¸üĞÂĞÅÏ¢
 	
 	public void dataFresh(){
 		System.out.println("RadarPanel -> dataFresh");
-		//Ë¢ĞÂÓÒÉÏ½ÇµÄÊı¾İ
+		//Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Çµï¿½ï¿½ï¿½ï¿½ï¿½
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
-		course.setText("COS : " + ship.getParameter(3) + "¡ãT ");
+		course.setText("COS : " + ship.getParameter(3) + "ï¿½ï¿½T ");
 		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
 		
 	}
-	/*******************Í¼ĞÎ»æ»­Çø**************************************************************/
+	/*******************Í¼ï¿½Î»æ»­ï¿½ï¿½**************************************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
-		Graphics2D g2 = (Graphics2D)g.create();   //²ÉÓÃcreate·½·¨ºó£¬Èç¹ûºó±ßÒªÓÃµ½g£¬Í¬Ñù¿ÉĞĞ   copy
+		Graphics2D g2 = (Graphics2D)g.create();   //ï¿½ï¿½ï¿½ï¿½createï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ãµï¿½gï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   copy
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		Font f = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 		g2.setFont(f);
-		//*************»­³ö±³¾°È¦     ¼ÆËã»­ÃæµÄ´óĞ¡µ÷Õû*****************************
+		//*************ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¦     ï¿½ï¿½ï¿½ã»­ï¿½ï¿½Ä´ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½*****************************
 		
-		//»­³ö±³¾°   Õâ²¿·Ö²»±ä»¯
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   ï¿½â²¿ï¿½Ö²ï¿½ï¿½ä»¯
 		g2.setColor(Color.GREEN);
 		diameter = (float) (Math.min(getWidth(), getHeight())*0.93);
-		startX = (getWidth() - diameter)/2;  //×óÉÏ½ÇÎ»ÖÃ
+		startX = (getWidth() - diameter)/2;  //ï¿½ï¿½ï¿½Ï½ï¿½Î»ï¿½ï¿½
 		startY = (getHeight() - diameter)/2;
 		g2.drawOval((int)startX-1, (int)startY-1, (int)diameter+2, (int)diameter+2);
-		//Ìî³äºÚÉ«±³¾°
+		//ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
-		//***************************¸üĞÂ½çÃæÊı¾İ******************************************
+		//***************************ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½******************************************
 		dataFresh();
 		
-		//**************½ÓÏÂÀ´»­±ßÉÏµÄ¿Ì¶È£¬²Î¿¼Ö¸Õë±íµÄÊµÏÖ·½·¨***********************
-		//Ã¿¸ö¸ñµãÎª3¡ã
-		if (headup) {    //ÀûÓÃ´¬²°µÄÊôĞÔ²ÎÊıÀ´ÉèÖÃ½çÃæÏÔÊ¾
-			drawScale(g2, ship.getParameter(3));  //¿ÉÒÔËæ×Å´¬²°¶¯Ì¬×ªÏò      Ê¹ÅÌÏò×ó×ª£¬ÓÃ¸ºÖµ£¨¡ª¡ª£©£¬ÓÒ×ªÕıÖµ£¨+£©
+		//**************ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ¿Ì¶È£ï¿½ï¿½Î¿ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Êµï¿½Ö·ï¿½ï¿½ï¿½***********************
+		//Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Îª3ï¿½ï¿½
+		if (headup) {    //ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
+			drawScale(g2, ship.getParameter(3));  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬×ªï¿½ï¿½      Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½Ã¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Öµï¿½ï¿½+ï¿½ï¿½
 		}
-		//**********************¼ÆËã»­¼¸¸öÈ¦,¸ù¾İÁ¿³ÌÀ´¾ö¶¨*******************************
+		//**********************ï¿½ï¿½ï¿½ã»­ï¿½ï¿½ï¿½ï¿½È¦,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*******************************
 		if (rangeline) {
 			drawRange(g2);
 		}
-		//********************»­Ïß£¬±íÊ¾´¬Ê×Ïò*********************************************
+		//********************ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*********************************************
 		if (headline) {
 			drawHeadLine(g2, ship.getParameter(3));
 		}
 	}
-	//»­³öÀ×´ï½çÃæÉÏµÄÊı×Ö £¬¿ÉÒÔËæ×Å´¬²°º½ÏòµÄ±ä»¯¶ø±ä»¯            »¹ÓĞ¿Ì¶È£¬·½±ã±æÊ¶·½Ïò
+	//ï¿½ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ä»¯ï¿½ï¿½ï¿½ä»¯            ï¿½ï¿½ï¿½Ğ¿Ì¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½
 	public void drawScale(Graphics2D g2, double theta){
 		System.out.println("RadarPanel -> drawScale");
 		g2.setColor(Color.GREEN);
-		//Ã¿¸ö¸ñµãÎª3¡ã
-		float xCircle = startX + diameter/2;  //¼ÆËãÔ²ĞÄ
+		//Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Îª3ï¿½ï¿½
+		float xCircle = startX + diameter/2;  //ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½
 		float yCircle = startY + diameter/2;
-		//»­Êı×Ö
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		g2.setColor(Color.CYAN);
 		for(int i = 0; i<36; i++){
-			float semi = diameter/2+10;  //°ë¾¶
-			//Êı×Ö²¼¾ÖÓÅµãÎÊÌâ£¬ÒÔºóÔÙ¸Ä
-			float degree = (float) Math.toRadians(i*10-90 + theta);   //ÔÚÕâÀïÌí¼ÓĞı×ª
+			float semi = diameter/2+10;  //ï¿½ë¾¶
+			//ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½â£¬ï¿½Ôºï¿½ï¿½Ù¸ï¿½
+			float degree = (float) Math.toRadians(i*10-90 + theta);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
-			g2.drawString(Integer.toString(num) + "¡ã", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
+			g2.drawString(Integer.toString(num) + "ï¿½ï¿½", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
-		//»­¿Ì¶È£¬¿ÉÒÔËæ×Å´¬²°×ªÏò×ª¶¯
-        //·½ÏòµÄ60¸ö¿Ì¶È
-		AffineTransform af = g2.getTransform();  //´Óµ±Ç°ÉÏÏÂÎÄ»ñµÃ
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //ÔÚÕâÀï¸ü¸ÄÁË
+		//ï¿½ï¿½ï¿½Ì¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½×ªï¿½ï¿½×ªï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½60ï¿½ï¿½ï¿½Ì¶ï¿½
+		AffineTransform af = g2.getTransform();  //ï¿½Óµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		
-        for (int i = 0; i < 360; i++) {   //x  yCircle¶¼ÊÇÔ²ĞÄÎ»ÖÃ
-            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge Í¹³ö
+        for (int i = 0; i < 360; i++) {   //x  yCircleï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½Î»ï¿½ï¿½
+            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge Í¹ï¿½ï¿½
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
-            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //Ã¿Ò»Ğ¡¸ñ×ª1¶È, ÒÔÔ²ĞÄÎªÖĞĞÄµã
+            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //Ã¿Ò»Ğ¡ï¿½ï¿½×ª1ï¿½ï¿½, ï¿½ï¿½Ô²ï¿½ï¿½Îªï¿½ï¿½ï¿½Äµï¿½
         }
-        //ÉèÖÃĞı×ªÖØÖÃ
-        g2.setTransform(af);  //»Ö¸´Ô­À´µÄ×´Ì¬
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
+        g2.setTransform(af);  //ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	}
-	//»­³öËæ×ÅÁ¿³Ì±ä»¯µÄ»·ĞÎÈ¦£¬  ·½±ã¹ÀËã¶Ô·½µÄÎ»ÖÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ä»¯ï¿½Ä»ï¿½ï¿½ï¿½È¦ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 	public void drawRange(Graphics2D g2) {
 		System.out.println("RadarPanel -> drawRange");
 		g2.setColor(Color.LIGHT_GRAY);
-		float diaVar = 0;  //»­È¦µÄ¹ı³ÌÖĞÁÙÊ±µÄ°ë¾¶
-		float diaStep = diameter/(range * 2);  //Ã¿´ÎÔö´ó°ë¾¶ºóµÄ²½½øÖµ, µÃµ½µÄÖµÊÇ  Ã¿º£ÀïµÄÏñËØÖµ
+		float diaVar = 0;  //ï¿½ï¿½È¦ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä°ë¾¶
+		float diaStep = diameter/(range * 2);  //Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¾¶ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Öµ, ï¿½Ãµï¿½ï¿½ï¿½Öµï¿½ï¿½  Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 		
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
-			//ÅĞ¶Ï°ë¾¶Ôö³¤ÂÊ
-			if (range <= 3) {  //Ò»¸ñ   0.5  º£Àï
+			//ï¿½Ğ¶Ï°ë¾¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			if (range <= 3) {  //Ò»ï¿½ï¿½   0.5  ï¿½ï¿½ï¿½ï¿½
 				diaVar += diaStep/2;
 			}
-			else if(range <=6 ){   //Ò»¸ñÒ»º£Àï
+			else if(range <=6 ){   //Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
 				diaVar += diaStep;
 			}
-			else if (range <= 24) {  //Ò»¸ñ2º£Àï
+			else if (range <= 24) {  //Ò»ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½
 				diaVar += diaStep*2;
 			}
 			else {
-				diaVar += diaStep*4;  //Ò»¸ñ4º£Àï
+				diaVar += diaStep*4;  //Ò»ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 	}
 	
 	public void drawHeadLine(Graphics2D g2, double theta) {
 		System.out.println("RadarPanel -> drawHeadline");
-		//ÔÚ±±ÏòÉÏÄ£Ê½ÖĞĞèÒª»ñÈ¡´¬²°º½Ïò
-		AffineTransform af = g2.getTransform();  //´Óµ±Ç°ÉÏÏÂÎÄ»ñµÃ
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //ÔÚÕâÀï¸ü¸ÄÁË
+		//ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		AffineTransform af = g2.getTransform();  //ï¿½Óµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½//è¿™é‡Œåº”è¯¥æ˜¯å­˜å‚¨å½“å‰åæ ‡ç³»çš„å˜æ¢
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 		
-		g2.setTransform(af);  //»Ö¸´Ô­À´µÄ×´Ì¬
+		g2.setTransform(af);  //ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	}
 }

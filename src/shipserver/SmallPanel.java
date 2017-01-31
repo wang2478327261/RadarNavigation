@@ -24,37 +24,37 @@ import common.Ship;
 @SuppressWarnings("serial")
 public class SmallPanel extends JPanel implements Runnable{
     
-    private double mousex, mousey;  //ÒÆ¶¯Êó±êµÄ×ø±ê
-    private double dragx, dragy;    //ÍÏ¶¯Î´ËÉ¿ªÊ±Êó±ê×ø±ê
-    private double oldx, oldy;    //°´ÏÂÊó±êºó   ×ø±ê
-    private double newx, newy;    //ËÉ¿ªÊó±ê   ×ø±ê
-    private double delx, dely;   //É¾³ýÊ±Êó±êµÄ×ø±ê
-    private String type = "Normal";            //´¬²°ÀàÐÍÒÔºó¿ÉÒÔÌí¼Ó
-    //ÔÚ½çÃæÉÏÏÔÊ¾°ïÖúËµÃ÷
+    private double mousex, mousey;  //ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private double dragx, dragy;    //ï¿½Ï¶ï¿½Î´ï¿½É¿ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private double oldx, oldy;    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½
+    private double newx, newy;    //ï¿½É¿ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½
+    private double delx, dely;   //É¾ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private String type = "Normal";            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½
     String helpStr = "";
     String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
     private boolean pressed = false;
     ServerThread server;
 	
-	private List<Ship> clientShips = new LinkedList<Ship>(); // ËùÓÐ¿Í»§¶ËºÍ·þÎñ¶Ë²úÉúµÄ´¬²°Î¬»¤¶ÔÏó
-	private List<Ship> serverShips = new LinkedList<Ship>(); // ·þÎñ¶ËÉú³ÉµÄ¶ÔÏó
-	//´æ´¢Ì×½Ó×Ö¶ÔÏó
+	private List<Ship> clientShips = new LinkedList<Ship>(); // ï¿½ï¿½ï¿½Ð¿Í»ï¿½ï¿½ËºÍ·ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private List<Ship> serverShips = new LinkedList<Ship>(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¶ï¿½ï¿½ï¿½
+	//ï¿½æ´¢ï¿½×½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½
 	//private Map<String, Socket> sockets = new HashMap<String, Socket>();
 	private List<Socket> sockets = new LinkedList<Socket>();
-	//´æ´¢´¬²°¹ì¼£  ------------->ÊµÏÖ±È½ÏÀ§ÄÑ£¬ÔÝÊ±ÏÈ²»ÊµÏÖ
-	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //Ò»Ìõ´¬¶ÔÓ¦Ò»Ìõ¹ì¼£Á´
+	//ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ì¼£  ------------->Êµï¿½Ö±È½ï¿½ï¿½ï¿½ï¿½Ñ£ï¿½ï¿½ï¿½Ê±ï¿½È²ï¿½Êµï¿½ï¿½
+	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½ï¿½ì¼£ï¿½ï¿½
 	
 	public SmallPanel() {
 		super();
 		/*addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				setCursor(new Cursor(Cursor.MOVE_CURSOR));  //ÒÆ¶¯¹â±ê
-				if (e.getWheelRotation() > 0) {   //¹öÂÖÏòÏÂ¹ö¶¯      ¡·0
-					//ËõÐ¡ÏÔÊ¾³ß´ç£¬µ«ÊÇÊµ¼Ê´¬²°ÊôÐÔ²»±ä
+				setCursor(new Cursor(Cursor.MOVE_CURSOR));  //ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½
+				if (e.getWheelRotation() > 0) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½      ï¿½ï¿½0
+					//ï¿½ï¿½Ð¡ï¿½ï¿½Ê¾ï¿½ß´ç£¬ï¿½ï¿½ï¿½ï¿½Êµï¿½Ê´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½
 					helpStr = "Scroll to Zoom out";
 				}
 				else if(e.getWheelRotation() < 0){
-					//·Å´ó³ß´ç
+					//ï¿½Å´ï¿½ß´ï¿½
 					helpStr = "Scroll to Zoom in";
 				}
 				repaint();
@@ -80,22 +80,22 @@ public class SmallPanel extends JPanel implements Runnable{
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//¼ÇÂ¼Êó±ê°´ÏÂÊ±µÄ×ø±ê
+				//ï¿½ï¿½Â¼ï¿½ï¿½ê°´ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					oldx = e.getX();
 					oldy = e.getY();
 					dragx = oldx;
 					dragy = oldy;
 					helpStr = "Drag to Create Moving Ship ";
-					pressed = true;
+					pressed = true;  //éœ€è¦æŒ‰ä¸‹æ ‡å¿—
 				}
-				//ÊµÏÖÉ¾³ý¹¦ÄÜ
+				//Êµï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					delx = e.getX();
 					dely = e.getY();
 					double disx, disy;
 			        double dis;
-			        //Ö»ÄÜÉ¾³ý·þÎñÆ÷²úÉúµÄ¶ÔÏó£¬²»ÄÜ²Ù×Ý¿Í»§¶Ë
+			        //Ö»ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ó£¬²ï¿½ï¿½Ü²ï¿½ï¿½Ý¿Í»ï¿½ï¿½ï¿½
 					if(e.getClickCount() >= 2){
 						if (serverShips.isEmpty()) {
 							helpStr = "No ship to Clear --> Left Drag to Create";
@@ -103,7 +103,7 @@ public class SmallPanel extends JPanel implements Runnable{
 						else {
 							serverShips.clear();
 			                for (Ship vessel : serverShips) {
-			                    track.get(vessel).clear();     //Çå³ý±¾´¬Â·¾¶ÐÅÏ¢
+			                    track.get(vessel).clear();     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ï¢
 			                }
 			                helpStr = "Clear All Ships --> No server ships";
 						}
@@ -117,7 +117,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		                    dis = Math.sqrt(disx*disx + disy*disy);
 		                    if(dis <= 20){
 		                        shIt.remove();
-		                        track.remove(vessel);     //Ò»´¦¶ÔÓ¦´¬²°µÄÂ·¾¶ÐÅÏ¢
+		                        track.remove(vessel);     //Ò»ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ï¢
 		                        helpStr = "Deleted a Ship --> Done";
 		                    }
 		                }
@@ -134,13 +134,13 @@ public class SmallPanel extends JPanel implements Runnable{
 		            double differentx = newx - mousex;
 		            double differenty = newy - mousey;
 		            double speed = Math.sqrt(Math.pow(differentx, 2) + Math.pow(differenty, 2))/10;
-		            //µ¯³ö²ÎÊýÌî³ä´°¿Ú
-		            String name = JOptionPane.showInputDialog("ÇëÊäÈë´¬Ãû £º ");
-		            if (name != null && !name.equals("")) {   //Èç¹û·µ»Ø¿ÕÖµ£¬Ôò²»½øÐÐ¶¯×÷
+		            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä´°ï¿½ï¿½
+		            String name = JOptionPane.showInputDialog("ï¿½ï¿½ï¿½ï¿½ï¿½ë´¬ï¿½ï¿½ ï¿½ï¿½ ");
+		            if (name != null && !name.equals("")) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½Öµï¿½ï¿½ï¿½ò²»½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½
 		            	Ship ship = new Ship(name, mousex, mousey, course, speed, type);
-		            	//½«ÐÂ½¨µÄ¶ÔÏó¼ÓÈë¶ÓÁÐ
+		            	//ï¿½ï¿½ï¿½Â½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			            serverShips.add(ship);
-			            //ÓÒÉÏ·½£¬ÏÔÊ¾µÄµ±Ç°´¬²°ÐÅÏ¢
+			            //ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Äµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 			            nameStr = "Ship name : "+name;
 			            positionStr = "Position : "+mousex+","+mousey;
 			            courseStr = "Course : "+(int)course;
@@ -148,7 +148,7 @@ public class SmallPanel extends JPanel implements Runnable{
 			            typeStr = "Type : "+type;
 			            
 			            new Thread(SmallPanel.this).start();
-			            //ÏòÍøÂç·¢ËÍ´´½¨´¬²°µÄÍ¬²½ÐÅºÅ
+			            //ï¿½ï¿½ï¿½ï¿½ï¿½ç·¢ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½Åºï¿½
 						for (Socket sk : sockets) {
 							String command = name + "logIn" + mousex + mousey + course + speed + type;
 							try {
@@ -170,21 +170,21 @@ public class SmallPanel extends JPanel implements Runnable{
 	private void initComponents() {
 		setBorder(BorderFactory.createEmptyBorder());
 		setLayout(null);
-		//setOpaque(false); // ÉèÖÃ³ÉÍ¸Ã÷µÄ opaque²»Í¸Ã÷
+		//setOpaque(false); // ï¿½ï¿½ï¿½Ã³ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ opaqueï¿½ï¿½Í¸ï¿½ï¿½
 		setBackground(Color.WHITE);
 		
 		server = new ServerThread(clientShips, serverShips, sockets, track, this);
 		server.start();
 	}
 	
-	/************** Í¨ÓÃ³ÌÐòÇø *********************************************/
+	/************** Í¨ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ *********************************************/
 	/**
-	 * Í¨¹ýÁ½µã-->¼ÆËã³öÁ½µãÐ±ÂÊ,·½Ïò--¡·ÏòÉÏÎª0£¬ Ë³Ê±ÕëÐý×ª    µ½  360¡ã
-	 * @param start_x  µÚÒ»´Î°´ÏÂ    Æðµã x
-	 * @param start_y  µÚÒ»´Î°´ÏÂ    Æðµã  y
-	 * @param end_x  ÖÕµã  x
-	 * @param end_y  ÖÕµã  y
-	 * @return  Á½µãÖ®¼äµÄÐ±ÂÊ
+	 * Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-->ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½--ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0ï¿½ï¿½ Ë³Ê±ï¿½ï¿½ï¿½ï¿½×ª    ï¿½ï¿½  360ï¿½ï¿½
+	 * @param start_x  ï¿½ï¿½Ò»ï¿½Î°ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ x
+	 * @param start_y  ï¿½ï¿½Ò»ï¿½Î°ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½  y
+	 * @param end_x  ï¿½Õµï¿½  x
+	 * @param end_y  ï¿½Õµï¿½  y
+	 * @return  ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½Ð±ï¿½ï¿½
 	 */
 	private double CaculateRatio(double start_x, double start_y, double end_x, double end_y){
         double differentx = end_x - start_x;
@@ -213,7 +213,7 @@ public class SmallPanel extends JPanel implements Runnable{
         return course;
     }
 	
-	/********************* Í¼ÐÎ»æÖÆÇø **********************************/
+	/********************* Í¼ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ **********************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
@@ -230,7 +230,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		
 		double Px, Py, course, speed;
 		g2.setColor(Color.RED);
-		if (pressed) {               //¶¯Ì¬ÏÔÊ¾µ±Ç°µÄ²ÎÊý
+		if (pressed) {               //ï¿½ï¿½Ì¬ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ä²ï¿½ï¿½ï¿½
 			Px = oldx;
 			Py = oldy;
 			course = CaculateRatio(oldx, oldy, dragx, dragy);
@@ -241,23 +241,23 @@ public class SmallPanel extends JPanel implements Runnable{
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
             
-            normalShip(g2, oldx, oldy, 0, 0);  //ÏÔÊ¾Ò»¸ö´¬²°ÐÎÌ¬
+            normalShip(g2, oldx, oldy, 0, 0);  //ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬
 		}
 		g2.setColor(Color.BLUE);
-		for (Ship vessel : clientShips) {     //»æÖÆ¿Í»§¶Ë²úÉúµÄ´¬²°¶ÔÏó
+		for (Ship vessel : clientShips) {     //ï¿½ï¿½ï¿½Æ¿Í»ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));
 			speed = vessel.getParameter(4);
 			
 			switch (vessel.getType()) {
-			// ¸ù¾Ý´¬²°ÀàÐÍµÄ²»Í¬½øÐÐ»æÖÆ
+			// ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÍµÄ²ï¿½Í¬ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½
 			}
 			normalShip(g2, Px, Py, course, speed);
 			
 		}
 		g2.setColor(Color.MAGENTA);
-		for (Ship vessel : serverShips) {         //»æÖÆ·þÎñ¶ËÉú³ÉµÄ¶ÔÏó
+		for (Ship vessel : serverShips) {         //ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¶ï¿½ï¿½ï¿½
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));

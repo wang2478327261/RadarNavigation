@@ -22,15 +22,15 @@ import javax.swing.border.EmptyBorder;
 import common.Ship;
 
 @SuppressWarnings("serial")
-public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
-	                                            //×¢Òâ£ºÒÔºóÀàÃûÓÃ´óĞ´¿ªÍ·,·½·¨ÃûÏÈĞ¡Ğ´ºó´óĞ´£¬±äÁ¿ÓÃĞ¡Ğ´
+public class RadarNavigation extends JFrame{  //ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½
+	                                            //×¢ï¿½â£ºï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½Ğ´ï¿½ï¿½Í·,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡Ğ´ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡Ğ´
 	private JPanel contentPane;
-	private RadarPanel radarpanel;    //À×´ï¶¯Ì¬ÏÔÊ¾Ãæ°å
-	private InfoPanel infopanel;     //ĞÅÏ¢ÏÔÊ¾Ãæ°å
-	private Ship ship;              //±¾´¬¶ÔÏó
+	private RadarPanel radarpanel;    //ï¿½×´ï¶¯Ì¬ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
+	private InfoPanel infopanel;     //ï¿½ï¿½Ï¢ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
+	private Ship ship;              //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	private List<Ship> ships = new LinkedList<Ship>();   //±£´æÏÖ³¡´æÔÚµÄ´¬²°¶ÔÏó
-	ClientThread client;            //·¢ËÍĞÅÏ¢µÄĞÂÏß³Ì
+	private List<Ship> ships = new LinkedList<Ship>();   //ï¿½ï¿½ï¿½ï¿½ï¿½Ö³ï¿½ï¿½ï¿½ï¿½ÚµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ClientThread client;            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -47,20 +47,20 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 	
 	/**
 	 * Create the frame.
-	 * µ¯³öÒ»¸öÊäÈë´¬²°Ãû³ÆµÄ´°¿Ú
-	 * Ö®ºóÆô¶¯Ì×½Ó×ÖÏß³ÌÓë·şÎñÆ÷½øĞĞÍ¨ĞÅ£¬ÕâÀïĞèÒªĞ´Ò»¸öÏß³ÌÀà£¬Í¬Ê±Éè¼ÆÍ¨ĞÅĞ­Òé
-	 * ½çÃæµÄ³õÊ¼»¯£¬´°¿ÚÄÚ½çÃæµÄ¶¯Ì¬²¼¾Ö
+	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ë´¬ï¿½ï¿½ï¿½ï¿½ï¿½ÆµÄ´ï¿½ï¿½ï¿½
+	 * Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×½ï¿½ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªĞ´Ò»ï¿½ï¿½ï¿½ß³ï¿½ï¿½à£¬Í¬Ê±ï¿½ï¿½ï¿½Í¨ï¿½ï¿½Ğ­ï¿½ï¿½
+	 * ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½Ä¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 	 * @throws IOException 
 	 */
 	public RadarNavigation() throws IOException {
-		addKeyListener(new KeyAdapter() {        //²âÊÔ·½Ïò×ª»»¹¦ÄÜ                ±¾´¬µÄ×´Ì¬¸Ä±ä
+		addKeyListener(new KeyAdapter() {        //ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½                ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Ä±ï¿½
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//TODO µ±±¾´¬×´Ì¬¸Ä±äÊ±£¬ĞèÒªÏò·şÎñ¶Ë·¢ËÍĞÅÏ¢£¬Í¬²½ÏÔÊ¾×´Ì¬
+				//TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Ä±ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½Ê¾×´Ì¬
 				String command = "";
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					ship.setValue(3, ship.getParameter(3)+1);
-					command = ship.getName() + ",course," + "starboard";  //Ê¹ÓÃ¿Õ¸ñ½øĞĞ·Ö¸î
+					command = ship.getName() + ",course," + "starboard";  //Ê¹ï¿½Ã¿Õ¸ï¿½ï¿½ï¿½Ğ·Ö¸ï¿½
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					ship.setValue(3, ship.getParameter(3)-1);
@@ -87,7 +87,7 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				//ÔÚ¹Ø±Õ¿Í»§¶ËµÄÊ±ºò·¢ËÍ×¢ÏúĞÅÏ¢
+				//ï¿½Ú¹Ø±Õ¿Í»ï¿½ï¿½Ëµï¿½Ê±ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½Ï¢
 				try {
 					client.logOut();
 				} catch (IOException e1) {
@@ -96,7 +96,7 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 				}
 			}
 		});
-		//´¦ÀíÓÃ»§ÊäÈëµÄ´¬²°Ãû³Æ,¿ÉÒÔÔÚÃû×ÖÖĞ¼ÓÈëÎ»ÖÃĞÅÏ¢£¬ºóÆÚÔÙ´¦ÀíÇĞÆ¬³öÀ´£¬È«¾ÖµØÍ¼·ÅÔÚ·şÎñÆ÷ÉÏ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½Öµï¿½Í¼ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
 		while(customer == null || customer.equals("")){
 			if (customer == null) {
@@ -106,32 +106,32 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 			JOptionPane.showMessageDialog(this, "you should input ship infoemation !", "Warning", JOptionPane.ERROR_MESSAGE);
 			customer = JOptionPane.showInputDialog(this, "Please input Ship name : ");
 		}
-		//JOptionPane.showMessageDialog(this, "±¾Èí¼şÓÉ\n@ÓñÁúÊÓ¾õĞ§¹û¹¤×÷ÊÒ@\nÖÆ×÷\nPOWERED BY ERON STUDIO");
-		//½«ÊäÈëÊı¾İ½øĞĞ·ÖÎö²Ù×÷£¬·ÖÎö³öÃû³Æ£¬Î»ÖÃµÈĞÅÏ¢     ----->**  ÒÀ´ÎÊäÈë´¬Ãû¡¢Î»ÖÃx y¡¢·½Ïò¡¢ËÙ¶È
+		//JOptionPane.showMessageDialog(this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n@ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@\nï¿½ï¿½ï¿½ï¿½\nPOWERED BY ERON STUDIO");
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½Î»ï¿½Ãµï¿½ï¿½ï¿½Ï¢     ----->**  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë´¬ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½x yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 		//String[] source = customer.split(",");
-		//ÕâÀïĞèÒª¼ÌĞø´¦ÀíÖ»ÊäÈëÒ»²¿·Ö²ÎÊıµÄÇé¿ö
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		/*ship = new Ship(source[0], Double.parseDouble(source[1]),
 				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
-				Double.parseDouble(source[4]), source[5]);  //¿Í»§¶ËµÄÒ»¸ö´¬²°
+				Double.parseDouble(source[4]), source[5]);  //ï¿½Í»ï¿½ï¿½Ëµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for(int i = 0; i < source.length; i++){
 			System.out.println(source[i]);
 		}*/
-		ship = new Ship();             //ĞèÒª½«ship¶ÔÏó´«Èë£¬ÒÔ¸üĞÂ±¾´¬ĞÅÏ¢
+		ship = new Ship();             //ï¿½ï¿½Òªï¿½ï¿½shipï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½Ô¸ï¿½ï¿½Â±ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		/**********************************************************************/
-		//ÕâÀïÒª½øĞĞ¿ªÆô·¢ËÍĞÅÏ¢µÄÌ×½Ó×Ö                      ĞÂ½¨Ïß³Ì                     Æô¶¯ĞÅÏ¢´«ËÍµÄĞÂÏß³Ì
-		client = new ClientThread(ship, ships);  //´«Èëship¶ÔÏóÎªÁËÄÜ¹»ÔÚĞÂÏß³ÌÖĞ¿ØÖÆ±¾´¬ÏòÇ°½ø£¬Í¬²½
-		client.start();    //¿ªÆôÏß³Ì£¬ÕâÊ±²ÅÊµ¼ÊÔËĞĞ
+		//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ğ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½×½ï¿½ï¿½ï¿½                      ï¿½Â½ï¿½ï¿½ß³ï¿½                     ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ß³ï¿½
+		client = new ClientThread(ship, ships);  //ï¿½ï¿½ï¿½ï¿½shipï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½ï¿½Ğ¿ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½
+		client.start();    //ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì£ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		/*********************************************************************/
-		//³õÊ¼»¯½çÃæ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		initComponents();
 	}
 	
 	private void initComponents() {
-		//ÔÚËõ·Å¹ı³ÌÖĞÖĞ½çÃæ¸úËæ±ä»¯
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä»¯
 		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {   //¸üĞÂ×é½¨µÄ´óĞ¡
-				if (!isUndecorated()) {  //Ã»ÓĞÈ«ÆÁ×´Ì¬ÏÂµÄ²¼¾Ö           È«¾Ö×´Ì¬ÊÇÃ»ÓĞ×°ÊÎµÄ
+			@Override          //windows resizedï¼Œ then relayout
+			public void componentResized(ComponentEvent e) {   //ï¿½ï¿½ï¿½ï¿½ï¿½é½¨ï¿½Ä´ï¿½Ğ¡
+				if (!isUndecorated()) {  //Ã»ï¿½ï¿½È«ï¿½ï¿½×´Ì¬ï¿½ÂµÄ²ï¿½ï¿½ï¿½           È«ï¿½ï¿½×´Ì¬ï¿½ï¿½Ã»ï¿½ï¿½×°ï¿½Îµï¿½
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 				}
@@ -139,39 +139,39 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
 					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
 				}
-				revalidate();  //²¼¾ÖË¢ĞÂ
-				//repaint();    //ĞèÒªrepaintÂğ£¿
+				revalidate();  //ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½
+				//repaint();    //ï¿½ï¿½Òªrepaintï¿½ï¿½
 			}
 		});
 		
-		//³õÊ¼»¯ÆäËûÊôĞÔ
+		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		setTitle("RadarNavigation");
 		setBackground(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(20, 20, 1008, 735);  //ÉèÖÃÃæ°å¸Õ¿ªÊ¼µÄÎ»ÖÃºÍ´óĞ¡   1000  + 700
+		setBounds(20, 20, 1008, 735);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½Ê¼ï¿½ï¿½Î»ï¿½ÃºÍ´ï¿½Ğ¡   1000  + 700
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(null);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);  //¶¨ÖÆ²¼¾Ö
+		contentPane.setLayout(null);  //ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½
 		
-		radarpanel = new RadarPanel(); //ĞÂ½¨À×´ïÏÔÊ¾Ãæ°å
+		radarpanel = new RadarPanel(); //ï¿½Â½ï¿½ï¿½×´ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
 		radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
 		contentPane.add(radarpanel);
-		radarpanel.getShip(ship);    //½«´¬²°¶ÔÏó´«Èë¼ÓÔØÔÚÕâÀï£¬¿ÉÔËĞĞ
-		//À×´ïµ¥»÷ÏìÓ¦ÊÂ¼ş
+		radarpanel.getShip(ship);    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ï¿½×´ïµ¥ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Â¼ï¿½
 		radarpanel.addMouseListener(new MouseAdapter() {
 			
-			@Override
-			public void mouseClicked(MouseEvent e) {   //ÕâÀï¿ÉÒÔ¼ÓÈëÊ±¼ä²âÊÔ£¬ÊµÏÖ¹¦ÄÜÖ®¼äµÄÇø±ğ£¬ÍøÉÏ²Á»¹Ñµ
-				//Ñ¡ÖĞ¶Ô·½´¬²°»ò»òÕßÈ¡ÏûÑ¡ÖĞ£¨ÓÒ¼üµ¥»÷£©
-				if(e.getButton() == MouseEvent.BUTTON1){   //×ó¼ü 16£¬ÖĞ¼ü 8£¬ÓÒ¼ü 4    e.getModifiers() == 16
-					//µ¥»÷ÊÂ¼ş
-					if (e.getClickCount() == 1) {    //×ó¼ü µ¥»÷Ò»´Î
-						//Ìí¼ÓÀ×´ï¶ÔÏóµ½ĞÅÏ¢Ãæ°å
-						Iterator<Ship> index = ships.iterator();  //Ô­ÒòËÑË÷½â¾ö
-						while (index.hasNext()) {   //µ±µã»÷¶ÔÏóºóÓ¦¸Ã¸ü¸ÄÏÔÊ¾Ğ§¹û£¬¸ü¸Ä´¬²°ÊôĞÔ±êÖ¾ £¬ ×·×ÙÄ£Ê½¡£¡£¡£¡£¡£
+			@Override  //å…¨å±åŠŸèƒ½
+			public void mouseClicked(MouseEvent e) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ô£ï¿½Êµï¿½Ö¹ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½Ñµ
+				//Ñ¡ï¿½Ğ¶Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ñ¡ï¿½Ğ£ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				if(e.getButton() == MouseEvent.BUTTON1){   //ï¿½ï¿½ï¿½ 16ï¿½ï¿½ï¿½Ğ¼ï¿½ 8ï¿½ï¿½ï¿½Ò¼ï¿½ 4    e.getModifiers() == 16
+					//ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+					if (e.getClickCount() == 1) {    //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+						//ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½
+						Iterator<Ship> index = ships.iterator();  //Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+						while (index.hasNext()) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ö¾ ï¿½ï¿½ ×·ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							Ship boat = index.next();
 							if (Math.abs(e.getX()-boat.getParameter(1))<10 && 
 									Math.abs(e.getY()-boat.getParameter(2))<10) {
@@ -183,20 +183,20 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 						}
 						
 					}
-					//È«ÆÁ¶¯×÷
-					if (e.getClickCount() >= 2) {   //ÕâÀï¿ÉÒÔÌí¼ÓÊ±¼äÅĞ¶Ï£¬ÊµÏÖ¸ü¾«È·µÄ¿ØÖÆ
+					//È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					if (e.getClickCount() >= 2) {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ğ¶Ï£ï¿½Êµï¿½Ö¸ï¿½ï¿½ï¿½È·ï¿½Ä¿ï¿½ï¿½ï¿½
 						if (!isUndecorated()) {
 							setLocation(0, 0);
 							setSize(Toolkit.getDefaultToolkit().getScreenSize());
-							//È¥³ı±êÌâÀ¸
+							//È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							dispose();
 							setUndecorated(true);
 							setVisible(true);
-							radarpanel.setSize(getWidth()*7/9, getHeight()-35);  //½â¾öËõĞ¡ºóÈ«ÆÁÊ±×ÖÌåµÄ±ä»¯ÎÊÌâ
+							radarpanel.setSize(getWidth()*7/9, getHeight()-35);  //ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½È«ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä±ä»¯ï¿½ï¿½ï¿½ï¿½
 						}
 						else {
 							setBounds(20, 20, 1008, 735);
-							//¹éÎ»,·µ»ØÔ­À´µÄ³ß´ç£¬Ö»ÄÜµ½³õÊ¼»¯³ß´ç£¬Èô¹ûÒª·Å´óÇ°£¬ĞèÒªÔö¼Ó±äÁ¿´æ´¢Ö®Ç°µÄ³ß´ç¼°Î»ÖÃ
+							//ï¿½ï¿½Î»,ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½Ä³ß´ç£¬Ö»ï¿½Üµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ß´ç£¬ï¿½ï¿½ï¿½ï¿½Òªï¿½Å´ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½ï¿½æ´¢Ö®Ç°ï¿½Ä³ß´ç¼°Î»ï¿½ï¿½
 							dispose();
 							setUndecorated(false);
 							setVisible(true);
@@ -207,25 +207,25 @@ public class RadarNavigation extends JFrame{  //µÇÂ½Ö÷Ãæ°å
 				}
 			}
 		});
-		//------------------------------------>¸Ä¶¯ÒÔÊ¹µÃ½çÃæ¿ÉÒÔ¹ö¶¯
-		infopanel = new InfoPanel();   //ĞÂ½¨ĞÅÏ¢ÏÔÊ¾Ãæ°å
+		//------------------------------------>ï¿½Ä¶ï¿½ï¿½ï¿½Ê¹ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½
+		infopanel = new InfoPanel();   //ï¿½Â½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 		//ScrollPane sp = new ScrollPane();
 		//sp.add(infopanel);
 		contentPane.add(infopanel);
 		//contentPane.add(sp);
-		//ĞÅÏ¢Ãæ°åÏìÓ¦
+		//ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦
 		infopanel.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//µ¥»÷ºóÏÔÊ¾²Ëµ¥£¬±ä»»½çÃæ  ÉèÖÃÕûÌåÊôĞÔ
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ëµï¿½ï¿½ï¿½ï¿½ä»»ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				revalidate();
-				if (e.getButton() == MouseEvent.BUTTON1) {  //²Ëµ¥Ä£Ê½ĞèÒªÌì½çÄ£Ê½±êÖ¾£¬1 ´ú±íÏÔÊ¾ĞÅÏ¢£¬0 ´ú±í ÏÔÊ¾²Ëµ¥£¬ÖØĞÂ²¼¾Ö
-					//½øÈë²Ëµ¥½çÃæ
+				if (e.getButton() == MouseEvent.BUTTON1) {  //ï¿½Ëµï¿½Ä£Ê½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ö¾ï¿½ï¿½1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢ï¿½ï¿½0 ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¾ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
+					//ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 				}
 				else if (e.getButton() == MouseEvent.BUTTON3) {
-					//ÍË³ö²Ëµ¥½çÃæ
+					//ï¿½Ë³ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 				}
 			}
 		});
