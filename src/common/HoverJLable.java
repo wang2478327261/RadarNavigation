@@ -62,8 +62,8 @@ public class HoverJLable extends JLabel implements Serializable{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				//setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));   //Ó¦¸ÃÊÇborderfactory·µ»ØÒ»¸öborder¶ÔÏó
-				setBorder(new LineBorder(Color.GREEN, 1));    //²»ÓÃ¹¤³§Ò»ÑùµÄÐ§¹û
+				//setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));   //Ó¦ï¿½ï¿½ï¿½ï¿½borderfactoryï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½borderï¿½ï¿½ï¿½ï¿½
+				setBorder(new LineBorder(Color.GREEN, 1));    //ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
