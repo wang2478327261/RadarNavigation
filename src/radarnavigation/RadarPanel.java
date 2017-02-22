@@ -219,15 +219,14 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 	}
 	
 	/***********************��ͨ�����Գ�����**********************************************/
-	public void setRange(String option) {   //���̴���3�������ǳ˷���С��3����  0.75,1.5,3,6,12,24,48,96
-		//�������û�п������򷵻أ����������̱任                    6.27ȡ��Ŷ��������Ի�
-		if (option.equals("increase")) {  //��������
+	public void setRange(String option) {   //变化量程
+		if (option.equals("increase")) {  //判断缩放动作
 			range *= 2;
 			if (range >= 96) {
 				range = 96;
 			}
 		}
-		else{   //reduce    ��������
+		else{   //reduce scale
 			range /= 2;
 			if (range <= 0.75) {
 				range = (float) 0.75;
@@ -244,7 +243,7 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 	
 	public void dataFresh(){
 		System.out.println("RadarPanel -> dataFresh");
-		//ˢ�����Ͻǵ�����
+		//显示组件的刷新
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
 		course.setText("COS : " + ship.getParameter(3) + "��T ");
@@ -256,22 +255,20 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
-		Graphics2D g2 = (Graphics2D)g.create();   //����create������������Ҫ�õ�g��ͬ������   copy
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D g2 = (Graphics2D)g.create();   //转换成2D
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  //渲染效果
 		Font f = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
-		g2.setFont(f);
-		//*************��������Ȧ     ���㻭��Ĵ�С����*****************************
-		
-		//��������   �ⲿ�ֲ��仯
+		g2.setFont(f);  //设置字体
+		//*************************************************************
 		g2.setColor(Color.GREEN);
 		diameter = (float) (Math.min(getWidth(), getHeight())*0.93);
-		startX = (getWidth() - diameter)/2;  //���Ͻ�λ��
+		startX = (getWidth() - diameter)/2;  //雷达显示圆形边框
 		startY = (getHeight() - diameter)/2;
 		g2.drawOval((int)startX-1, (int)startY-1, (int)diameter+2, (int)diameter+2);
-		//����ɫ����
+		//背景
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
-		//***************************���½�������******************************************
+		//***********************刷新**********************************
 		dataFresh();
 		
 		//**************�����������ϵĿ̶ȣ��ο�ָ����ʵ�ַ���***********************
