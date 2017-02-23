@@ -6,8 +6,9 @@ import javax.swing.JFrame;
 
 import radarnavigation.RadarPanel;
 
-@SuppressWarnings("serial")
-public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
+public class ShipManager extends JFrame{
+	
+	private static final long serialVersionUID = 5649146024506368826L;
 	
 	private SmallPanel smallpanel;
 	
@@ -30,7 +31,7 @@ public class ShipManager extends JFrame{   //服务端需要添加船舶的功能，方便测试
 	/**
 	 * Create the frame.
 	 */
-	public ShipManager() {  //smallpanel中新建server线程，传入参数，进行控制，所以主类只是一个壳子
+	public ShipManager() {
 		initComponents();
 	}
 	

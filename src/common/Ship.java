@@ -2,18 +2,17 @@
 package common;
 
 /**
- * ½¨Á¢´¬²°¶ÔÏóÀà£¬¿ØÖÆ´¬²°ÊôĞÔ±ä»¯   ³õÊ¼»¯ºóÉú³É´¬²°¶ÔÏó
- *@author ERON
- *@param name--Ãû³Æ, Px--Î³¶È,Py--¾­¶È, course--´¬²°·½Ïò, speed--ËÙ¶È, type--ÀàĞÍ
+ * èˆ¹èˆ¶å¯¹è±¡æœ¬èº«ï¼Œå¯ä»¥æ”¹è¿›ï¼Œå¢åŠ åŠ¨æ€ä¿¡æ¯å’Œé™æ€ä¿¡æ¯åˆ†ç¦»
+ * @author ERON
  */
 public class Ship {
 	
 	private String name = "Default";
-	private double Px = 0;  //´¬²°Î³¶È       ÔÚ³ÌĞòÖĞÊÇ   x   Öµ
-	private double Py = 0;  //´¬²°¾­¶È   ÔÚ³ÌĞòÖĞÊÇ   y   Öµ
-	private double course = 0;  //º½Ïò
-	private double speed = 3;  //ËÙ¶È
-	private String type = "Normal";  //´¬²°ÀàĞÍ
+	private double Px = 0;
+	private double Py = 0;
+	private double course = 0;
+	private double speed = 3;
+	private String type = "Normal";
 	
 	public Ship(String name, double Px, double Py, double course, double speed, String type) {
 		this.name = name;
@@ -33,11 +32,10 @@ public class Ship {
 		this.type = "Normal";
 	}
 	/**
-	 * <p>Í¨¹ıË÷ÒıµÃµ½´¬²°²ÎÊı£¬1--ºáÏòÎ»ÖÃ£¬ 2--×İÏòÎ»ÖÃ£¬ 3--·½Ïò£¬ 4--ËÙ¶È</p>
 	 * @param index
-	 * @return Px(ºáÏòÎ»ÖÃ), Py(×İÏòÎ»ÖÃ), course(·½Ïò), speed(ËÙ¶È)
+	 * @return ship's param
 	 */
-	public double getParameter(int index){   //µÃµ½´¬²°¼ÆËãÏà¹ØÊı¾İ
+	public double getParameter(int index){
         switch(index){
             case 1 : return Px;
             case 2 : return Py;
@@ -47,20 +45,20 @@ public class Ship {
         }
     }
 	
-	public void setType(String type) { //Õâ¸ö·½·¨¶àÓà£¬³õÊ¼»¯ºó´¬²°µÄÀàĞÍ²»¿É¸ü¸Ä
+	public void setType(String type) {
 		this.type = type;
 	}
 	public String getType(){
 		return type;
 	}
-	public void setName(String name){  //´¬²°µÄÃû³ÆÔÚµÇÂ½Ê±È·¶¨£¬Ö»ÄÜÓĞÓÃ»§×¢ÏúÖØĞÂµÇÂ¼¸ÄÃû
+	public void setName(String name){
 		this.name = name;
 	}
 	public String getName() {
 		return name;
 	}
 	
-	public void printShip() {  //ÓÃÓÚ²âÊÔ´¬²°×´Ì¬¸Ä±ä
+	public void printShip() {
 		System.out.println(getName());
 		System.out.println(getParameter(1));
 		System.out.println(getParameter(2));
@@ -69,11 +67,6 @@ public class Ship {
 		System.out.println(getType());
 	}
 	
-	/**
-	 * synchronizedÍ¬²½·½·¨   ¶Ô´¬²°ÊôĞÔÖØĞÂ¸³Öµ
-	 * @param index    1--¡·Px£¬ 2--¡·Py£¬ 3--¡··½Ïò£¬ 4--¡·ËÙ¶È
-	 * @param newValue   ½«¶ÔÓ¦µÄÊôĞÔ¸³ÖµÎª  newValue
-	 */
 	public synchronized void setValue(int index, double newValue){
         switch(index){
             case 1: Px = newValue; break;
@@ -87,7 +80,6 @@ public class Ship {
             if(this.course<0) this.course+=360;
             if(this.course>=360) this.course-=360;
         }
-        //ÕâÀïÒ²ĞèÒª¶ÔËÙ¶È½øĞĞĞ£Ñé   ËÙ¶È²»ÄÜ´óÓÚ30½Úkt
         if (speed < 0 || speed > 30) {
 			System.err.println("your speed is : " + speed + "\nPlease get normal speed!");
 			speed = 3;
@@ -95,7 +87,6 @@ public class Ship {
     }
 	
 	public void goAhead() {
-		//Ê¹´¬²°Ç°½øÒ»²½£¬¸üĞÂ´¬²°Êı¾İĞÅÏ¢
         double stepx = speed*Math.sin(Math.toRadians(course));
         double stepy = speed*Math.cos(Math.toRadians(course));
         setValue(1, Px+stepx);

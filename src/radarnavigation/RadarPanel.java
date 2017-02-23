@@ -19,20 +19,19 @@ import javax.swing.SwingConstants;
 import common.HoverJLable;
 import common.Ship;
 
-@SuppressWarnings("serial")
-public class RadarPanel extends JPanel{   //�״�������ʾ��������Ϣ
+public class RadarPanel extends JPanel{   //显示主界面
 	
-	//��Щ������Ĭ��ֵ         ��Щ���״����Ķ�����ֵ��Ӧ�������״�����
-	private float range = 6;  //�״�����̣� ��λ�Ǻ���    �״�����  ���12�����С1����, ��ʼ��Ϊ6����
-	//�״�ģʽ     �״���ʾģʽ    ������  ��������    /////����˶�  �����˶�.......
-	private boolean headline = true;  //�״ﴬ����     ������رմ�����
-	private boolean rangeline = true;  //���̻�����  �ֶ�Σ������̱仯
-	private boolean headup = true;   //������    ������ ģʽ
-	private boolean relative = true;  //����˶�  �����˶�
+	private static final long serialVersionUID = -6000318065148555968L;
 	
-	private float startX, startY, diameter;  //��ʾ�״��������Ͻ������Լ�     Բ�� --��ֱ�� 
-	double pc = 1;  //��ʾÿ����ٺ���
-	private Ship ship;  //���뱾��������
+	private float range = 6;  //量程
+	private boolean headline = true;  //
+	private boolean rangeline = true;  //是否显示量程
+	private boolean headup = true;   //是否首向上
+	private boolean relative = true;  //是否相对运动
+	
+	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
+	double pc = 1;  //每圈代表的距离
+	private Ship ship;  //当前自己的对象
 	
 	private HoverJLable showMode;
 	private HoverJLable activeMode;
@@ -61,30 +60,29 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				//�ı��״�����,   ���Ϲ���Ϊ��ֵ -1�����¹�����ֵ  1
-				if (e.getWheelRotation() > 0) {   //��С����
+				if (e.getWheelRotation() > 0) {   //减小量程
 					setRange("reduce");
 				}
-				if(e.getWheelRotation() < 0){  //��������
+				if(e.getWheelRotation() < 0){  //增大量程
 					setRange("increase");
 				}
 				//System.out.println(((radarPanel) radarpanel).getRange());
 				showRange.setText("RANGE : " + range + " KN ");
-				//�ж�÷���ʾ�ĺ���
-				if (range <= 3) {  //һ��   0.5  ����
+				//更新显示信息
+				if (range <= 3) {
 					//pc = diameter/(range*2)/2;
 					pc = 0.5;
 				}
-				else if(range <=6 ){   //һ��1����
+				else if(range <=6 ){   //每圈1海里
 					//pc = diameter/(range*2);
 					pc = 1;
 				}
-				else if (range <= 24) {  //һ��2����
+				else if (range <= 24) {
 					//pc = diameter/(range*2)*2;
 					pc = 2;
 				}
 				else {
-					//pc = diameter/(range*2)*4;  //һ��4����
+					//pc = diameter/(range*2)*4;
 					pc = 4;
 				}
 				
@@ -94,13 +92,13 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 			}
 		});
 		
-		//��ʼ������
+		//初始化界面
 		initComponents();
 	}
-	private void initComponents() {    //������ĳɹ������������������õķ����������
-		addComponentListener(new ComponentAdapter() {  //ʵ���Զ�����
+	private void initComponents() {
+		addComponentListener(new ComponentAdapter() {  //全屏缩放，怎么制作响应式界面
 			@Override
-			public void componentResized(ComponentEvent e) {  //����������ԶԲ��ֽ���������ƣ�����
+			public void componentResized(ComponentEvent e) {  //缩放后的同时更新界面
 				Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 				int h = (int)(diameter*0.04);
 				//���Ͻ�
@@ -116,7 +114,7 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), h);
 				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), h);
 				speed.setBounds(getWidth()-(int)(diameter*0.2), course.getY()+course.getHeight(), (int)(diameter*0.2), h);
-				//���������С
+				//字体设置，有没有好点的办法
 				lineUp.setFont(font);
 				rangeSwitch.setFont(font);
 				showMode.setFont(font);
@@ -131,7 +129,7 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 		});
 		
 		// TODO Auto-generated constructor stub
-		setBorder(null);  //��Щ���Կ������״�������иı�
+		setBorder(null);  //自由布局
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
@@ -169,7 +167,7 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 		});
 		add(rangeSwitch);
 		
-		showMode = new HoverJLable("HEADUP");   //����дһ��JLable�����࣬ʵ����ͬ�Ķ��������ٴ�����
+		showMode = new HoverJLable("HEADUP");
 		showMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -202,12 +200,10 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 		});
 		
 		add(activeMode);
-		//���½���ʾ��ǰ������Ϣ
 		showRange = new HoverJLable("RANGE : " + range + " KN ");
 		add(showRange);
 		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
 		add(perCircle);
-		//���Ϸ���ʾ������Ϣ
 		latitude = new HoverJLable("LAT : 0 ", SwingConstants.RIGHT);
 		add(latitude);
 		longitude = new HoverJLable("LOG : 0 ", SwingConstants.RIGHT);
@@ -271,85 +267,78 @@ public class RadarPanel extends JPanel{   //�״�������ʾ���
 		//***********************刷新**********************************
 		dataFresh();
 		
-		//**************�����������ϵĿ̶ȣ��ο�ָ����ʵ�ַ���***********************
-		//ÿ�����Ϊ3��
-		if (headup) {    //���ô��������Բ��������ý�����ʾ
-			drawScale(g2, ship.getParameter(3));  //�������Ŵ�����̬ת��      ʹ������ת���ø�ֵ������������ת��ֵ��+��
+		//**************绘制刻度***********************
+		if (headup) {
+			drawScale(g2, ship.getParameter(3));
 		}
-		//**********************���㻭����Ȧ,��������������*******************************
+		//**********************绘制量程*******************************
 		if (rangeline) {
 			drawRange(g2);
 		}
-		//********************���ߣ���ʾ������*********************************************
+		//******************绘制首向线********************************************
 		if (headline) {
 			drawHeadLine(g2, ship.getParameter(3));
 		}
 	}
-	//�����״�����ϵ����� ���������Ŵ�������ı仯���仯            ���п̶ȣ������ʶ����
+	
 	public void drawScale(Graphics2D g2, double theta){
 		System.out.println("RadarPanel -> drawScale");
 		g2.setColor(Color.GREEN);
-		//ÿ�����Ϊ3��
-		float xCircle = startX + diameter/2;  //����Բ��
+		//圆形坐标
+		float xCircle = startX + diameter/2;
 		float yCircle = startY + diameter/2;
-		//������
+		//画出一圈的刻度
 		g2.setColor(Color.CYAN);
 		for(int i = 0; i<36; i++){
-			float semi = diameter/2+10;  //�뾶
-			//���ֲ����ŵ����⣬�Ժ��ٸ�
-			float degree = (float) Math.toRadians(i*10-90 + theta);   //�����������ת
+			float semi = diameter/2+10;
+			float degree = (float) Math.toRadians(i*10-90 + theta);
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
 			g2.drawString(Integer.toString(num) + "��", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
-		//���̶ȣ��������Ŵ���ת��ת��
-        //�����60���̶�
-		AffineTransform af = g2.getTransform();  //�ӵ�ǰ�����Ļ��
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //�����������
+		//图形旋转
+		AffineTransform af = g2.getTransform();  //保存以前的坐标信息
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
 		
-        for (int i = 0; i < 360; i++) {   //x  yCircle����Բ��λ��
+        for (int i = 0; i < 360; i++) {
             int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge ͹��
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
-            g2.rotate(Math.toRadians(1), xCircle, yCircle);  //ÿһС��ת1��, ��Բ��Ϊ���ĵ�
+            g2.rotate(Math.toRadians(1), xCircle, yCircle);
         }
-        //������ת����
-        g2.setTransform(af);  //�ָ�ԭ����״̬
+        //还原坐标系
+        g2.setTransform(af);
 	}
-	//�����������̱仯�Ļ���Ȧ��  �������Է���λ��
+	//绘制量程
 	public void drawRange(Graphics2D g2) {
 		System.out.println("RadarPanel -> drawRange");
 		g2.setColor(Color.LIGHT_GRAY);
-		float diaVar = 0;  //��Ȧ�Ĺ�������ʱ�İ뾶
-		float diaStep = diameter/(range * 2);  //ÿ������뾶��Ĳ���ֵ, �õ���ֵ��  ÿ���������ֵ
-		
+		float diaVar = 0;  //每次变化的幅度
+		float diaStep = diameter/(range * 2);
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
-			//�жϰ뾶������
-			if (range <= 3) {  //һ��   0.5  ����
+			if (range <= 3) {
 				diaVar += diaStep/2;
 			}
-			else if(range <=6 ){   //һ��һ����
+			else if(range <=6 ){
 				diaVar += diaStep;
 			}
-			else if (range <= 24) {  //һ��2����
+			else if (range <= 24) {
 				diaVar += diaStep*2;
 			}
 			else {
-				diaVar += diaStep*4;  //һ��4����
+				diaVar += diaStep*4;
 			}
 		}
 	}
 	
-	public void drawHeadLine(Graphics2D g2, double theta) {
+	public void drawHeadLine(Graphics2D g2, double theta) {  //theta rotate degree
 		System.out.println("RadarPanel -> drawHeadline");
-		//�ڱ�����ģʽ����Ҫ��ȡ��������
-		AffineTransform af = g2.getTransform();  //�ӵ�ǰ�����Ļ��//这里应该是存储当前坐标系的变换
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);     //�����������
+		AffineTransform af = g2.getTransform();  //这里应该是存储当前坐标系的变换
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
 		
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
-		
-		g2.setTransform(af);  //�ָ�ԭ����״̬
+		g2.setTransform(af);
 	}
 }

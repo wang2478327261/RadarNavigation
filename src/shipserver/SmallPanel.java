@@ -21,40 +21,39 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import common.Ship;
 
-@SuppressWarnings("serial")
 public class SmallPanel extends JPanel implements Runnable{
     
-    private double mousex, mousey;  //�ƶ���������
-    private double dragx, dragy;    //�϶�δ�ɿ�ʱ�������
-    private double oldx, oldy;    //��������   ����
-    private double newx, newy;    //�ɿ����   ����
-    private double delx, dely;   //ɾ��ʱ��������
-    private String type = "Normal";            //���������Ժ�������
-    //�ڽ�������ʾ����˵��
+	private static final long serialVersionUID = 5493000947340277541L;
+	
+	private double mousex, mousey;
+    private double dragx, dragy;
+    private double oldx, oldy;
+    private double newx, newy;
+    private double delx, dely;
+    private String type = "Normal";
+    
     String helpStr = "";
     String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
     private boolean pressed = false;
     ServerThread server;
 	
-	private List<Ship> clientShips = new LinkedList<Ship>(); // ���пͻ��˺ͷ���˲����Ĵ���ά������
-	private List<Ship> serverShips = new LinkedList<Ship>(); // ��������ɵĶ���
-	//�洢�׽��ֶ���
+	private List<Ship> clientShips = new LinkedList<Ship>();
+	private List<Ship> serverShips = new LinkedList<Ship>();
+	
 	//private Map<String, Socket> sockets = new HashMap<String, Socket>();
 	private List<Socket> sockets = new LinkedList<Socket>();
-	//�洢�����켣  ------------->ʵ�ֱȽ����ѣ���ʱ�Ȳ�ʵ��
+	
 	private Map<String, List<Point>> track = new HashMap<String, List<Point>>();   //һ������Ӧһ���켣��
 	
 	public SmallPanel() {
 		super();
 		/*addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				setCursor(new Cursor(Cursor.MOVE_CURSOR));  //�ƶ����
-				if (e.getWheelRotation() > 0) {   //�������¹���      ��0
-					//��С��ʾ�ߴ磬����ʵ�ʴ������Բ���
+				setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				if (e.getWheelRotation() > 0) {
 					helpStr = "Scroll to Zoom out";
 				}
 				else if(e.getWheelRotation() < 0){
-					//�Ŵ�ߴ�
 					helpStr = "Scroll to Zoom in";
 				}
 				repaint();
@@ -80,7 +79,6 @@ public class SmallPanel extends JPanel implements Runnable{
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//��¼��갴��ʱ������
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					oldx = e.getX();
 					oldy = e.getY();
@@ -89,13 +87,11 @@ public class SmallPanel extends JPanel implements Runnable{
 					helpStr = "Drag to Create Moving Ship ";
 					pressed = true;  //需要按下标志
 				}
-				//ʵ��ɾ������
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					delx = e.getX();
 					dely = e.getY();
 					double disx, disy;
 			        double dis;
-			        //ֻ��ɾ�������������Ķ��󣬲��ܲ��ݿͻ���
 					if(e.getClickCount() >= 2){
 						if (serverShips.isEmpty()) {
 							helpStr = "No ship to Clear --> Left Drag to Create";
@@ -103,7 +99,7 @@ public class SmallPanel extends JPanel implements Runnable{
 						else {
 							serverShips.clear();
 			                for (Ship vessel : serverShips) {
-			                    track.get(vessel).clear();     //�������·����Ϣ
+			                    track.get(vessel).clear();
 			                }
 			                helpStr = "Clear All Ships --> No server ships";
 						}
@@ -117,7 +113,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		                    dis = Math.sqrt(disx*disx + disy*disy);
 		                    if(dis <= 20){
 		                        shIt.remove();
-		                        track.remove(vessel);     //һ����Ӧ������·����Ϣ
+		                        track.remove(vessel);
 		                        helpStr = "Deleted a Ship --> Done";
 		                    }
 		                }
@@ -134,13 +130,12 @@ public class SmallPanel extends JPanel implements Runnable{
 		            double differentx = newx - mousex;
 		            double differenty = newy - mousey;
 		            double speed = Math.sqrt(Math.pow(differentx, 2) + Math.pow(differenty, 2))/10;
-		            //����������䴰��
-		            String name = JOptionPane.showInputDialog("�����봬�� �� ");
-		            if (name != null && !name.equals("")) {   //������ؿ�ֵ���򲻽��ж���
+		            
+		            String name = JOptionPane.showInputDialog("ship name");
+		            if (name != null && !name.equals("")) {
 		            	Ship ship = new Ship(name, mousex, mousey, course, speed, type);
-		            	//���½��Ķ���������
 			            serverShips.add(ship);
-			            //���Ϸ�����ʾ�ĵ�ǰ������Ϣ
+			            
 			            nameStr = "Ship name : "+name;
 			            positionStr = "Position : "+mousex+","+mousey;
 			            courseStr = "Course : "+(int)course;
@@ -148,13 +143,12 @@ public class SmallPanel extends JPanel implements Runnable{
 			            typeStr = "Type : "+type;
 			            
 			            new Thread(SmallPanel.this).start();
-			            //�����緢�ʹ���������ͬ���ź�
+			            
 						for (Socket sk : sockets) {
 							String command = name + "logIn" + mousex + mousey + course + speed + type;
 							try {
 								server.sendData(sk, command);
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
@@ -170,22 +164,14 @@ public class SmallPanel extends JPanel implements Runnable{
 	private void initComponents() {
 		setBorder(BorderFactory.createEmptyBorder());
 		setLayout(null);
-		//setOpaque(false); // ���ó�͸���� opaque��͸��
+		//setOpaque(false);
 		setBackground(Color.WHITE);
 		
 		server = new ServerThread(clientShips, serverShips, sockets, track, this);
 		server.start();
 	}
 	
-	/************** ͨ�ó����� *********************************************/
-	/**
-	 * ͨ������-->���������б��,����--������Ϊ0�� ˳ʱ����ת    ��  360��
-	 * @param start_x  ��һ�ΰ���    ��� x
-	 * @param start_y  ��һ�ΰ���    ���  y
-	 * @param end_x  �յ�  x
-	 * @param end_y  �յ�  y
-	 * @return  ����֮���б��
-	 */
+	/****************************************************/
 	private double CaculateRatio(double start_x, double start_y, double end_x, double end_y){
         double differentx = end_x - start_x;
         double differenty = end_y - start_y;
@@ -213,10 +199,9 @@ public class SmallPanel extends JPanel implements Runnable{
         return course;
     }
 	
-	/********************* ͼ�λ����� **********************************/
+	/*************************************************/
 	@Override
 	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.03)));
@@ -230,7 +215,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		
 		double Px, Py, course, speed;
 		g2.setColor(Color.RED);
-		if (pressed) {               //��̬��ʾ��ǰ�Ĳ���
+		if (pressed) {
 			Px = oldx;
 			Py = oldy;
 			course = CaculateRatio(oldx, oldy, dragx, dragy);
@@ -241,23 +226,22 @@ public class SmallPanel extends JPanel implements Runnable{
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
             
-            normalShip(g2, oldx, oldy, 0, 0);  //��ʾһ��������̬
+            normalShip(g2, oldx, oldy, 0, 0);
 		}
 		g2.setColor(Color.BLUE);
-		for (Ship vessel : clientShips) {     //���ƿͻ��˲����Ĵ�������
+		for (Ship vessel : clientShips) {
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));
 			speed = vessel.getParameter(4);
 			
 			switch (vessel.getType()) {
-			// ���ݴ������͵Ĳ�ͬ���л���
 			}
 			normalShip(g2, Px, Py, course, speed);
 			
 		}
 		g2.setColor(Color.MAGENTA);
-		for (Ship vessel : serverShips) {         //���Ʒ�������ɵĶ���
+		for (Ship vessel : serverShips) {
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));

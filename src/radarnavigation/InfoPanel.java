@@ -12,11 +12,10 @@ import javax.swing.JPanel;
 import common.Ship;
 
 @SuppressWarnings("serial")
-public class InfoPanel extends JPanel{   //点击信息显示面板
+public class InfoPanel extends JPanel{
 	
-	//需要显示信息存储的数据
-	List<Ship> ships = new LinkedList<Ship>();   //存储显示信息的船舶对象
-	private int scroll_Y = 0;     //滚轮滚动     高度的变化值
+	List<Ship> ships = new LinkedList<Ship>();
+	private int scroll_Y = 0;
 	
 	public InfoPanel() {
 		super();
@@ -27,9 +26,9 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 	private void initComponents() {
 		
 		addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {    //以后可以改进滚动控制
-				//滚动翻页
-				if (e.getWheelRotation() > 0) {   //鼠标滚轮向下滚动       让字    向上走
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				//锟斤拷锟斤拷锟斤拷页
+				if (e.getWheelRotation() > 0) {
 					scroll_Y -= 40;
 				}
 				else if(e.getWheelRotation() < 0){
@@ -38,10 +37,9 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 				repaint();
 			}
 		});
-		// TODO Auto-generated constructor stub
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		setLayout(null);    //测试用例
+		setLayout(null);
 		ships.add(new Ship("huawei",123,23,34,13,"normal"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
@@ -51,7 +49,7 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 	}
 	
-	/*********绘图区域********************************************************/
+	/*************************************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
@@ -60,9 +58,8 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.07)));
 		g2.setColor(Color.CYAN);
 		//******************************************************************************
-		//显示增加的船舶信息
-		int h = g2.getFont().getSize();   //字体高度
-		int locate = 1;     //画出字符的行数
+		int h = g2.getFont().getSize();
+		int locate = 1;
 		//scrollStart = (int) (locate*h*1.3) + scroll_Y;
 		for (Ship vessel : ships) {
 			g2.drawString(vessel.getName()+"\n", 2, (int) (locate*h*1.3)+scroll_Y); locate++;
@@ -78,18 +75,15 @@ public class InfoPanel extends JPanel{   //点击信息显示面板
 		}
 	}
 	
-	/********普通方法区域**************************************************/
-	//向船舶获取列表上更新对象
-	public void addShip(Ship ship) {   //要显示的船舶
+	/****************************************************/
+	public void addShip(Ship ship) {
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
-		//更新界面
 		repaint();
 	}
-	public void removeShip(Ship ship) {  //也可以名称索引
+	public void removeShip(Ship ship) {
 		ships.remove(ship);
 		System.out.println("InfoPanel -> removeShip");
-		//需要更新界面
 		repaint();
 	}
 	
