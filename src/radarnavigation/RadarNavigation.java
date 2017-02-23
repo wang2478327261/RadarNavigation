@@ -1,7 +1,6 @@
 package radarnavigation;
 
 import java.awt.EventQueue;
-import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -15,10 +14,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import common.Ship;
 
 public class RadarNavigation extends JFrame{  //客户端的主类
@@ -73,11 +74,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 					ship.setValue(4, ship.getParameter(4)-1);
 					command = ship.getName() + ",speed,"  + "reduce";
 				}
-				try {
+				/*try {
 					client.sendData(command);
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
+				}*/
 				repaint();
 				System.out.println("RadarNavigation -> keyPress" + command);
 			}
@@ -85,11 +86,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				try {
+				/*try {
 					client.logOut();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
+				}*/
 			}
 		});
 		String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
@@ -111,7 +112,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		ship = new Ship();
 		/**********************************************************************/
 		client = new ClientThread(ship, ships);
-		client.start();
+		//client.start();
 		/*********************************************************************/
 		initComponents();
 	}

@@ -58,12 +58,12 @@ public class HoverJLable extends JLabel implements Serializable{
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				//setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-				setBorder(new LineBorder(Color.GREEN, 1));
+				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				//setBorder(BorderFactory.createEmptyBorder());
-				setBorder(new EmptyBorder(null));
+				setBorder(BorderFactory.createEmptyBorder());
 			}
 		});
 		//Font font = new Font("Consolas", Font.PLAIN, 20);

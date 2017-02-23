@@ -106,10 +106,10 @@ public class RadarPanel extends JPanel{   //显示主界面
 				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
 				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
 				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
-				//���½�
+				
 				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
 				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
-				//���Ͻ�
+				
 				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), h);
 				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), h);
 				course.setBounds(getWidth()-(int)(diameter*0.25), longitude.getY()+longitude.getHeight(), (int)(diameter*0.25), h);
@@ -208,7 +208,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		add(latitude);
 		longitude = new HoverJLable("LOG : 0 ", SwingConstants.RIGHT);
 		add(longitude);
-		course = new HoverJLable("COS : 0 ��T ", SwingConstants.RIGHT);
+		course = new HoverJLable("COS : 0 T ", SwingConstants.RIGHT);
 		add(course);
 		speed = new HoverJLable("SPD : 0 KT ", SwingConstants.RIGHT);
 		add(speed);
@@ -242,7 +242,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		//显示组件的刷新
 		latitude.setText("LAT : " + ship.getParameter(1) + " ");
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
-		course.setText("COS : " + ship.getParameter(3) + "��T ");
+		course.setText("COS : " + ship.getParameter(3) + " T ");
 		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
 		
 	}
@@ -295,7 +295,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
-			g2.drawString(Integer.toString(num) + "��", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
+			g2.drawString(Integer.toString(num) + "`", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
 		//图形旋转
 		AffineTransform af = g2.getTransform();  //保存以前的坐标信息
