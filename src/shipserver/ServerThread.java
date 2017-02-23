@@ -46,7 +46,7 @@ public class ServerThread extends Thread{
 		new Thread(){
 			@Override
 			public void run() {
-				System.out.println("�Է���˴����Ķ������ͬ��");
+				System.out.println("server thread");
 				while(!logOut){
 					for(Ship ship : serverShips){
 						ship.goAhead();

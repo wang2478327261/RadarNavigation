@@ -284,7 +284,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	public void drawScale(Graphics2D g2, double theta){
 		System.out.println("RadarPanel -> drawScale");
 		g2.setColor(Color.GREEN);
-		//圆形坐标
+		//圆心坐标
 		float xCircle = startX + diameter/2;
 		float yCircle = startY + diameter/2;
 		//画出一圈的刻度
@@ -299,7 +299,8 @@ public class RadarPanel extends JPanel{   //显示主界面
 		}
 		//图形旋转
 		AffineTransform af = g2.getTransform();  //保存以前的坐标信息
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
+		//g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
+		g2.rotate(theta, xCircle, yCircle);
 		
         for (int i = 0; i < 360; i++) {
             int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge ͹��

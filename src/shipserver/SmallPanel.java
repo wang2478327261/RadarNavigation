@@ -9,6 +9,9 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -47,7 +50,7 @@ public class SmallPanel extends JPanel implements Runnable{
 	
 	public SmallPanel() {
 		super();
-		/*addMouseWheelListener(new MouseWheelListener() {
+		addMouseWheelListener(new MouseWheelListener() {  //function implement in next version
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				setCursor(new Cursor(Cursor.MOVE_CURSOR));
 				if (e.getWheelRotation() > 0) {
@@ -58,7 +61,7 @@ public class SmallPanel extends JPanel implements Runnable{
 				}
 				repaint();
 			}
-		});*/
+		});
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -222,11 +225,12 @@ public class SmallPanel extends JPanel implements Runnable{
 			double differentx = dragx - oldx;
             double differenty = dragy - oldy;
             speed = Math.sqrt(differentx*differentx + differenty*differenty);
-            g2.drawLine((int)oldx, (int)oldy, (int)dragx, (int)dragy);
+            g2.drawLine((int)oldx, (int)oldy, (int)dragx, (int)dragy);  //船首向
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
             
-            normalShip(g2, oldx, oldy, 0, 0);
+            //normalShip(g2, oldx, oldy, 0, 0);
+            creatingShip(g2, Px, Py, course, speed);
 		}
 		g2.setColor(Color.BLUE);
 		for (Ship vessel : clientShips) {
@@ -269,6 +273,30 @@ public class SmallPanel extends JPanel implements Runnable{
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
+	}
+	//试试用旋转创建-->试过了，是哟个好方法，但是还不能用
+	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed){  //拖拽时创建船舶对象，不用绘制船舶首向
+		int linestartx, linestarty, lineendx, lineendy;
+		linestartx = (int) (Px + 20 * Math.sin(course));
+		linestarty = (int) (Py - 20 * Math.cos(course));
+		/*lineendx = (int) (linestartx + speed * Math.sin(course));
+		lineendy = (int) (linestarty - speed * Math.cos(course));*/
+		AffineTransform af = g2.getTransform();
+		g2.rotate(course, linestartx, linestarty);
+		
+		int[] trianglex = { linestartx, (int) (Px + 7 * Math.sin(course + Math.PI / 2)),
+				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + Math.PI / 2)),
+				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + 3 * Math.PI / 2)),
+				(int) (Px + 7 * Math.sin(course + 3 * Math.PI / 2)) };
+		int[] triangley = { linestarty, (int) (Py - 7 * Math.cos(course + Math.PI / 2)),
+				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + Math.PI / 2)),
+				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + 3 * Math.PI / 2)),
+				(int) (Py - 7 * Math.cos(course + 3 * Math.PI / 2)) };
+		// drawbody and courseline
+		g2.drawPolygon(trianglex, triangley, 5);
+		//g2.drawLine(linestartx, linestarty, lineendx, lineendy);
+		
+		g2.setTransform(af);
 	}
 	
 	public void printString(Graphics g2){
