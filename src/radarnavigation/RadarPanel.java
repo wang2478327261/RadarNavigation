@@ -101,7 +101,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 			public void componentResized(ComponentEvent e) {  //缩放后的同时更新界面
 				Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 				int h = (int)(diameter*0.04);
-				//���Ͻ�
+				//响应式布局--以下的计算都是根据一个对象的尺寸同步变换，这里是圆的直径
 				lineUp.setBounds(4, 4, (int)(diameter*0.3), h);
 				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
 				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
@@ -281,12 +281,11 @@ public class RadarPanel extends JPanel{   //显示主界面
 		}
 	}
 	
-	public void drawScale(Graphics2D g2, double theta){
+	public void drawScale(Graphics2D g2, double theta){  //角度的刻度
 		System.out.println("RadarPanel -> drawScale");
-		g2.setColor(Color.GREEN);
 		//圆心坐标
-		float xCircle = startX + diameter/2;
-		float yCircle = startY + diameter/2;
+		float xCircle = startX + diameter/2;  //圆心x坐标
+		float yCircle = startY + diameter/2;  //圆心y坐标
 		//画出一圈的刻度
 		g2.setColor(Color.CYAN);
 		for(int i = 0; i<36; i++){
@@ -301,9 +300,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 		AffineTransform af = g2.getTransform();  //保存以前的坐标信息
 		//g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
 		g2.rotate(theta, xCircle, yCircle);
-		
+		g2.setColor(Color.GREEN);
         for (int i = 0; i < 360; i++) {
-            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //bulge ͹��
+            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
             g2.rotate(Math.toRadians(1), xCircle, yCircle);
         }
@@ -333,10 +332,10 @@ public class RadarPanel extends JPanel{   //显示主界面
 		}
 	}
 	
-	public void drawHeadLine(Graphics2D g2, double theta) {  //theta rotate degree
+	public void drawHeadLine(Graphics2D g2, double theta) {  //theta -> rotate degree
 		System.out.println("RadarPanel -> drawHeadline");
 		AffineTransform af = g2.getTransform();  //这里应该是存储当前坐标系的变换
-		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
+		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);  //以圆心为中心，旋转theta角度
 		
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
