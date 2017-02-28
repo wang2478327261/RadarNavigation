@@ -174,7 +174,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		server.start();
 	}
 	
-	/****************************************************/
+	/*****************根据起始点计算,这个我算了好久，最后才把所有的情况分类成功***********************************/
 	private double CaculateRatio(double start_x, double start_y, double end_x, double end_y){
         double differentx = end_x - start_x;
         double differenty = end_y - start_y;
@@ -202,7 +202,7 @@ public class SmallPanel extends JPanel implements Runnable{
         return course;
     }
 	
-	/*************************************************/
+	/*****************绘制界面上的船舶对象********************************/
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -210,7 +210,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		g2.setFont(new Font("Default", Font.PLAIN, (int) (Math.min(getWidth(), getHeight())*0.03)));
 		g2.setColor(Color.BLUE);
 		
-		paintShips(g2);
+		paintShips(g2);  //自己写的代码竟然看不懂了，船舶绘制的设计没有记录局部坐标系的信息
 		printString(g2);
 	}
 	
@@ -218,22 +218,22 @@ public class SmallPanel extends JPanel implements Runnable{
 		
 		double Px, Py, course, speed;
 		g2.setColor(Color.RED);
-		if (pressed) {
-			Px = oldx;
-			Py = oldy;
+		if (pressed) {  //在创建新的船舶对象时能够显示创建过程
+			//Px = oldx;
+			//Py = oldy;
 			course = CaculateRatio(oldx, oldy, dragx, dragy);
-			double differentx = dragx - oldx;
-            double differenty = dragy - oldy;
-            speed = Math.sqrt(differentx*differentx + differenty*differenty);
+			double diffx = dragx - oldx;
+            double diffy = dragy - oldy;
+            speed = Math.sqrt(diffx*diffx + diffy*diffy);  //速度与拖动距离成正比
             g2.drawLine((int)oldx, (int)oldy, (int)dragx, (int)dragy);  //船首向
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
             
             //normalShip(g2, oldx, oldy, 0, 0);
-            creatingShip(g2, Px, Py, course, speed);
+            creatingShip(g2, oldx, oldy, course, speed);
 		}
 		g2.setColor(Color.BLUE);
-		for (Ship vessel : clientShips) {
+		for (Ship vessel : clientShips) {  //客户端船舶
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));
@@ -245,7 +245,7 @@ public class SmallPanel extends JPanel implements Runnable{
 			
 		}
 		g2.setColor(Color.MAGENTA);
-		for (Ship vessel : serverShips) {
+		for (Ship vessel : serverShips) {  //服务端创建的船舶
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
 			course = Math.toRadians(vessel.getParameter(3));
@@ -255,7 +255,7 @@ public class SmallPanel extends JPanel implements Runnable{
 		
 	}
 	
-	public void normalShip(Graphics2D g2, double Px, double Py, double course, double speed) {
+	public void normalShip(Graphics2D g2, double Px, double Py, double course, double speed) {  //可以整体旋转
 		int linestartx, linestarty, lineendx, lineendy;
 		linestartx = (int) (Px + 20 * Math.sin(course));
 		linestarty = (int) (Py - 20 * Math.cos(course));
@@ -273,25 +273,50 @@ public class SmallPanel extends JPanel implements Runnable{
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
-	}
-	//试试用旋转创建-->试过了，是哟个好方法，但是还不能用
-	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed){  //拖拽时创建船舶对象，不用绘制船舶首向
+
+		/*AffineTransform at = g2.getTransform();
+		at.rotate(course);
+		
 		int linestartx, linestarty, lineendx, lineendy;
 		linestartx = (int) (Px + 20 * Math.sin(course));
 		linestarty = (int) (Py - 20 * Math.cos(course));
-		/*lineendx = (int) (linestartx + speed * Math.sin(course));
-		lineendy = (int) (linestarty - speed * Math.cos(course));*/
-		AffineTransform af = g2.getTransform();
-		g2.rotate(course, linestartx, linestarty);
+		lineendx = (int) (linestartx + speed * Math.sin(course));
+		lineendy = (int) (linestarty - speed * Math.cos(course));
 		
-		int[] trianglex = { linestartx, (int) (Px + 7 * Math.sin(course + Math.PI / 2)),
+		int[] trianglex = { linestartx,
+				(int) (Px + 7 * Math.sin(course + Math.PI / 2)),
 				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + Math.PI / 2)),
 				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + 3 * Math.PI / 2)),
 				(int) (Px + 7 * Math.sin(course + 3 * Math.PI / 2)) };
-		int[] triangley = { linestarty, (int) (Py - 7 * Math.cos(course + Math.PI / 2)),
+		int[] triangley = { linestarty,
+				(int) (Py - 7 * Math.cos(course + Math.PI / 2)),
 				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + Math.PI / 2)),
 				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + 3 * Math.PI / 2)),
 				(int) (Py - 7 * Math.cos(course + 3 * Math.PI / 2)) };
+		// drawbody and courseline
+		g2.drawPolygon(trianglex, triangley, 5);
+		g2.drawLine(linestartx, linestarty, lineendx, lineendy);*/
+	}
+	//试试用旋转创建-->试过了，是哟个好方法，但是还不能用
+	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed){  //拖拽时创建船舶对象，不用绘制船舶首向
+		AffineTransform af = g2.getTransform();
+		double radiusCourse = Math.toRadians(course);
+		g2.rotate(Math.toRadians(radiusCourse), Px, Py);
+		
+		int linestartx, linestarty, lineendx, lineendy;
+		linestartx = (int) (Px + 20 * Math.sin(radiusCourse));
+		linestarty = (int) (Py - 20 * Math.cos(radiusCourse));
+		/*lineendx = (int) (linestartx + speed * Math.sin(course));
+		lineendy = (int) (linestarty - speed * Math.cos(course));*/
+		
+		int[] trianglex = { linestartx, (int) (Px + 7 * Math.sin(radiusCourse + Math.PI / 2)),
+				(int) (Px - 10 * Math.sin(radiusCourse) + 7 * Math.sin(radiusCourse + Math.PI / 2)),
+				(int) (Px - 10 * Math.sin(radiusCourse) + 7 * Math.sin(radiusCourse + 3 * Math.PI / 2)),
+				(int) (Px + 7 * Math.sin(radiusCourse + 3 * Math.PI / 2)) };
+		int[] triangley = { linestarty, (int) (Py - 7 * Math.cos(radiusCourse + Math.PI / 2)),
+				(int) (Py + 10 * Math.cos(radiusCourse) - 7 * Math.cos(radiusCourse + Math.PI / 2)),
+				(int) (Py + 10 * Math.cos(radiusCourse) - 7 * Math.cos(radiusCourse + 3 * Math.PI / 2)),
+				(int) (Py - 7 * Math.cos(radiusCourse + 3 * Math.PI / 2)) };
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		//g2.drawLine(linestartx, linestarty, lineendx, lineendy);
@@ -313,7 +338,7 @@ public class SmallPanel extends JPanel implements Runnable{
     }
 	
 	@Override
-	public void run() {
+	public void run() {  //释放鼠标开始计时，5秒后更新数据
 		// TODO Auto-generated method stub
 		try{
 			Thread.sleep(5000);

@@ -85,7 +85,7 @@ public class ServerThread extends Thread{
 						// TODO Auto-generated method stub
 						//super.run();
 						Socket socket = sockets.get(sockets.size() - 1);
-						System.out.println("�յ��ŵĿͻ��˽������߳�");
+						System.out.println("get latest socket");
 						
 						String getData = null;
 						String[] change = null;

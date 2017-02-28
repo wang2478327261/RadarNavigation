@@ -18,36 +18,36 @@ import javax.swing.border.LineBorder;
  * @author ERON
  *
  */
-public class HoverJLable extends JLabel implements Serializable{
+public class HoverLable extends JLabel implements Serializable{
 	
 	private static final long serialVersionUID = 3249102401404391293L;
 
-	public HoverJLable() {
+	public HoverLable() {
 		super();
 		initComponents();
 	}
 	
-	public HoverJLable(Icon image, int horizontalAlignment) {
+	public HoverLable(Icon image, int horizontalAlignment) {
 		super(image, horizontalAlignment);
 		initComponents();
 	}
 
-	public HoverJLable(Icon image) {
+	public HoverLable(Icon image) {
 		super(image);
 		initComponents();
 	}
 
-	public HoverJLable(String text, Icon icon, int horizontalAlignment) {
+	public HoverLable(String text, Icon icon, int horizontalAlignment) {
 		super(text, icon, horizontalAlignment);
 		initComponents();
 	}
 
-	public HoverJLable(String text, int horizontalAlignment) {
+	public HoverLable(String text, int horizontalAlignment) {
 		super(text, horizontalAlignment);
 		initComponents();
 	}
 
-	public HoverJLable(String text) {
+	public HoverLable(String text) {
 		super(text);
 		initComponents();
 	}
@@ -73,3 +73,5 @@ public class HoverJLable extends JLabel implements Serializable{
 		setBorder(BorderFactory.createEmptyBorder());
 	}
 }
+
+

@@ -16,7 +16,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import common.HoverJLable;
+import common.HoverLable;
 import common.Ship;
 
 public class RadarPanel extends JPanel{   //显示主界面
@@ -33,16 +33,16 @@ public class RadarPanel extends JPanel{   //显示主界面
 	double pc = 1;  //每圈代表的距离
 	private Ship ship;  //当前自己的对象
 	
-	private HoverJLable showMode;
-	private HoverJLable activeMode;
-	private HoverJLable lineUp;
-	private HoverJLable rangeSwitch;
-	private HoverJLable showRange;
-	private HoverJLable latitude;
-	private HoverJLable longitude;
-	private HoverJLable course;
-	private HoverJLable speed;
-	private HoverJLable perCircle;
+	private HoverLable showMode;
+	private HoverLable activeMode;
+	private HoverLable lineUp;
+	private HoverLable rangeSwitch;
+	private HoverLable showRange;
+	private HoverLable latitude;
+	private HoverLable longitude;
+	private HoverLable course;
+	private HoverLable speed;
+	private HoverLable perCircle;
 	
 	public RadarPanel() {
 		super();
@@ -134,7 +134,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
 		
-		lineUp = new HoverJLable("HEADLINE < ON > ");
+		lineUp = new HoverLable("HEADLINE < ON > ");
 		lineUp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -150,7 +150,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		});
 		add(lineUp);
 		
-		rangeSwitch = new HoverJLable("RANGE < ON > ");
+		rangeSwitch = new HoverLable("RANGE < ON > ");
 		rangeSwitch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -167,7 +167,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		});
 		add(rangeSwitch);
 		
-		showMode = new HoverJLable("HEADUP");
+		showMode = new HoverLable("HEADUP");
 		showMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -184,7 +184,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		
 		add(showMode);
 		
-		activeMode = new HoverJLable("RELATIVE");
+		activeMode = new HoverLable("RELATIVE");
 		activeMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -200,17 +200,17 @@ public class RadarPanel extends JPanel{   //显示主界面
 		});
 		
 		add(activeMode);
-		showRange = new HoverJLable("RANGE : " + range + " KN ");
+		showRange = new HoverLable("RANGE : " + range + " KN ");
 		add(showRange);
-		perCircle = new HoverJLable("PER CIRCLE : " + pc + " KN/PC ");
+		perCircle = new HoverLable("PER CIRCLE : " + pc + " KN/PC ");
 		add(perCircle);
-		latitude = new HoverJLable("LAT : 0 ", SwingConstants.RIGHT);
+		latitude = new HoverLable("LAT : 0 ", SwingConstants.RIGHT);
 		add(latitude);
-		longitude = new HoverJLable("LOG : 0 ", SwingConstants.RIGHT);
+		longitude = new HoverLable("LOG : 0 ", SwingConstants.RIGHT);
 		add(longitude);
-		course = new HoverJLable("COS : 0 T ", SwingConstants.RIGHT);
+		course = new HoverLable("COS : 0 T ", SwingConstants.RIGHT);
 		add(course);
-		speed = new HoverJLable("SPD : 0 KT ", SwingConstants.RIGHT);
+		speed = new HoverLable("SPD : 0 KT ", SwingConstants.RIGHT);
 		add(speed);
 	}
 	
@@ -281,14 +281,14 @@ public class RadarPanel extends JPanel{   //显示主界面
 		}
 	}
 	
-	public void drawScale(Graphics2D g2, double theta){  //角度的刻度
+	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
 		System.out.println("RadarPanel -> drawScale");
 		//圆心坐标
 		float xCircle = startX + diameter/2;  //圆心x坐标
 		float yCircle = startY + diameter/2;  //圆心y坐标
 		
 		//画出一圈数字
-		g2.setColor(Color.CYAN);
+		g2.setColor(Color.CYAN);  //这里虽然计算正确，但是应该考虑degree过大时候会溢出的情况，启动线程将角度化简
 		for(int i = 0; i<36; i++){  //一圈的度数  指示
 			float semi = diameter/2+10;  //度数显示的坐标半径
 			float degree = (float) Math.toRadians(i*10-90 + theta);  //-90是因为起始是在x坐标那块
@@ -310,6 +310,7 @@ public class RadarPanel extends JPanel{   //显示主界面
             //g2.drawLine((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(xCircle-(diameter*0.0015)+0.003*diameter), (int)(startY+bulge));
             g2.rotate(Math.toRadians(1), xCircle, yCircle);
         }
+        //g2.rotate(Math.toRadians(theta), xCircle, yCircle);  //放在后面不行，必须放在前面
         //还原坐标系
         g2.setTransform(af);
 	}
