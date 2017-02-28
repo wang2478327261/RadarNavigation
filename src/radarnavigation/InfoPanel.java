@@ -49,7 +49,7 @@ public class InfoPanel extends JPanel{
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 	}
 	
-	/*************************************************************/
+	/******************绘制面板的重写方法*******************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
@@ -75,7 +75,7 @@ public class InfoPanel extends JPanel{
 		}
 	}
 	
-	/****************************************************/
+	/******************控制信息传递的方法群**********************************/
 	public void addShip(Ship ship) {
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
