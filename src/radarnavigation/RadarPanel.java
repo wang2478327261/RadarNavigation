@@ -286,24 +286,28 @@ public class RadarPanel extends JPanel{   //显示主界面
 		//圆心坐标
 		float xCircle = startX + diameter/2;  //圆心x坐标
 		float yCircle = startY + diameter/2;  //圆心y坐标
-		//画出一圈的刻度
+		
+		//画出一圈数字
 		g2.setColor(Color.CYAN);
-		for(int i = 0; i<36; i++){
-			float semi = diameter/2+10;
-			float degree = (float) Math.toRadians(i*10-90 + theta);
+		for(int i = 0; i<36; i++){  //一圈的度数  指示
+			float semi = diameter/2+10;  //度数显示的坐标半径
+			float degree = (float) Math.toRadians(i*10-90 + theta);  //-90是因为起始是在x坐标那块
 			int x = (int) (xCircle + semi * Math.cos(degree));
 			int y = (int) (yCircle + semi * Math.sin(degree));
 			int num = i * 10;
-			g2.drawString(Integer.toString(num) + "`", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
+			g2.drawString(Integer.toString(num) + "^", (int)(x - 0.01*diameter), (int)(y+0.005*diameter));
 		}
 		//图形旋转
 		AffineTransform af = g2.getTransform();  //保存以前的坐标信息
-		//g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);
-		g2.rotate(theta, xCircle, yCircle);
+		g2.rotate(Math.toRadians(theta), xCircle, yCircle);  //这里以前出错了，转角应该是弧度，不能是角度
+		//g2.rotate(theta, xCircle, yCircle);
+		//画刻度
 		g2.setColor(Color.GREEN);
         for (int i = 0; i < 360; i++) {
-            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);
+        	//i是5的倍数吗？不是就画短，如果是，i是10的倍数吗？
+            int bulge = (int) (i % 5 == 0 ? (i%10 == 0?0.02*diameter:0.01*diameter ): 0.005*diameter);  //计算是长凸出还是短凸出
             g2.fillRect((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(0.003*diameter), bulge);
+            //g2.drawLine((int)(xCircle-(diameter*0.0015)), (int)(startY), (int)(xCircle-(diameter*0.0015)+0.003*diameter), (int)(startY+bulge));
             g2.rotate(Math.toRadians(1), xCircle, yCircle);
         }
         //还原坐标系

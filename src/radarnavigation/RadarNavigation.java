@@ -59,11 +59,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 			public void keyPressed(KeyEvent e){
 				String command = "";
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					ship.setValue(3, ship.getParameter(3)+1);
+					ship.setValue(3, ship.getParameter(3)+2);
 					command = ship.getName() + ",course," + "starboard";  //ʹ�ÿո���зָ�
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					ship.setValue(3, ship.getParameter(3)-1);
+					ship.setValue(3, ship.getParameter(3)-2);
 					command = ship.getName() + ",course," + "port";
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
