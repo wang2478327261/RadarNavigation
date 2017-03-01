@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import common.Ship;
@@ -151,7 +152,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		radarpanel.getShip(ship);
 		
 		radarpanel.addMouseListener(new MouseAdapter() {
-			
 			@Override  //全屏功能
 			public void mouseClicked(MouseEvent e) {
 				
@@ -193,14 +193,15 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 				}
 			}
 		});
+		
 		infopanel = new InfoPanel();
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		//ScrollPane sp = new ScrollPane();
-		//sp.add(infopanel);
+		//JScrollPane jsp = new JScrollPane();
+		//jsp.setViewportView(infopanel);
 		contentPane.add(infopanel);
+		//contentPane.add(jsp);
 		//contentPane.add(sp);
 		infopanel.addMouseListener(new MouseAdapter() {
-			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				revalidate();

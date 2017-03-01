@@ -46,8 +46,8 @@ public class RadarPanel extends JPanel{   //显示主界面
 	
 	public RadarPanel() {
 		super();
-		
-		addMouseListener(new MouseAdapter() {
+		//2017.3.1 去掉边框效果，没必要这种动态变化
+		/*addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
@@ -56,7 +56,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}
-		});
+		});*/
 		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
@@ -129,7 +129,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		});
 		
 		// TODO Auto-generated constructor stub
-		setBorder(null);  //自由布局
+		setBorder(BorderFactory.createLineBorder(Color.GREEN));  //自由布局
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		setLayout(null);
@@ -214,7 +214,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		add(speed);
 	}
 	
-	/***********************��ͨ�����Գ�����**********************************************/
+	/*********************************************************************/
 	public void setRange(String option) {   //变化量程
 		if (option.equals("increase")) {  //判断缩放动作
 			range *= 2;
@@ -246,13 +246,13 @@ public class RadarPanel extends JPanel{   //显示主界面
 		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
 		
 	}
-	/*******************ͼ�λ滭��**************************************************************/
+	/*******************Repaint**************************************************************/
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g.create();   //转换成2D
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  //渲染效果
+		//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  //渲染效果
 		Font f = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 		g2.setFont(f);  //设置字体
 		//*************************************************************

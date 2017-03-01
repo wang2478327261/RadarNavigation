@@ -24,10 +24,8 @@ public class InfoPanel extends JPanel{
 	}
 	
 	private void initComponents() {
-		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				//������ҳ
 				if (e.getWheelRotation() > 0) {
 					scroll_Y -= 40;
 				}
