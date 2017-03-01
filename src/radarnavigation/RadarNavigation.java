@@ -197,10 +197,10 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		infopanel = new InfoPanel();
 		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 		//JScrollPane jsp = new JScrollPane();
-		//jsp.setViewportView(infopanel);
 		contentPane.add(infopanel);
 		//contentPane.add(jsp);
-		//contentPane.add(sp);
+		//jsp.setViewportView(infopanel);
+		
 		infopanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

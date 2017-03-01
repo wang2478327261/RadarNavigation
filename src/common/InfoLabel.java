@@ -1,5 +1,8 @@
 package common;
 
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -36,12 +39,13 @@ public class InfoLabel extends JLabel {
 		super(text);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-		super.setText(text);
+	//自己写的传值
+	public InfoLabel(Ship ship){
+		super();
+		
+		setForeground(Color.GREEN);
+		setSize(100, 100);
+		setBorder(BorderFactory.createLineBorder(Color.GREEN));
+		setText(ship.getName()+"<br>"+ship.getType());
 	}
-	
-	
 }

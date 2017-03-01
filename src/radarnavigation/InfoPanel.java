@@ -9,6 +9,8 @@ import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
+
+import common.InfoLabel;
 import common.Ship;
 
 @SuppressWarnings("serial")
@@ -20,6 +22,9 @@ public class InfoPanel extends JPanel{
 	public InfoPanel() {
 		super();
 		System.out.println("InfoPanel -> infopanel");
+		
+		ships.add(new Ship());
+		ships.add(new Ship());
 		initComponents();
 	}
 	
@@ -37,18 +42,21 @@ public class InfoPanel extends JPanel{
 		});
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		setLayout(null);
-		ships.add(new Ship("huawei",123,23,34,13,"normal"));
+		//setLayout(null);
+		/*ships.add(new Ship("huawei",123,23,34,13,"normal"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
-		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
+		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));*/
+		for(int i=0;i<ships.size();i++){
+			this.add(new InfoLabel(ships.get(i)));
+		}
 	}
 	
 	/******************绘制面板的重写方法*******************************************/
-	@Override
+	/*@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paint(g);
@@ -71,7 +79,7 @@ public class InfoPanel extends JPanel{
 			locate++;
 			g2.setColor(Color.CYAN);
 		}
-	}
+	}*/
 	
 	/******************控制信息传递的方法群**********************************/
 	public void addShip(Ship ship) {
