@@ -1,6 +1,7 @@
 package radarnavigation;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import common.InfoLabel;
+import common.InfoShow;
 import common.Ship;
 
 @SuppressWarnings("serial")
@@ -23,6 +25,12 @@ public class InfoPanel extends JPanel{
 		super();
 		System.out.println("InfoPanel -> infopanel");
 		
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		initComponents();
@@ -40,6 +48,7 @@ public class InfoPanel extends JPanel{
 				repaint();
 			}
 		});
+		setLayout(new FlowLayout());
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		//setLayout(null);
@@ -51,7 +60,7 @@ public class InfoPanel extends JPanel{
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));
 		ships.add(new Ship("youyuuou", 156, 34, 15,17, "limit"));*/
 		for(int i=0;i<ships.size();i++){
-			this.add(new InfoLabel(ships.get(i)));
+			this.add(new InfoShow(ships.get(i)));
 		}
 	}
 	

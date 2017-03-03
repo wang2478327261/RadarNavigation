@@ -44,8 +44,8 @@ public class InfoLabel extends JLabel {
 		super();
 		
 		setForeground(Color.GREEN);
-		setSize(100, 100);
+		setSize(200, 100);
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));
-		setText(ship.getName()+"<br>"+ship.getType());
+		setText(ship.getName()+"---"+ship.getType());
 	}
 }

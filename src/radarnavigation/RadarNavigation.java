@@ -1,5 +1,6 @@
 package radarnavigation;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
@@ -17,19 +18,19 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
+import common.InfoShow;
 import common.Ship;
 
 public class RadarNavigation extends JFrame{  //客户端的主类
 	
 	private static final long serialVersionUID = 4076498288039253119L;
 	
-	private JPanel contentPane;
+	//private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达显示面板
 	private InfoPanel infopanel;     //右侧的信息面板
+	private JScrollPane jsp;  //将右侧信息板添加-->滚动界面
 	private Ship ship;              //船舶对象，本船的对象
 	
 	private List<Ship> ships = new LinkedList<Ship>();   //其他船舶信息
@@ -124,11 +125,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 			public void componentResized(ComponentEvent e) {
 				if (!isUndecorated()) {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
-					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 				}
 				else {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
-					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
+					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
 				}
 				revalidate();  //这个得了解清楚
 				//repaint();
@@ -140,11 +141,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(20, 20, 1008, 735);
 		
-		contentPane = new JPanel();
+		Container contentPane = this.getContentPane();
 		contentPane.setBackground(null);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//contentPane.setBorder(BorderFactory.createEmptyBorder());
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		this.setLayout(null);
 		
 		radarpanel = new RadarPanel();
 		radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
@@ -195,23 +196,24 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		});
 		
 		infopanel = new InfoPanel();
-		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		//JScrollPane jsp = new JScrollPane();
-		contentPane.add(infopanel);
-		//contentPane.add(jsp);
-		//jsp.setViewportView(infopanel);
+		//infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+		jsp = new JScrollPane();
+		jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+		jsp.setViewportView(infopanel);
+		jsp.add(new InfoShow(ship));
+		contentPane.add(jsp);
 		
-		infopanel.addMouseListener(new MouseAdapter() {
+		jsp.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				revalidate();
-				if (e.getButton() == MouseEvent.BUTTON1) {
-				}
-				else if (e.getButton() == MouseEvent.BUTTON3) {
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					
 				}
 			}
+			
 		});
-		
 	}
 	
 }
