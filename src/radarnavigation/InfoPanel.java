@@ -10,13 +10,14 @@ import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import common.InfoLabel;
 import common.InfoShow;
 import common.Ship;
 
-@SuppressWarnings("serial")
-public class InfoPanel extends JPanel{
+public class InfoPanel extends JScrollPane{
+	
+	private static final long serialVersionUID = -1344586063850816104L;
 	
 	List<Ship> ships = new LinkedList<Ship>();
 	private int scroll_Y = 0;
@@ -48,7 +49,7 @@ public class InfoPanel extends JPanel{
 				repaint();
 			}
 		});
-		setLayout(new FlowLayout());
+		//setLayout(new FlowLayout());
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		//setLayout(null);
