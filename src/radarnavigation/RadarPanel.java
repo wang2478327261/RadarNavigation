@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -13,9 +12,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
 import common.HoverLable;
 import common.Ship;
 
@@ -24,7 +25,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private static final long serialVersionUID = -6000318065148555968L;
 	
 	private float range = 6;  //量程
-	private boolean headline = true;  //
+	private boolean headline = true;
 	private boolean rangeline = true;  //是否显示量程
 	private boolean headup = true;   //是否首向上
 	private boolean relative = true;  //是否相对运动
@@ -102,13 +103,13 @@ public class RadarPanel extends JPanel{   //显示主界面
 				Font font = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 				int h = (int)(diameter*0.04);
 				//响应式布局--以下的计算都是根据一个对象的尺寸同步变换，这里是圆的直径
-				lineUp.setBounds(4, 4, (int)(diameter*0.3), h);
-				rangeSwitch.setBounds(4, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
-				showMode.setBounds(4, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
-				activeMode.setBounds(4, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
+				lineUp.setBounds(0, 4, (int)(diameter*0.3), h);
+				rangeSwitch.setBounds(0, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
+				showMode.setBounds(0, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
+				activeMode.setBounds(0, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
 				
-				showRange.setBounds(4, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
-				perCircle.setBounds(4, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
+				showRange.setBounds(0, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
+				perCircle.setBounds(0, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
 				
 				latitude.setBounds(getWidth()-(int)(diameter*0.3), 4, (int)(diameter*0.3), h);
 				longitude.setBounds(getWidth()-(int)(diameter*0.3), latitude.getY()+latitude.getHeight(), (int)(diameter*0.3), h);

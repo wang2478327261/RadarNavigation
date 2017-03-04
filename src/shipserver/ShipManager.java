@@ -1,10 +1,8 @@
 package shipserver;
 
 import java.awt.EventQueue;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 
-import radarnavigation.RadarPanel;
+import javax.swing.JFrame;
 
 public class ShipManager extends JFrame{
 	

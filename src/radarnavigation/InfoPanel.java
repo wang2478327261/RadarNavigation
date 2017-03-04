@@ -1,10 +1,6 @@
 package radarnavigation;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
@@ -13,7 +9,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import common.InfoShow;
 import common.Ship;
@@ -22,7 +17,7 @@ public class InfoPanel extends JPanel{
 	
 	private static final long serialVersionUID = -1344586063850816104L;
 	
-	List<Ship> ships = new LinkedList<Ship>();
+	public static List<Ship> ships = new LinkedList<Ship>();
 	private int scroll_Y = 0;
 	
 	public InfoPanel() {
@@ -37,52 +32,7 @@ public class InfoPanel extends JPanel{
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
+		
 		initComponents();
 	}
 	
@@ -142,15 +92,15 @@ public class InfoPanel extends JPanel{
 	}*/
 	
 	/******************控制信息传递的方法群**********************************/
-	public void addShip(Ship ship) {
+	public static void addShip(Ship ship) {
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
-		repaint();
+		//repaint();
 	}
-	public void removeShip(Ship ship) {
+	public static void removeShip(Ship ship) {
 		ships.remove(ship);
 		System.out.println("InfoPanel -> removeShip");
-		repaint();
+		//repaint();
 	}
 	
 	public void changeMode(){

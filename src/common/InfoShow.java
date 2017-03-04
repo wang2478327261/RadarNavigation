@@ -1,6 +1,7 @@
 package common;
 
 import java.awt.Color;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -41,12 +42,12 @@ public class InfoShow extends JTextArea {
 		// TODO Auto-generated constructor stub
 	}
 	public InfoShow(Ship ship){
-		setForeground(Color.GREEN);
-		setBackground(Color.DARK_GRAY);
-		setSize(200, 100);
+		setForeground(Color.RED);
+		setBackground(Color.PINK);
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));
-		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa+\ncnsjbsckd";
+		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa\ncnsjbsckd";
 		this.setEditable(false);
+		this.setMargin(new Insets(2, 2, 2, 2));
 		this.setText(info);
 	}
 }

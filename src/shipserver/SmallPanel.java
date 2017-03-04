@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import common.Ship;
 
-public class SmallPanel extends JPanel implements Runnable{
+public class SmallPanel extends JPanel implements Runnable{  //船舶绘制有点问题，下一个版本制作的时候应当注意
     
 	private static final long serialVersionUID = 5493000947340277541L;
 	
@@ -129,7 +129,8 @@ public class SmallPanel extends JPanel implements Runnable{
 				if(e.getButton() == MouseEvent.BUTTON1){
 		            newx = e.getX();
 		            newy = e.getY();
-		            double course = CaculateRatio(mousex, mousey, newx, newy);
+		            //double course = CaculateRatio(mousex, mousey, newx, newy);
+		            double course = CaculateRatio(oldx, oldy, dragx, dragy);   //?????
 		            double differentx = newx - mousex;
 		            double differenty = newy - mousey;
 		            double speed = Math.sqrt(Math.pow(differentx, 2) + Math.pow(differenty, 2))/10;
@@ -229,7 +230,7 @@ public class SmallPanel extends JPanel implements Runnable{
             g2.drawString("Course : " + (int)course, (int)dragx + 30, (int)dragy);
             g2.drawString("Speed : "+(int)speed/10, (int)dragx + 30, (int)dragy+30);
             
-            //normalShip(g2, oldx, oldy, 0, 0);
+            //normalShip(g2, oldx, oldy, course, speed);
             creatingShip(g2, oldx, oldy, course, speed);
 		}
 		g2.setColor(Color.BLUE);
@@ -257,6 +258,7 @@ public class SmallPanel extends JPanel implements Runnable{
 	
 	public void normalShip(Graphics2D g2, double Px, double Py, double course, double speed) {  //可以整体旋转
 		int linestartx, linestarty, lineendx, lineendy;
+		//course = Math.toRadians(course);
 		linestartx = (int) (Px + 20 * Math.sin(course));
 		linestarty = (int) (Py - 20 * Math.cos(course));
 		lineendx = (int) (linestartx + speed * Math.sin(course));
@@ -273,33 +275,10 @@ public class SmallPanel extends JPanel implements Runnable{
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
-
-		/*AffineTransform at = g2.getTransform();
-		at.rotate(course);
-		
-		int linestartx, linestarty, lineendx, lineendy;
-		linestartx = (int) (Px + 20 * Math.sin(course));
-		linestarty = (int) (Py - 20 * Math.cos(course));
-		lineendx = (int) (linestartx + speed * Math.sin(course));
-		lineendy = (int) (linestarty - speed * Math.cos(course));
-		
-		int[] trianglex = { linestartx,
-				(int) (Px + 7 * Math.sin(course + Math.PI / 2)),
-				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + Math.PI / 2)),
-				(int) (Px - 10 * Math.sin(course) + 7 * Math.sin(course + 3 * Math.PI / 2)),
-				(int) (Px + 7 * Math.sin(course + 3 * Math.PI / 2)) };
-		int[] triangley = { linestarty,
-				(int) (Py - 7 * Math.cos(course + Math.PI / 2)),
-				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + Math.PI / 2)),
-				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + 3 * Math.PI / 2)),
-				(int) (Py - 7 * Math.cos(course + 3 * Math.PI / 2)) };
-		// drawbody and courseline
-		g2.drawPolygon(trianglex, triangley, 5);
-		g2.drawLine(linestartx, linestarty, lineendx, lineendy);*/
 	}
-	//试试用旋转创建-->试过了，是哟个好方法，但是还不能用
+	//试试用旋转创建-->试过了，是个好方法，但是还不能用
 	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed){  //拖拽时创建船舶对象，不用绘制船舶首向
-		AffineTransform af = g2.getTransform();
+		AffineTransform af = g2.getTransform();  //以后用这种方法更好
 		double radiusCourse = Math.toRadians(course);
 		g2.rotate(Math.toRadians(radiusCourse), Px, Py);
 		

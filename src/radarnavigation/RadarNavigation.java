@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import common.InfoShow;
 import common.Ship;
 
 public class RadarNavigation extends JFrame{  //客户端的主类
@@ -199,7 +198,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		
 		infopanel = new InfoPanel();
 		//infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		infopanel.setSize(getWidth()*2/9, getHeight()-35);
+		//infopanel.setSize(getWidth()*2/9, getHeight()-35);
 		jsp = new JScrollPane();
 		jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9-50, getHeight()-35);
 		jsp.setLocation(radarpanel.getWidth(), 0);
