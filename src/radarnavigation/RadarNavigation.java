@@ -30,7 +30,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 	//private JPanel contentPane;
 	private RadarPanel radarpanel;    //雷达显示面板
 	private InfoPanel infopanel;     //右侧的信息面板
-	//private JScrollPane jsp = new JScrollPane();  //将右侧信息板添加-->滚动界面
+	private JScrollPane jsp ;  //将右侧信息板添加-->滚动界面
 	private Ship ship;              //船舶对象，本船的对象
 	
 	private List<Ship> ships = new LinkedList<Ship>();   //其他船舶信息
@@ -125,11 +125,13 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 			public void componentResized(ComponentEvent e) {
 				if (!isUndecorated()) {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
-					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+					infopanel.setSize(getWidth()*2/9, getHeight()-35);
+					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 				}
 				else {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
-					infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
+					infopanel.setSize(getWidth()*2/9, getHeight());
+					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
 				}
 				revalidate();  //这个得了解清楚
 				//repaint();
@@ -196,13 +198,15 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		});
 		
 		infopanel = new InfoPanel();
-		infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		//jsp = new JScrollPane();
-		//jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-		//jsp.setViewportView(infopanel);
+		//infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
+		infopanel.setSize(getWidth()*2/9, getHeight()-35);
+		jsp = new JScrollPane();
+		jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9-50, getHeight()-35);
+		jsp.setLocation(radarpanel.getWidth(), 0);
+		jsp.setViewportView(infopanel);
 		
-		contentPane.add(infopanel);
-		//contentPane.add(jsp);
+		//contentPane.add(infopanel);
+		contentPane.add(jsp);
 		
 		infopanel.addMouseListener(new MouseAdapter() {
 			@Override

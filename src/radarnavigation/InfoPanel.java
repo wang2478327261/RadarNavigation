@@ -9,13 +9,16 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import common.InfoShow;
 import common.Ship;
 
-public class InfoPanel extends JScrollPane{
+public class InfoPanel extends JPanel{
 	
 	private static final long serialVersionUID = -1344586063850816104L;
 	
@@ -26,6 +29,52 @@ public class InfoPanel extends JScrollPane{
 		super();
 		System.out.println("InfoPanel -> infopanel");
 		
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
+		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
@@ -49,7 +98,8 @@ public class InfoPanel extends JScrollPane{
 				repaint();
 			}
 		});
-		//setLayout(new FlowLayout());
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));  //这个有点问题，但是可以运行
+		setBorder(BorderFactory.createLineBorder(Color.RED));  //测试
 		setBackground(Color.DARK_GRAY);
 		//setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		//setLayout(null);

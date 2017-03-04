@@ -45,7 +45,7 @@ public class InfoShow extends JTextArea {
 		setBackground(Color.DARK_GRAY);
 		setSize(200, 100);
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));
-		info = ship.getName() + "-->" + ship.getType();
+		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa+\ncnsjbsckd";
 		this.setEditable(false);
 		this.setText(info);
 	}
