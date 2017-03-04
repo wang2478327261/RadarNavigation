@@ -124,12 +124,12 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 			public void componentResized(ComponentEvent e) {
 				if (!isUndecorated()) {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight()-35);
-					infopanel.setSize(getWidth()*2/9, getHeight()-35);
+					//infopanel.setSize(getWidth()*2/9, getHeight()-35);
 					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
 				}
 				else {
 					radarpanel.setBounds(0, 0, getWidth()*7/9, getHeight());
-					infopanel.setSize(getWidth()*2/9, getHeight());
+					//infopanel.setSize(getWidth()*2/9, getHeight());
 					jsp.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight());
 				}
 				revalidate();  //这个得了解清楚
@@ -156,7 +156,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		radarpanel.addMouseListener(new MouseAdapter() {
 			@Override  //全屏功能
 			public void mouseClicked(MouseEvent e) {
-				
 				if(e.getButton() == MouseEvent.BUTTON1){
 					//e.getModifiers() == 16
 					if (e.getClickCount() == 1) {
@@ -174,7 +173,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 						
 					}
 					
-					if (e.getClickCount() >= 2) {
+					/*if (e.getClickCount() >= 2) {
 						if (!isUndecorated()) {
 							setLocation(0, 0);
 							setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -191,7 +190,29 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 							radarpanel.setSize(getWidth()*7/9, getHeight());
 						}
 						revalidate();
+					}*/
+				}
+				else if (e.getButton() == MouseEvent.BUTTON3) {
+					//删除操作
+				}
+				else if (e.getButton() == MouseEvent.BUTTON2) {
+					//全屏
+					if (!isUndecorated()) {
+						setLocation(0, 0);
+						setSize(Toolkit.getDefaultToolkit().getScreenSize());
+						dispose();
+						setUndecorated(true);
+						setVisible(true);
+						radarpanel.setSize(getWidth()*7/9, getHeight()-35);
 					}
+					else {
+						setBounds(20, 20, 1008, 735);
+						dispose();
+						setUndecorated(false);
+						setVisible(true);
+						radarpanel.setSize(getWidth()*7/9, getHeight());
+					}
+					revalidate();
 				}
 			}
 		});
@@ -206,18 +227,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 		
 		//contentPane.add(infopanel);
 		contentPane.add(jsp);
-		
-		infopanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseClicked(e);
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					
-				}
-			}
-			
-		});
 	}
 	
 }

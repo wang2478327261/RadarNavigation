@@ -31,7 +31,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private boolean relative = true;  //是否相对运动
 	
 	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
-	double pc = 1;  //每圈代表的距离
+	double pc = 1;  //每圈代表的距离,跟随range变化
 	private Ship ship;  //当前自己的对象
 	
 	private HoverLable showMode;
