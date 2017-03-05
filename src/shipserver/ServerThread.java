@@ -178,21 +178,21 @@ public class ServerThread extends Thread{
 		}
 	}
 	
-	public void sendData(Socket socket, String data) throws IOException{
+	public static void sendData(Socket socket, String data) throws IOException{
 		PrintWriter output = new PrintWriter(socket.getOutputStream());
 		output.println(data);
 		output.flush();
 		System.out.println("ServerThread.sendData()");
 	}
 	
-	public String getData(Socket socket) throws IOException{
+	public static String getData(Socket socket) throws IOException{
 		BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String data = input.readLine();
 		System.out.println("ServerThread.getData()");
 		return data;
 	}
 	
-	public void sync(Socket socket, String name) throws IOException{
+	public static void sync(Socket socket, String name) throws IOException{
 		// TODO sync
 		System.out.println("ServerThread -> sycn");
 		String command = name + ",go";
