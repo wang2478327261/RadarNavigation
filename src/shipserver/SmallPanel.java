@@ -151,7 +151,7 @@ public class SmallPanel extends JPanel implements Runnable{  //船舶绘制有�
 						for (Socket sk : sockets) {
 							String command = name + "logIn" + mousex + mousey + course + speed + type;
 							try {
-								server.sendData(sk, command);
+								ServerThread.sendData(sk, command);
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
