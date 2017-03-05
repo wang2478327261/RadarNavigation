@@ -26,9 +26,9 @@ import common.Ship;
 
 public class SmallPanel extends JPanel implements Runnable{  //船舶绘制有点问题，下一个版本制作的时候应当注意
     
-	private static final long serialVersionUID = 5493000947340277541L;
-	
-	private double mousex, mousey;
+    private static final long serialVersionUID = 5493000947340277541L;
+
+    private double mousex, mousey;
     private double dragx, dragy;
     private double oldx, oldy;
     private double newx, newy;
