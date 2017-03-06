@@ -64,6 +64,10 @@ public class RadarPanel extends JPanel{   //显示主界面
 			}
 		});*/
 		
+		//初始化界面
+		initComponents();
+	}
+	private void initComponents() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {  //缩放偏移时应当记录当前的信息，以便于还原
 				if (e.getWheelRotation() > 0) {   //减小量程
@@ -97,10 +101,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 				repaint(1000);
 			}
 		});
-		//初始化界面
-		initComponents();
-	}
-	private void initComponents() {
+		
 		addComponentListener(new ComponentAdapter() {  //全屏缩放，怎么制作响应式界面
 			@Override
 			public void componentResized(ComponentEvent e) {  //缩放后的同时更新界面
