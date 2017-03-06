@@ -31,7 +31,9 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     private JScrollPane jsp;  //将右侧信息板添加-->滚动界面
     private Ship ship;              //船舶对象，本船的对象
     
-    private List<Ship> ships = new LinkedList<Ship>();   //其他船舶信息
+    private List<Ship> ships = new LinkedList<Ship>();   //其他船舶信息,应当传递绘制面板局部的，因为只能在圆内绘制
+    private List<Ship> innerShips = new LinkedList<>();  //雷达面板显示的船舶信息，再想想还有什么好办法
+    													//使用树结构怎么样？大于量程加入左子树，小于量程加入右子树
     ClientThread client;            //客户端通信线程
     
     public static void main(String[] args) {
@@ -46,10 +48,9 @@ public class RadarNavigation extends JFrame{  //客户端的主类
             }
         });
     }
-
+    
     /**
      * Create the frame.
-     *
      * @author ERON
      * @see RadarPanel
      * @throws IOException
@@ -83,7 +84,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
          */
         initComponents();
     }
-
+    
     private void initComponents() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -146,7 +147,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     jsp.setBounds(radarpanel.getWidth(), 0, getWidth() * 2 / 9, getHeight());
                 }
                 revalidate();  //这个得了解清楚
-                //repaint();
+                repaint();  //如果不重绘会出现刷新不及时的情况
             }
         });
         

@@ -12,6 +12,7 @@ public class InfoShow extends JTextArea {
 	private static final long serialVersionUID = -6736968308209642335L;
 
 	private String info = null;
+	private String idName = null;
 	public InfoShow() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -46,8 +47,14 @@ public class InfoShow extends JTextArea {
 		setBackground(Color.PINK);
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));
 		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa\ncnsjbsckd";
+		idName = ship.getName();
+		
 		this.setEditable(false);
 		this.setMargin(new Insets(2, 2, 2, 2));
 		this.setText(info);
+	}
+	
+	public String getID(){
+		return idName;
 	}
 }

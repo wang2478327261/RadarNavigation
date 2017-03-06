@@ -1,8 +1,6 @@
 package radarnavigation;
 
 import java.awt.Color;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class InfoPanel extends JPanel{
 	private static final long serialVersionUID = -1344586063850816104L;
 	
 	public static List<Ship> ships = new LinkedList<Ship>();  //当前面板中的显示对象队列
-	private static List<InfoShow> infos = new LinkedList<>();  //对应的组件列表，方便操作
+	private static List<InfoShow> infos = new LinkedList<InfoShow>();  //对应的组件列表，方便操作
 	
 	public InfoPanel() {
 		super();
@@ -32,7 +30,9 @@ public class InfoPanel extends JPanel{
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());*/
-		
+		for(int i=0;i<ships.size();i++){
+			infos.add(new InfoShow(ships.get(i)));
+		}
 		initComponents();
 	}
 	
@@ -40,8 +40,9 @@ public class InfoPanel extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));  //这个有点问题，但是可以运行
 		setBorder(BorderFactory.createLineBorder(Color.RED));  //测试
 		setBackground(Color.DARK_GRAY);
-		for(int i=0;i<ships.size();i++){
-			this.add(new InfoShow(ships.get(i)));
+		
+		for(int i=0;i<infos.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
+			this.add(infos.get(i));
 		}
 	}
 	
@@ -49,18 +50,29 @@ public class InfoPanel extends JPanel{
 	//以前是绘制出选择的信息，现在直接组件排版
 	
 	/******************控制信息传递的方法群**********************************/
-	public static void addShip(Ship ship) {
+	public static void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
-		//repaint();
+		infos.add(new InfoShow(ship));
 	}
 	public static void removeShip(Ship ship) {
-		ships.remove(ship);
+		for(int i=0;i<ships.size();i++){
+			if (ships.get(i).getName() == ship.getName()) {
+				ships.remove(i);
+				break;
+			}
+		}
+		//ships.remove(ship);  //?可以直接删除对象吗？应该不可以，没有唯一识别符
 		System.out.println("InfoPanel -> removeShip");
-		//repaint();
+		for(int i=0;i<infos.size();i++){
+			if (infos.get(i).getID() == ship.getName()) {
+				infos.remove(i);
+				break;
+			}
+		}
 	}
 	
 	public void changeMode(){
-		
+		//改变模式，以前想加的功能，碍于现在的进度，暂时不识闲，以后或者下一个版本考虑这种界面整体变化的情况
 	}
 }

@@ -14,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -35,6 +37,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
 	double pc = 1;  //每圈代表的距离,跟随range变化
 	private Ship ship;  //当前自己的对象
+	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象
 	
 	private HoverLable showMode;  //首向上还是北向上
 	private HoverLable activeMode;  //相对运动还是绝对运动
@@ -62,7 +65,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		});*/
 		
 		addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {
+			public void mouseWheelMoved(MouseWheelEvent e) {  //缩放偏移时应当记录当前的信息，以便于还原
 				if (e.getWheelRotation() > 0) {   //减小量程
 					setRange("reduce");
 				}
@@ -130,7 +133,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 			}
 		});
 		
-		// TODO Auto-generated constructor stub
+		// TODO 总体设置
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));  //自由布局
 		setBackground(Color.DARK_GRAY);
 		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -250,8 +253,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 	}
 	/*******************Repaint**************************************************************/
 	@Override
-	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g) {  //需要根据量程重新绘制，这种方法不好，和信息面板一样，用组件，消耗更少的资源
+									//或者查阅资料，实现动画的局部刷新
+		// TODO 绘制雷达界面
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D)g.create();   //转换成2D
 		//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  //渲染效果
@@ -347,5 +351,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 		g2.setColor(Color.GREEN);
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 		g2.setTransform(af);
+	}
+	
+	public void deawShips(){
+		//绘制当前船舶的模糊对象
 	}
 }
