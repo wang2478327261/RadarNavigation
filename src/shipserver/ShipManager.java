@@ -17,12 +17,13 @@ public class ShipManager extends JFrame {  //注意设计界面系统的结构�
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     ShipManager frame = new ShipManager();
                     frame.setVisible(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.exit(1);
                 }
             }
         });

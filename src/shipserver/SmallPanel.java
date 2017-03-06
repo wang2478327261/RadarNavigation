@@ -41,13 +41,20 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
     private List<Ship> serverShips = new LinkedList<Ship>();  //服务端本地创建的对象，用来测试
 
     //private Map<String, Socket> sockets = new HashMap<String, Socket>();
-    private List<Socket> sockets = new LinkedList<Socket>();
-
+    private List<Socket> sockets = new LinkedList<Socket>();  //记录套接字，以后应当参照ChatRoom代码
+    
     //private Map<String, List<Point>> track = new HashMap<String, List<Point>>(); 
     //这个不需要吧，应当根据消息各自创建比较好，数据量比较少
     public SmallPanel() {
         super();
+        
+        initComponents();
+
+    }
+
+    private void initComponents() {
         addMouseWheelListener(new MouseWheelListener() {  //function implement in next version
+            @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 setCursor(new Cursor(Cursor.MOVE_CURSOR));
                 if (e.getWheelRotation() > 0) {
@@ -76,7 +83,6 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
             }
         });
         addMouseListener(new MouseAdapter() {
-
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
@@ -119,7 +125,6 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
                 }
                 repaint();
             }
-
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
@@ -158,16 +163,12 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
                 repaint();
             }
         });
-        initComponents();
-
-    }
-
-    private void initComponents() {
+        
         setBorder(BorderFactory.createEmptyBorder());
         setLayout(null);
-        //setOpaque(false);
+        //setOpaque(false);  //起初是想实现一个动态的面板，后来去除变成现在直观的界面
         setBackground(Color.WHITE);
-
+        //启动通信线程
         server = new ServerThread(clientShips, serverShips, sockets, this);
         server.start();
     }
@@ -264,7 +265,6 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
             switch (vessel.getType()) {
             }
             normalShip(g2, Px, Py, course, speed);
-
         }
         g2.setColor(Color.MAGENTA);
         for (Ship vessel : serverShips) {  //服务端创建的船舶
@@ -340,7 +340,7 @@ public class SmallPanel extends JPanel implements Runnable {  //船舶绘制有�
 
     @Override
     public void run() {  //释放鼠标开始计时，5秒后更新数据
-        // TODO Auto-generated method stub
+        // TODO 以后可以使用timer，原来原理都是一样的，嘿嘿
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

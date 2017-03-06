@@ -13,14 +13,14 @@ import common.Ship;
 public class ServerThread extends Thread {
 
     private ServerSocket serversocket;
-    private boolean logOut = false;
+    private boolean logOut = false;  //登录标志
     private SmallPanel smallpanel;
 
     private List<Ship> clientShips;
     private List<Ship> serverShips;
     private List<Socket> sockets;
     //private Map<String, List<Point>> track;
-
+    
     public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, //Map<String, List<Point>> track,
             SmallPanel smallpanel) {
         super();
@@ -194,12 +194,5 @@ public class ServerThread extends Thread {
         String command = name + ",go";
         sendData(socket, command);
     }
-
-    /*public void kickOut(String name) throws IOException {
-		sendData(name + ",kickOut");
-	}
-	
-	public void logOut(Ship ship) throws IOException {
-		sendData(ship.getName() + ",logOut");
-	}*/
+    
 }
