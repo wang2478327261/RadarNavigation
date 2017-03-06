@@ -21,15 +21,15 @@ public class ServerThread extends Thread{
 	private List<Ship> clientShips;
 	private List<Ship> serverShips;
 	private List<Socket> sockets;
-	private Map<String, List<Point>> track;
+	//private Map<String, List<Point>> track;
 	
-	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, Map<String, List<Point>> track,
+	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, //Map<String, List<Point>> track,
 			SmallPanel smallpanel) {
 		super();
 		this.clientShips = clientShips;
 		this.serverShips = serverShips;
 		this.sockets = sockets;
-		this.track = track;
+		//this.track = track;
 		this.smallpanel = smallpanel;
 		System.out.println("ServerThread -> @overidethread");
 	}

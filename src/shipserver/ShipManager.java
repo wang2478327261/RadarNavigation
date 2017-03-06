@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class ShipManager extends JFrame{
+public class ShipManager extends JFrame{  //注意设计界面系统的结构，方便数据传递
 	
 	private static final long serialVersionUID = 5649146024506368826L;
 	
@@ -38,8 +38,6 @@ public class ShipManager extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(20, 20, 1208, 735);
 		smallpanel = new SmallPanel();
-		//smallpanel.setBorder(BorderFactory.createEmptyBorder());
-		//smallpanel.setLayout(null);
 		setContentPane(smallpanel);
 	}
 	
