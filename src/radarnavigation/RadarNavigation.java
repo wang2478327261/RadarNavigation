@@ -7,7 +7,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -55,7 +54,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
      * @see RadarPanel
      * @throws IOException
      */
-    public RadarNavigation() throws IOException {
+    public RadarNavigation() throws IOException {  //录取客户端船舶信息，暂时录入名称和位置信息
 
         String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
         while (customer == null || customer.equals("")) {
@@ -88,7 +87,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     private void initComponents() {
         addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {  //更改客户端信息
             	System.out.println("keyCode");
                 String command = "";
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
