@@ -27,7 +27,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     
     private static final long serialVersionUID = 4076498288039253119L;
     
-    //private JPanel contentPane;
     private RadarPanel radarpanel;    //雷达显示面板
     private InfoPanel infopanel;     //右侧的信息面板
     private JScrollPane jsp;  //将右侧信息板添加-->滚动界面
@@ -115,6 +114,14 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 				}*/
                 repaint();
                 System.out.println("RadarNavigation -> keyPress" + command);
+                //下面这段带码对总体没有意义，去掉2017.3.5 record
+                /*if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                	setBounds(20, 20, 1008, 735);
+                    dispose();
+                    setUndecorated(false);
+                    setVisible(true);
+                    radarpanel.setSize(getWidth() * 7 / 9, getHeight());
+				}*/
             }
         });
         addWindowListener(new WindowAdapter() {
@@ -178,7 +185,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                         }
 
                     }
-
+                    //这里会与选择对象冲突，所以去掉，还有，应该使用timer类进行，百度一下，可以避免多次单机后的错误
                     /*if (e.getClickCount() >= 2) {
 						if (!isUndecorated()) {
 							setLocation(0, 0);
@@ -230,7 +237,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         //contentPane.add(infopanel);
         contentPane.add(jsp);
         this.setFocusable(true);
-        //this.requestFocus();
     }
 
 }

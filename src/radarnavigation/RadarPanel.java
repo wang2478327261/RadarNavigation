@@ -36,16 +36,16 @@ public class RadarPanel extends JPanel{   //显示主界面
 	double pc = 1;  //每圈代表的距离,跟随range变化
 	private Ship ship;  //当前自己的对象
 	
-	private HoverLable showMode;
-	private HoverLable activeMode;
-	private HoverLable lineUp;
-	private HoverLable rangeSwitch;
-	private HoverLable showRange;
-	private HoverLable latitude;
-	private HoverLable longitude;
-	private HoverLable course;
-	private HoverLable speed;
-	private HoverLable perCircle;
+	private HoverLable showMode;  //首向上还是北向上
+	private HoverLable activeMode;  //相对运动还是绝对运动
+	private HoverLable lineUp;  //是否显示船首线
+	private HoverLable rangeSwitch;  //是否打开显示 量程
+	private HoverLable showRange;  //显示当前的量程是多少
+	private HoverLable latitude;  //当前经度
+	private HoverLable longitude;  //当前纬度
+	private HoverLable course;  //当前航向
+	private HoverLable speed;  //当前航速
+	private HoverLable perCircle;  //当前量程下每个量程圈的大小，是多少海里
 	
 	public RadarPanel() {
 		super();
