@@ -15,6 +15,7 @@ public class ShipManager extends JFrame {
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     ShipManager frame = new ShipManager();
