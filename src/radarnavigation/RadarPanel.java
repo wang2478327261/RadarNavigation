@@ -161,7 +161,6 @@ public class RadarPanel extends JPanel{   //显示主界面
 			public void mouseClicked(MouseEvent e) {
 				if (rangeline) {
 					rangeSwitch.setText("RANGE < OFF > ");
-					
 				}
 				else {
 					rangeSwitch.setText("RANGE < ON > ");
@@ -186,7 +185,6 @@ public class RadarPanel extends JPanel{   //显示主界面
 				repaint();
 			}
 		});
-		
 		add(showMode);
 		
 		activeMode = new HoverLable("RELATIVE");
@@ -219,7 +217,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		add(speed);
 	}
 	
-	/*********************************************************************/
+	/**************normal method*******************************************************/
 	public void setRange(String option) {   //变化量程
 		if (option.equals("increase")) {  //判断缩放动作
 			range *= 2;
