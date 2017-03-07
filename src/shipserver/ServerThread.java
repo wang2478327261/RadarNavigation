@@ -11,16 +11,16 @@ import java.util.List;
 import common.Ship;
 
 public class ServerThread extends Thread {
-
+	
 	private ServerSocket serversocket;
 	private boolean logOut = false;
 	private SmallPanel smallpanel;
-
+	
 	private List<Ship> clientShips;
 	private List<Ship> serverShips;
 	private List<Socket> sockets;
 	// private Map<String, List<Point>> track;
-
+	
 	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, // Map<String,
 																								// List<Point>>
 																								// track,
