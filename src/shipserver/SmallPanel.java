@@ -278,8 +278,12 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	}
 
 	public void normalShip(Graphics2D g2, double Px, double Py, double course, double speed) { // 可以整体旋转
-		int linestartx, linestarty, lineendx, lineendy;
 		course = Math.toRadians(course);  //角度转换成弧度
+		
+		AffineTransform af = g2.getTransform(); // 以后用这种方法更好
+		g2.rotate(course, Px, Py);
+		
+		int linestartx, linestarty, lineendx, lineendy;
 		linestartx = (int) (Px + 20 * Math.sin(course));
 		linestarty = (int) (Py - 20 * Math.cos(course));
 		lineendx = (int) (linestartx + speed * Math.sin(course));
@@ -296,6 +300,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
+		
+		g2.setTransform(af);
 	}
 	// 试试用旋转创建-->试过了，是个好方法，但是还需要修改
 	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed) { // 拖拽时创建船舶对象，不用绘制船舶首向
