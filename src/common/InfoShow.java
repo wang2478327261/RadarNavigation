@@ -1,6 +1,7 @@
 package common;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
@@ -43,8 +44,10 @@ public class InfoShow extends JTextArea {
 		// TODO Auto-generated constructor stub
 	}
 	public InfoShow(Ship ship){
-		setForeground(Color.RED);
-		setBackground(Color.PINK);
+		Font font = new Font("Default", Font.PLAIN, 14);
+		setFont(font);
+		setForeground(Color.CYAN);
+		setBackground(Color.DARK_GRAY);
 		setBorder(BorderFactory.createLineBorder(Color.GREEN));
 		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa\ncnsjbsckd";
 		idName = ship.getName();
