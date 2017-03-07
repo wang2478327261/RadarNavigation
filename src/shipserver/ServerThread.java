@@ -211,16 +211,17 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 		System.out.println("kick out "+name);
 	}*/
 	
-	public void logIn(String name){
+	public void logIn(String command){
+		//String command = name + "logIn" + mousex + mousey + course + speed + type;
 		for(int i=0;i<sockets.size();i++){
 			try {
-				sendData(sockets.get(i), "login,"+name);
+				sendData(sockets.get(i), command);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		System.out.println("log in "+name);
+		System.out.println(command);
 	}
 	
 	public void logOut(String name){

@@ -109,9 +109,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 							helpStr = "No ship to Clear --> Left Drag to Create";
 						} else {
 							for(int i=0;i<serverShips.size();i++){  //清空服务端创建的船舶对象
-								for(int j=0;j<sockets.size();j++){  //向客户端发送logout信息
-									server.logOut(serverShips.get(i).getName());
-								}
+								server.logOut(serverShips.get(i).getName());
 							}
 							serverShips.clear();
 							helpStr = "Clear All Ships --> No server ships";
@@ -147,8 +145,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 					String name = JOptionPane.showInputDialog("ship name");
 					if (name != null && !name.equals("")) {
 						Ship ship = new Ship(name, mousex, mousey, course, speed, type);
-						newServerShip(ship);
-						//serverShips.add(ship);
+						serverShips.add(ship);
 						
 						nameStr = "Ship name : " + name;
 						positionStr = "Position : " + mousex + "," + mousey;
@@ -158,14 +155,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 						
 						new Thread(SmallPanel.this).start();
 						
-						for (Socket sk : sockets) {  //同步客户端,吊桶通信类的方法
-							String command = name + "logIn" + mousex + mousey + course + speed + type;
-							try {
-								server.sendData(sk, command);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
+						String command = name + "logIn" + mousex + mousey + course + speed + type;
+						server.logIn(command);  //登录信息多于登出信息，需要位置，速度...
 					}
 				}
 				pressed = false;
@@ -179,18 +170,18 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		
 	}
 	//与通信线程的数据传递
-	public void newServerShip(Ship ship){
+	/*public void newServerShip(Ship ship){
 		serverShips.add(ship);
-	}
+	}*/
 	public void addClientShip(Ship ship){
 		clientShips.add(ship);
 	}
-	public List<Ship> getServerShips(){
+	/*public List<Ship> getServerShips(){
 		return serverShips;
 	}
 	public List<Ship> getClientShips(){
 		return clientShips;
-	}
+	}*/
 	/**
 	 * ***************根据起始点计算,这个我算了好久，最后才把所有的情况分类成功*****************************
 	 */
