@@ -36,7 +36,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 	public void run() {  //server总线程
 		// super.run();
 		try {
-			serversocket = new ServerSocket(8888);  //打开服务端口，接受客户端请求
+			serversocket = new ServerSocket(6000);  //打开服务端口，接受客户端请求
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -75,12 +75,6 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 						items.remove();  //移除当前指向
 					}
 				}
-				/*for (int i = 0; i < sockets.size(); i++) {
-					if (sockets.get(i).isClosed()) {
-						sockets.remove(i);
-						i--;  //？？？
-					}
-				}*/
 				new Thread() {  //每接收到一个新客户端，就开启一个新线程针对这个新的客户端
 					@Override
 					public void run() {
@@ -90,78 +84,87 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 						
 						String getData = null;
 						String[] change = null;
-						String name = null;
+						String name = null;  //根据名字判断是不是自己
+						BufferedReader input = null;
+						PrintWriter output = null;
 						try {
-							BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-							PrintWriter output = new PrintWriter(socket.getOutputStream());
-							getData = input.readLine();
-							change = getData.split(",");
-							name = change[0];
-
-							clientShips.add(new Ship(name, Double.parseDouble(change[2]), Double.parseDouble(change[3]),
-									Double.parseDouble(change[4]), Double.parseDouble(change[5]), change[6]));
+							input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+							output = new PrintWriter(socket.getOutputStream());
+						} catch (IOException exception) {
+							// TODO Auto-generated catch block
+							exception.printStackTrace();
+						}
+						
+						while (!socket.isClosed()) {  //本线程对应的客户端线程
+							try {
+								getData = input.readLine();  //拿到数据
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							change = getData.split(",");  //将接收的数据分离，并准备解析
+							name=change[0];
+							if (change[1].equals("logIn")) {  //这里处理本地的事情
+								//既然是新的客户端，那一定是登陆进来的
+								clientShips.add(new Ship(change[0], Double.parseDouble(change[2]), Double.parseDouble(change[3]),
+										Double.parseDouble(change[4]), Double.parseDouble(change[5]), change[6]));
+								//logIn(getData);  //发布登录信息
+							}else if (change[1].equals("logOut")) {
+								Iterator<Ship> s = clientShips.iterator();
+								while(s.hasNext()){
+									Ship get = s.next();
+									if (get.getName().equals(name)) {
+										s.remove();
+										break;
+									}
+								}
+								break;
+							} else if (change[1].equals("speed")) {
+								//speed通信格式
+								Iterator<Ship> s = clientShips.iterator();
+								while(s.hasNext()){
+									Ship get = s.next();
+									if (get.getName().equals(name)) {
+										get.setValue(4, get.getParameter(4)+Double.parseDouble(change[2]));
+										break;
+									}
+								}
+							} else if (change[1].equals("course")) {
+								//course通信格式
+								Iterator<Ship> s = clientShips.iterator();
+								while(s.hasNext()){
+									Ship get = s.next();
+									if (get.getName().equals(name)) {
+										get.setValue(3, get.getParameter(3)+Double.parseDouble(change[2]));
+										break;
+									}
+								}
+							} else if (change[1].equals("go")) {
+								//本地前进一步
+								Iterator<Ship> s = clientShips.iterator();
+								while(s.hasNext()){
+									Ship get = s.next();
+									if (get.getName().equals(name)) {
+										get.goAhead();
+										break;
+									}
+								}
+							}
+							//所有的动作都对本船无关，只需要发送到其他客户端即可,由客户端根据情况处理
 							for (Socket sk : sockets) {
-								// String command = name +
-								// ",logIn"+","+change[2]+change[3]+change[4]+change[5]+change[6];
 								try {
 									sendData(sk, getData);
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
 							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						while (!socket.isClosed()) {
-							if (change[1].equals("logOut")) {
-								for (Socket sk : sockets) {
-									// String command = name + ",logOut";
-									try {
-										sendData(sk, getData);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-
-								break;
-							} else if (change[1].equals("speed")) {
-								for (Socket sk : sockets) {
-									// String command = name + ",speed" + ","
-									// +change[2];
-									try {
-										sendData(sk, getData);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							} else if (change[1].equals("course")) {
-								for (Socket sk : sockets) {
-									// String command = name + ",course" +
-									// ","+change[2];
-									try {
-										sendData(sk, getData);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							} else if (change[1].equals("go")) {
-								for (Socket sk : sockets) {
-									// String command = name + ",go";
-									try {
-										sendData(sk, getData);
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-							}
-
+							smallpanel.repaint();
 						}
 					}
 				}.start();
 
 				try {
-					sleep(200);
+					sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -208,7 +211,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 	public void bigSync(Socket socket, String name, double x,double y,double course, double speed){
 		//大同步，5秒一次
 		System.out.println("ServerThread -> BBBigsycn");
-		String command = name +","+x+","+y+","+course+","+speed;
+		String command = name +",sync,"+x+","+y+","+course+","+speed;
 		try {
 			sendData(socket, command);
 		} catch (IOException e) {
@@ -236,7 +239,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 		System.out.println("kick out "+name);
 	}*/
 	
-	public void logIn(String command){
+	/*public void logIn(String command){
 		//String command = name + "logIn" + mousex + mousey + course + speed + type;
 		for(int i=0;i<sockets.size();i++){
 			try {
@@ -259,5 +262,5 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 			}
 		}
 		System.out.println("log out "+name);
-	}
+	}*/
 }

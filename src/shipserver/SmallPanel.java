@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -108,7 +109,15 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 							helpStr = "No ship to Clear --> Left Drag to Create";
 						} else {
 							for(int i=0;i<serverShips.size();i++){  //清空服务端创建的船舶对象
-								server.logOut(serverShips.get(i).getName());
+								Ship sh = serverShips.get(i);
+								for(int j=0;j<sockets.size();j++){
+									try {
+										server.sendData(sockets.get(j), sh.getName()+",logOut");
+									} catch (IOException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+								}
 							}
 							serverShips.clear();
 							helpStr = "Clear All Ships --> No server ships";
@@ -121,7 +130,15 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 							disy = Math.abs(dely - vessel.getParameter(2));
 							dis = Math.sqrt(disx * disx + disy * disy);
 							if (dis <= 20) {
-								server.logOut(vessel.getName());  //向客户端发送信息
+								//server.logOut(vessel.getName());  //向客户端发送信息
+								for(int i=0;i<sockets.size();i++){
+									try {
+										server.sendData(sockets.get(i), vessel.getName()+",logOut");
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									}
+								}
+								System.out.println(vessel.getName()+"->logOut");
 								helpStr = "Deleted a Ship --> Done";
 								shIt.remove();
 							}
@@ -155,7 +172,15 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 						new Thread(SmallPanel.this).start();
 						
 						String command = name + ",logIn," + mousex +","+ mousey +","+ course +","+ speed +","+ type;
-						server.logIn(command);  //登录信息多于登出信息，需要位置，速度...
+						//server.logIn(command);  //登录信息多于登出信息，需要位置，速度...
+						for(int i=0;i<sockets.size();i++){
+							try {
+								server.sendData(sockets.get(i), command);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
 				}
 				pressed = false;
@@ -172,9 +197,9 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	/*public void newServerShip(Ship ship){
 		serverShips.add(ship);
 	}*/
-	public void addClientShip(Ship ship){
+	/*public void addClientShip(Ship ship){
 		clientShips.add(ship);
-	}
+	}*/
 	/*public List<Ship> getServerShips(){
 		return serverShips;
 	}
