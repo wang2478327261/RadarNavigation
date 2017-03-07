@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -14,32 +13,32 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import common.Ship;
 
 public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有点问题，下一个版本制作的时候应当注意
-
+	
 	private static final long serialVersionUID = 5493000947340277541L;
-
+	
 	private double mousex, mousey; // 移动时的鼠标坐标
 	private double dragx, dragy; // 拖动时鼠标坐标
 	private double pressx, pressy; // 创建时按压下的位置
 	private double releasex, releasey; // 松开鼠标时的位置
 	private double delx, dely; // 要删除的对象位置，鼠标点击的位置
 	private String type = "Normal"; // 这个暂时默认，不进行更改
-	
+	/**********帮助提示符，以后可以单独一个组件，局部更新***************************************/
 	String helpStr = "";
 	String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
 	private boolean pressed = false;
-	ServerThread server;
-
+	ServerThread server;  //通信线程
+	
 	private List<Ship> clientShips = new LinkedList<Ship>();  //客户端消息创建的对象
 	private List<Ship> serverShips = new LinkedList<Ship>();  //服务端本地创建，用于测试
 
@@ -47,7 +46,11 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	private List<Socket> sockets = new LinkedList<Socket>();
 
 	//private Map<String, List<Point>> track = new HashMap<String, List<Point>>(); //2017.3.7 去掉这种做法，参考ChatRoom
-
+	/*****************************************/
+	/*******下边记录缩放比例，绘制缩放后的船舶影像******/
+	/*****************************************/
+	int level = 1;  //缩放级别，1:1
+	
 	public SmallPanel() {
 		super();
 		initComponents();
@@ -70,10 +73,10 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				mousex = e.getX();
 				mousey = e.getY();
-				helpStr = "'Left Click & Drag' Create Ships, 'Right Click' Delete, 'Right Double Click' Delete All Ship";
+				helpStr = "'Left Click & Drag' Create Ships, 'Right Click' Delete, 'Right Double Click' Delete All Ships";
 				repaint();
 			}
-
+			
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				dragx = e.getX();
@@ -87,8 +90,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					pressx = e.getX();
 					pressy = e.getY();
-					dragx = pressx;  //为什么以前要这么做？  试验后：因为会出现瞬间长度无限长
-					dragy = pressy;
+					dragx = pressx;  //为什么以前要这么做？
+					dragy = pressy;  //试验后：因为刚开始drag=0，以后会记录上一次drag位置，这样可以更新点击坐标
 					helpStr = "Drag to Create Moving Ship ";
 					pressed = true; // 需要按下标志
 				}

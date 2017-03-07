@@ -10,7 +10,7 @@ import java.util.List;
 
 import common.Ship;
 
-public class ServerThread extends Thread {
+public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 	
 	private ServerSocket serversocket;
 	private boolean logOut = false;
@@ -21,15 +21,12 @@ public class ServerThread extends Thread {
 	private List<Socket> sockets;
 	// private Map<String, List<Point>> track;
 	
-	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets, // Map<String,
-																								// List<Point>>
-																								// track,
-			SmallPanel smallpanel) {
+	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets,
+		SmallPanel smallpanel) {
 		super();
 		this.clientShips = clientShips;
 		this.serverShips = serverShips;
 		this.sockets = sockets;
-		// this.track = track;
 		this.smallpanel = smallpanel;
 		System.out.println("ServerThread -> @overidethread");
 	}
