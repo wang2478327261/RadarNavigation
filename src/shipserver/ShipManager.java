@@ -4,42 +4,43 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class ShipManager extends JFrame {
+public class ShipManager extends JFrame { // 注意界面结构的合理设计
 
-    private static final long serialVersionUID = 5649146024506368826L;
+	private static final long serialVersionUID = 5649146024506368826L;
 
-    private SmallPanel smallpanel;
+	private SmallPanel smallpanel; // 做成全局定义可以方便以后外层调用方法
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ShipManager frame = new ShipManager();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    System.exit(1);
-                }
-            }
-        });
-    }
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ShipManager frame = new ShipManager();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					System.exit(1);
+				}
+			}
+		});
+	}
 
-    /**
-     * Create the frame.
-     */
-    public ShipManager() {
-        initComponents();
-    }
+	/**
+	 * Create the frame.
+	 */
+	public ShipManager() {
+		initComponents();
+	}
 
-    private void initComponents() {
-        setTitle("ShipManager");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(20, 20, 1208, 735);
-        smallpanel = new SmallPanel();
-        setContentPane(smallpanel);
-    }
+	private void initComponents() {
+		setTitle("ShipManager");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(20, 20, 1208, 735);
+
+		smallpanel = new SmallPanel();
+		setContentPane(smallpanel);
+	}
 
 }

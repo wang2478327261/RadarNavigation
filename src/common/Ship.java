@@ -1,11 +1,15 @@
 
 package common;
 
+import java.io.Serializable;
+
 /**
  * 船舶对象本身，可以改进，增加动态信息和静态信息分离
  * @author ERON
  */
-public class Ship {
+public class Ship implements Serializable{
+	
+	private static final long serialVersionUID = -3576425321740625846L;
 	
 	private String name = "Default";
 	private double Px = 0;

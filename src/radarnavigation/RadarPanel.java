@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -248,7 +246,6 @@ public class RadarPanel extends JPanel{   //显示主界面
 		longitude.setText("LOG : " + ship.getParameter(2) + " ");
 		course.setText("COS : " + ship.getParameter(3) + " T ");
 		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
-		
 	}
 	/*******************Repaint**************************************************************/
 	@Override

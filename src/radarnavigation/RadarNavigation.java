@@ -56,7 +56,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
      * @throws IOException
      */
     public RadarNavigation() throws IOException {  //录取客户端船舶信息，暂时录入名称和位置信息
-
         String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
         while (customer == null || customer.equals("")) {
             if (customer == null) {
@@ -223,20 +222,18 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                         radarpanel.setSize(getWidth() * 7 / 9, getHeight());
                     }
                     revalidate();
+                    //需要repaint吗？
                 }
             }
         });
         infopanel = new InfoPanel();
-        //infopanel.setBounds(radarpanel.getWidth(), 0, getWidth()*2/9, getHeight()-35);
-        //infopanel.setSize(getWidth()*2/9, getHeight()-35);
         jsp = new JScrollPane();
         jsp.setBounds(radarpanel.getWidth(), 0, getWidth() * 2 / 9 - 50, getHeight() - 35);
         jsp.setLocation(radarpanel.getWidth(), 0);
         jsp.setViewportView(infopanel);
-
-        //contentPane.add(infopanel);
         contentPane.add(jsp);
-        this.setFocusable(true);
+        
+        this.setFocusable(true);  //如果没有这句就无法侦听到按键事件
     }
 
 }
