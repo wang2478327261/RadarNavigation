@@ -8,15 +8,15 @@ import java.io.Serializable;
  * @author ERON
  */
 public class Ship implements Serializable{  //下一个版本中需要加入船舶的静态属性和动态属性，动态属性重新写一个类，增加灵活度
-	
+	private static int i=0;  //保证每次创建的船名不同
 	private static final long serialVersionUID = -3576425321740625846L;
 	
-	private String name = "Default";
+	private String name = null;
 	private double Px = 0;
 	private double Py = 0;
 	private double course = 0;
 	private double speed = 3;
-	private String type = "Normal";
+	private String type = null;
 	
 	public Ship(String name, double Px, double Py, double course, double speed, String type) {
 		this.name = name;
@@ -28,7 +28,7 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
 	}
 	
 	public Ship() {
-		this.name = "Default";
+		this.name = "Default"+(i++);
 		this.Px = 0;
 		this.Py = 0;
 		this.course = 0;
@@ -85,8 +85,8 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
             if(this.course>=360) this.course-=360;
         }
         if (speed < 0 || speed > 30) {
-			System.err.println("your speed is : " + speed + "\nPlease get normal speed!");
-			speed = 3;
+			System.err.println("Ship->setValue: your speed is : " + speed + "\nPlease get normal speed!");
+			speed = 5;
 		}
     }
 	

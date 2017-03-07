@@ -11,7 +11,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -155,7 +154,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 						
 						new Thread(SmallPanel.this).start();
 						
-						String command = name + "logIn" + mousex + mousey + course + speed + type;
+						String command = name + ",logIn," + mousex +","+ mousey +","+ course +","+ speed +","+ type;
 						server.logIn(command);  //登录信息多于登出信息，需要位置，速度...
 					}
 				}
@@ -220,6 +219,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 			case 4:
 				course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
 				break;
+			default:
+				System.err.println("calcute error!!");
 		}
 
 		while (course < 0 || course >= 360) {
@@ -366,7 +367,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		}
 		;
 		helpStr = "";
-
+		
 		nameStr = "";
 		positionStr = "";
 		speedStr = "";
