@@ -18,19 +18,19 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 	
 	private List<Ship> clientShips;
 	private List<Ship> serverShips;
-	private List<Socket> sockets;
+	private List<Socket> sockets;  //在这个类中只要不new一个新的链表，那它就是指向了引用的套接字聊表
 	// private Map<String, List<Point>> track;
 	
-	public ServerThread(List<Ship> clientShips, List<Ship> serverShips, List<Socket> sockets,
-		SmallPanel smallpanel) {
+	public ServerThread(SmallPanel smallpanel, List<Ship> clientShips, List<Ship> serverShips,
+			List<Socket> sockets) {  //怎么解决超界限的问题，下一个版本中要加入地球模型
 		super();
 		this.clientShips = clientShips;
 		this.serverShips = serverShips;
-		this.sockets = sockets;
 		this.smallpanel = smallpanel;
+		this.sockets = sockets;
 		System.out.println("ServerThread -> @overidethread");
 	}
-
+	
 	@Override
 	public void run() {
 		// super.run();
@@ -48,11 +48,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 					for (Ship ship : serverShips) {
 						ship.goAhead();
 						for (Socket sk : sockets) {
-							try {
-								sync(sk, ship.getName());
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							sync(sk, ship.getName());
 						}
 					}
 					smallpanel.repaint();
@@ -176,32 +172,66 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 		}
 	}
 
-	public static void sendData(Socket socket, String data) throws IOException {
+	public void sendData(Socket socket, String data) throws IOException {
 		PrintWriter output = new PrintWriter(socket.getOutputStream());
 		output.println(data);
 		output.flush();
 		System.out.println("ServerThread.sendData()");
 	}
-
-	public static String getData(Socket socket) throws IOException {
+	
+	public String getData(Socket socket) throws IOException {
 		BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String data = input.readLine();
 		System.out.println("ServerThread.getData()");
 		return data;
 	}
 
-	public static void sync(Socket socket, String name) throws IOException {
+	public void sync(Socket socket, String name){
 		// TODO sync
 		System.out.println("ServerThread -> sycn");
 		String command = name + ",go";
-		sendData(socket, command);
+		try {
+			sendData(socket, command);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	/*
-	 * public void kickOut(String name) throws IOException { sendData(name +
-	 * ",kickOut"); }
-	 * 
-	 * public void logOut(Ship ship) throws IOException {
-	 * sendData(ship.getName() + ",logOut"); }
-	 */
+	//2017.3.7  服务端无权踢出用户
+	/*public void kickOut(String name){  //服务端将某个客户端踢出
+		for(int i=0;i<sockets.size();i++){
+			//给客户端发送提出信息，客户端关闭发送端口，退出程序
+			try {
+				sendData(sockets.get(i), "kickout,"+name);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("kick out "+name);
+	}*/
+	
+	public void logIn(String name){
+		for(int i=0;i<sockets.size();i++){
+			try {
+				sendData(sockets.get(i), "login,"+name);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("log in "+name);
+	}
+	
+	public void logOut(String name){
+		for(int i=0;i<sockets.size();i++){
+			try {
+				sendData(sockets.get(i), "logout,"+name);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("log out "+name);
+	}
 }

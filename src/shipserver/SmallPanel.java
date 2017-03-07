@@ -39,8 +39,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	private boolean pressed = false;
 	/***********************通信相关变量**********************************/
 	ServerThread server;  //通信线程
-	private List<Ship> clientShips = new LinkedList<Ship>();  //客户端消息创建的对象
-	private List<Ship> serverShips = new LinkedList<Ship>();  //服务端本地创建，用于测试
+	public static List<Ship> clientShips = new LinkedList<Ship>();  //客户端消息创建的对象
+	public static List<Ship> serverShips = new LinkedList<Ship>();  //服务端本地创建，用于测试
 	// private Map<String, Socket> sockets = new HashMap<String, Socket>();
 	private List<Socket> sockets = new LinkedList<Socket>();
 	
@@ -53,6 +53,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	public SmallPanel() {
 		super();
 		initComponents();
+		server = new ServerThread(this, clientShips, serverShips, sockets);
+		server.start();
 	}
 	private void initComponents() {
 		addMouseWheelListener(new MouseWheelListener() { //缩放过程应当记录缩放比例，便于还原
@@ -97,7 +99,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 					helpStr = "Drag to Create Moving Ship ";
 					pressed = true; // 需要按下标志
 				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
+				else if (e.getButton() == MouseEvent.BUTTON3) {
 					delx = e.getX();
 					dely = e.getY();
 					double disx, disy;
@@ -106,10 +108,12 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 						if (serverShips.isEmpty()) {
 							helpStr = "No ship to Clear --> Left Drag to Create";
 						} else {
-							serverShips.clear();
-							for (Ship vessel : serverShips) {
-								//track.get(vessel).clear();
+							for(int i=0;i<serverShips.size();i++){  //清空服务端创建的船舶对象
+								for(int j=0;j<sockets.size();j++){  //向客户端发送logout信息
+									server.logOut(serverShips.get(i).getName());
+								}
 							}
+							serverShips.clear();
 							helpStr = "Clear All Ships --> No server ships";
 						}
 					} else {
@@ -120,16 +124,16 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 							disy = Math.abs(dely - vessel.getParameter(2));
 							dis = Math.sqrt(disx * disx + disy * disy);
 							if (dis <= 20) {
-								shIt.remove();
-								//track.remove(vessel);
+								server.logOut(vessel.getName());  //向客户端发送信息
 								helpStr = "Deleted a Ship --> Done";
+								shIt.remove();
 							}
 						}
 					}
 				}
 				repaint();
 			}
-
+			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
@@ -143,20 +147,21 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 					String name = JOptionPane.showInputDialog("ship name");
 					if (name != null && !name.equals("")) {
 						Ship ship = new Ship(name, mousex, mousey, course, speed, type);
-						serverShips.add(ship);
+						newServerShip(ship);
+						//serverShips.add(ship);
 						
 						nameStr = "Ship name : " + name;
 						positionStr = "Position : " + mousex + "," + mousey;
 						courseStr = "Course : " + (int) course;
 						speedStr = "Speed : " + (int) speed;
 						typeStr = "Type : " + type;
-
+						
 						new Thread(SmallPanel.this).start();
-
-						for (Socket sk : sockets) {
+						
+						for (Socket sk : sockets) {  //同步客户端,吊桶通信类的方法
 							String command = name + "logIn" + mousex + mousey + course + speed + type;
 							try {
-								ServerThread.sendData(sk, command);
+								server.sendData(sk, command);
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
@@ -167,16 +172,25 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 				repaint();
 			}
 		});
-
+		
 		setBorder(BorderFactory.createEmptyBorder());
-		setLayout(null);
-		// setOpaque(false);
+		//setOpaque(false);
 		setBackground(Color.WHITE);
 		
-		server = new ServerThread(clientShips, serverShips, sockets, this);
-		server.start();
 	}
-
+	//与通信线程的数据传递
+	public void newServerShip(Ship ship){
+		serverShips.add(ship);
+	}
+	public void addClientShip(Ship ship){
+		clientShips.add(ship);
+	}
+	public List<Ship> getServerShips(){
+		return serverShips;
+	}
+	public List<Ship> getClientShips(){
+		return clientShips;
+	}
 	/**
 	 * ***************根据起始点计算,这个我算了好久，最后才把所有的情况分类成功*****************************
 	 */
@@ -186,7 +200,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		double differenty = end_y - start_y;
 		double course = 0;
 		int adjust = 0;// switch case///
-
+		
 		if (differentx == 0 && differenty == 0) {
 			adjust = 0;
 		} else if (differentx >= 0 && differenty < 0) {
@@ -200,21 +214,21 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		}
 
 		switch (adjust) {
-		case 0:
-			course = 0;
-			break;
-		case 1:
-			course = 450 - Math.toDegrees(Math.atan2(-differenty, differentx));
-			break;
-		case 2:
-			course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
-			break;
-		case 3:
-			course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
-			break;
-		case 4:
-			course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
-			break;
+			case 0:
+				course = 0;
+				break;
+			case 1:
+				course = 450 - Math.toDegrees(Math.atan2(-differenty, differentx));
+				break;
+			case 2:
+				course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
+				break;
+			case 3:
+				course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
+				break;
+			case 4:
+				course = 90 - Math.toDegrees(Math.atan2(-differenty, differentx));
+				break;
 		}
 
 		while (course < 0 || course >= 360) {
@@ -241,7 +255,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		paintShips(g2); // 自己写的代码竟然看不懂了，船舶绘制的设计没有记录局部坐标系的信息
 		printString(g2);
 	}
-
+	
 	public void paintShips(Graphics2D g2) {
 		double Px, Py, course, speed;
 		g2.setColor(Color.RED);
