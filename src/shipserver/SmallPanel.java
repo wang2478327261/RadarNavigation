@@ -37,19 +37,18 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 	String helpStr = "";
 	String nameStr = "", positionStr = "", courseStr = "", speedStr = "", typeStr = "";
 	private boolean pressed = false;
+	/***********************通信相关变量**********************************/
 	ServerThread server;  //通信线程
-	
 	private List<Ship> clientShips = new LinkedList<Ship>();  //客户端消息创建的对象
 	private List<Ship> serverShips = new LinkedList<Ship>();  //服务端本地创建，用于测试
-
 	// private Map<String, Socket> sockets = new HashMap<String, Socket>();
 	private List<Socket> sockets = new LinkedList<Socket>();
-
+	
 	//private Map<String, List<Point>> track = new HashMap<String, List<Point>>(); //2017.3.7 去掉这种做法，参考ChatRoom
 	/*****************************************/
 	/*******下边记录缩放比例，绘制缩放后的船舶影像******/
 	/*****************************************/
-	int level = 1;  //缩放级别，1:1
+	private float level = 1F;  //缩放级别，1:1
 	
 	public SmallPanel() {
 		super();
@@ -61,9 +60,12 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 				setCursor(new Cursor(Cursor.MOVE_CURSOR));
 				if (e.getWheelRotation() > 0) {
 					helpStr = "Scroll to Zoom out";
+					level /=2;
 				} else if (e.getWheelRotation() < 0) {
 					helpStr = "Scroll to Zoom in";
+					level *=2;
 				}
+				System.out.println(level);
 				repaint();
 			}
 		});
@@ -170,7 +172,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		setLayout(null);
 		// setOpaque(false);
 		setBackground(Color.WHITE);
-
+		
 		server = new ServerThread(clientShips, serverShips, sockets, this);
 		server.start();
 	}

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 船舶对象本身，可以改进，增加动态信息和静态信息分离
  * @author ERON
  */
-public class Ship implements Serializable{
+public class Ship implements Serializable{  //下一个版本中需要加入船舶的静态属性和动态属性，动态属性重新写一个类，增加灵活度
 	
 	private static final long serialVersionUID = -3576425321740625846L;
 	
