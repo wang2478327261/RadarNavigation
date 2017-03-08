@@ -86,10 +86,10 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 						String[] change = null;
 						String name = null;  //根据名字判断是不是自己
 						BufferedReader input = null;
-						PrintWriter output = null;
+						//PrintWriter output = null;
 						try {
 							input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-							output = new PrintWriter(socket.getOutputStream());
+							//output = new PrintWriter(socket.getOutputStream());
 						} catch (IOException exception) {
 							// TODO Auto-generated catch block
 							exception.printStackTrace();

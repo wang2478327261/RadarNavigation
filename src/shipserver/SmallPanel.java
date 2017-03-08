@@ -159,7 +159,15 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 					double speed = Math.sqrt(differentx*differentx + differenty*differenty)/10;
 					
 					String name = JOptionPane.showInputDialog("ship name");
+					adjust:
 					if (name != null && !name.equals("")) {
+						//查看名称是否与存在的名称相同
+						for(int i=0;i<serverShips.size();i++){
+							if (serverShips.get(i).getName().equals(name)) {
+								System.out.println("你创建了相同的船名,违反名称的唯一性");
+								break adjust;
+							}
+						}
 						Ship ship = new Ship(name, mousex, mousey, course, speed, type);
 						serverShips.add(ship);
 						
