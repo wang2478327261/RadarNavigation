@@ -50,12 +50,12 @@ public class InfoPanel extends JPanel{
 	//以前是绘制出选择的信息，现在直接组件排版
 	
 	/******************控制信息传递的方法群**********************************/
-	public static void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
+	public void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
 		infos.add(new InfoShow(ship));
 	}
-	public static void removeShip(Ship ship) {
+	public void removeShip(Ship ship) {
 		for(int i=0;i<ships.size();i++){
 			if (ships.get(i).getName() == ship.getName()) {
 				ships.remove(i);

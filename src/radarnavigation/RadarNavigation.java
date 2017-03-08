@@ -205,6 +205,15 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 					}*/
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     //删除操作
+                	Iterator<Ship> index = ships.iterator();
+                    while (index.hasNext()) {
+                        Ship boat = index.next();
+                        if (Math.abs(e.getX() - boat.getParameter(1)) < 10
+                                && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
+                            infopanel.removeShip(boat);
+                            System.out.println("remove one: "+boat);
+                        }
+                    }
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //全屏
                     if (!isUndecorated()) {
@@ -234,6 +243,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         contentPane.add(jsp);
         
         this.setFocusable(true);  //如果没有这句就无法侦听到按键事件
+        this.requestFocus();
     }
 
 }
