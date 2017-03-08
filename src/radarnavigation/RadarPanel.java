@@ -50,18 +50,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	
 	public RadarPanel() {
 		super();
-		//2017.3.1 去掉边框效果，没必要这种动态变化
-		/*addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-			}
-		});*/
-		
+		//2017.3.1 去掉鼠标进出的边框变化效果，没必要这种动态变化
 		//初始化界面
 		initComponents();
 	}
@@ -242,10 +231,10 @@ public class RadarPanel extends JPanel{   //显示主界面
 	public void dataFresh(){
 		System.out.println("RadarPanel -> dataFresh");
 		//显示组件的刷新
-		latitude.setText("LAT : " + ship.getParameter(1) + " ");
-		longitude.setText("LOG : " + ship.getParameter(2) + " ");
-		course.setText("COS : " + ship.getParameter(3) + " T ");
-		speed.setText("SPD : " + ship.getParameter(4) + "KT ");
+		latitude.setText("LAT : " + ship.getParameter(1) + "  ");  //多加了空格看起来清除
+		longitude.setText("LOG : " + ship.getParameter(2) + "  ");
+		course.setText("COS : " + ship.getParameter(3) + " T  ");
+		speed.setText("SPD : " + ship.getParameter(4) + "KT  ");
 	}
 	/*******************Repaint**************************************************************/
 	@Override
@@ -281,6 +270,8 @@ public class RadarPanel extends JPanel{   //显示主界面
 		if (headline) {
 			drawHeadLine(g2, ship.getParameter(3));
 		}
+		//***********************************************************************
+		drawShips();
 	}
 	
 	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
@@ -349,7 +340,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		g2.setTransform(af);
 	}
 	
-	public void deawShips(){
+	public void drawShips(){
 		//绘制当前船舶的模糊对象
 	}
 }

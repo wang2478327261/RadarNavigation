@@ -77,7 +77,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
          * *******************************************************************
          */
         client = new ClientThread(ship, ships);
-        //client.start();
+        client.start();
         /**
          * ******************************************************************
          */
@@ -126,11 +126,11 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                /*try {
+                try {
 					client.logOut();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}*/
+				}
             }
         });
         addComponentListener(new ComponentAdapter() {
@@ -146,7 +146,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     jsp.setBounds(radarpanel.getWidth(), 0, getWidth() * 2 / 9, getHeight());
                 }
                 revalidate();  //这个得了解清楚
-                repaint();  //如果不重绘会出现刷新不及时的情况
+                repaint();  //如果不重绘,会出现刷新不及时的情况
             }
         });
         
@@ -177,32 +177,12 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                             Ship boat = index.next();
                             if (Math.abs(e.getX() - boat.getParameter(1)) < 10
                                     && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
-                                infopanel.addShip(ship);
-                            } else {
-                                System.out.println("mei you");
+                                infopanel.addShip(boat);
+                                System.out.println("get a ship : "+boat.toString());
                             }
                         }
-
                     }
                     //这里会与选择对象冲突，所以去掉，还有，应该使用timer类进行，百度一下，可以避免多次单机后的错误
-                    /*if (e.getClickCount() >= 2) {
-						if (!isUndecorated()) {
-							setLocation(0, 0);
-							setSize(Toolkit.getDefaultToolkit().getScreenSize());
-							dispose();
-							setUndecorated(true);
-							setVisible(true);
-							radarpanel.setSize(getWidth()*7/9, getHeight()-35);
-						}
-						else {
-							setBounds(20, 20, 1008, 735);
-							dispose();
-							setUndecorated(false);
-							setVisible(true);
-							radarpanel.setSize(getWidth()*7/9, getHeight());
-						}
-						revalidate();
-					}*/
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     //删除操作
                 	Iterator<Ship> index = ships.iterator();
@@ -211,7 +191,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                         if (Math.abs(e.getX() - boat.getParameter(1)) < 10
                                 && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
                             infopanel.removeShip(boat);
-                            System.out.println("remove one: "+boat);
+                            System.out.println("remove one: "+boat.toString());
                         }
                     }
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
