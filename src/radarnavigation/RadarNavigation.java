@@ -161,7 +161,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         setContentPane(contentPane);
         this.setLayout(null);
         
-        radarpanel = new RadarPanel();
+        radarpanel = new RadarPanel();  //显示海里应当必能直接像素，像素扩大再显示，这样里的远一些，更实际
         radarpanel.setBounds(0, 0, getWidth() * 7 / 9, getHeight() - 35);
         contentPane.add(radarpanel);
         radarpanel.getShip(ship);
