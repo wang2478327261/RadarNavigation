@@ -42,6 +42,21 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 try {
                     RadarNavigation frame = new RadarNavigation();
                     frame.setVisible(true);
+                    
+                    frame.ships.add(new Ship());  //添加他船
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());
+                    
+                    //System.out.println(frame.ships);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,7 +83,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         String[] source = customer.split(",");  //这里需要判断完整性，暂时不做，没意思
         if (source.length!=5) {
 			ship = new Ship();
-			System.out.println("信息不完整，创建默认船舶-->\n" + ship.toString());
+			System.out.println("信息不完整，创建默认船舶-->" + ship.toString());
 		}else{
 			ship = new Ship(source[0],
 	        		Double.parseDouble(source[1]),

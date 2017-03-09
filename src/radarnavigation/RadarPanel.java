@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,10 +27,10 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	private static final long serialVersionUID = -6000318065148555968L;
 	
 	private float range = 6;  //量程
-	private boolean headline = true;
+	private boolean headline = true;  //是否显示船首线
 	private boolean rangeline = true;  //是否显示量程
-	private boolean headup = true;   //是否首向上
-	private boolean relative = true;  //是否相对运动
+	private boolean headup = true;   //是否首向上，还是北向上
+	private boolean relative = true;  //是否相对运动，还是绝对运动
 	
 	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
 	private double pc = 1;  //每圈代表的距离,跟随range变化
@@ -50,7 +49,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	
 	private Ship ship = null;  //当前自己的对象
 	private List<Ship> ships = null;  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
-	private Random rd = new Random(100);
+	private Random rd = new Random();
 	
 	public RadarPanel() {
 		super();
@@ -225,7 +224,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		}
 		System.out.println("RadarPanel -> setRange");
 	}
-	public float getRange() {
+	public float getRange() {  //不需要吧，range在本类中可以直接引用
 		return range;
 	}
 	public void getShip(Ship ship, List<Ship> ships){  //从主类中导入数据
@@ -252,7 +251,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);  //渲染效果
 		Font f = new Font("Default", Font.PLAIN, (int) (diameter*0.025));
 		g2.setFont(f);  //设置字体
-		//*************************************************************
+		//*******************画雷达背景圆******************************************
 		g2.setColor(Color.GREEN);
 		diameter = (float) (Math.min(getWidth(), getHeight())*0.93);
 		startX = (getWidth() - diameter)/2;  //雷达显示圆形边框
@@ -261,7 +260,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		//背景
 		g2.setColor(Color.BLACK);
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
-		//***********************刷新**********************************
+		//***********************刷新本船的显示数据**********************************
 		dataFresh();
 		
 		//**************绘制刻度***********************
@@ -277,7 +276,8 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 			drawHeadLine(g2, ship.getParameter(3));
 		}
 		//***********************************************************************
-		drawShips();
+		drawOwnShip(g2);
+		drawOtherShips(g2);
 	}
 	
 	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
@@ -319,6 +319,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //每次变化的幅度-->每次画圈的半径
 		diaStep = diameter/(range * 2);  //XX像素/海里
+		System.out.println("diastep------>>>>>"+diaStep);
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 			if (range <= 3) {
@@ -345,8 +346,44 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 		g2.setTransform(af);
 	}
+	public void drawOwnShip(Graphics2D g2){  //绘制客户端本船
+		drawBlur(g2, (int)(startX+diameter/2), (int)(startY+diameter/2), ship.getParameter(3));
+	}
 	
-	public void drawShips(){
-		//绘制当前船舶的模糊对象
+	public void drawOtherShips(Graphics2D g2){  //绘制他船之前需要计算相对位置或者绝对关系
+		//绘制他船的模糊对象
+		for(int i=0;i<ships.size();i++){
+			Ship other = ships.get(i);
+			drawBlur(g2, other.getParameter(1), other.getParameter(2), other.getParameter(3));
+		}
+	}
+	
+	public void drawBlur(Graphics2D g2, double Px, double Py, double theta){  //绘制这里有问题
+		//绘制他船的模糊对象
+		AffineTransform af = g2.getTransform();  //这里应该是存储当前坐标系的变换
+		g2.rotate(Math.toRadians(theta), Px, Py);  //以船心为中心，旋转theta角度---->theta对应船舶航向
+		g2.setColor(Color.ORANGE);
+		
+		int x[] = new int[(int) diaStep];
+		int y[] = new int[(int) diaStep];
+		int rangeX = (int) (0.025*diaStep);
+		int rangeY = (int) (0.5*diaStep);
+		System.out.println(rangeX+"---<>---"+rangeY);
+		if (rangeX<1) {
+			rangeX = 1;
+		}
+		if (rangeY<1) {
+			rangeY = 1;
+		}
+		for(int i=0;i<(int)diaStep;i++){  //随机点生成的不对
+			x[i] = rd.nextInt(rangeX);
+			y[i] = rd.nextInt(rangeY);
+		}
+		for(int j=0;j<(int)diaStep;j++){  //画点
+			//g2.drawOval((int)(Px+x[j]), (int)(Py+y[j]), 2, 2);
+			g2.drawRoundRect((int)(Px-x[j]), (int)(Py-y[j]), (int) (0.025*diaStep), (int) (0.05*diaStep)/4, 10, 10);
+		}
+		
+		g2.setTransform(af);
 	}
 }

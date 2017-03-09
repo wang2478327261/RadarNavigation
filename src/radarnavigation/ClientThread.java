@@ -19,8 +19,8 @@ public class ClientThread extends Thread{
 	private Socket socket;
 	private BufferedReader input;
 	private PrintWriter output;
-	private Ship ship;
-	private List<Ship> ships;
+	private Ship ship = null;  //本船
+	private List<Ship> ships = null;  //其他船舶
 	//public boolean logOut = false;
 	
 	/**
