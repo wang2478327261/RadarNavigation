@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -22,7 +23,7 @@ import javax.swing.SwingConstants;
 import common.HoverLable;
 import common.Ship;
 
-public class RadarPanel extends JPanel{   //显示主界面
+public class RadarPanel extends JPanel{   //显示主界面,假设客户端的船舶200米长，50米宽
 	
 	private static final long serialVersionUID = -6000318065148555968L;
 	
@@ -31,8 +32,10 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private boolean rangeline = true;  //是否显示量程
 	private boolean headup = true;   //是否首向上
 	private boolean relative = true;  //是否相对运动
+	
 	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
-	double pc = 1;  //每圈代表的距离,跟随range变化
+	private double pc = 1;  //每圈代表的距离,跟随range变化
+	private double diaStep=0;  //像素/海里
 	
 	private HoverLable showMode;  //首向上还是北向上
 	private HoverLable activeMode;  //相对运动还是绝对运动
@@ -45,8 +48,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private HoverLable speed;  //当前航速
 	private HoverLable perCircle;  //当前量程下每个量程圈的大小，是多少海里
 	
-	private Ship ship;  //当前自己的对象
-	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
+	private Ship ship = null;  //当前自己的对象
+	private List<Ship> ships = null;  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
+	private Random rd = new Random(100);
 	
 	public RadarPanel() {
 		super();
@@ -138,7 +142,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 					lineUp.setText("HEADLINE < ON > ");
 				}
 				headline = !headline;
-				repaint();
+				repaint(1000);
 			}
 		});
 		add(lineUp);
@@ -154,7 +158,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 					rangeSwitch.setText("RANGE < ON > ");
 				}
 				rangeline = !rangeline;
-				repaint();
+				repaint(1000);
 			}
 		});
 		add(rangeSwitch);
@@ -170,7 +174,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 					showMode.setText("HEADUP");
 				}
 				headup = !headup;
-				repaint();
+				repaint(1000);
 			}
 		});
 		add(showMode);
@@ -186,7 +190,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 					activeMode.setText("RELATIVE");
 				}
 				relative = !relative;
-				repaint();
+				repaint(1000);
 			}
 		});
 		
@@ -205,7 +209,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		add(speed);
 	}
 	
-	/**************normal method*******************************************************/
+	/**************normal method 普通方法区*******************************************************/
 	public void setRange(String option) {   //变化量程
 		if (option.equals("increase")) {  //判断缩放动作
 			range *= 2;
@@ -229,7 +233,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 		this.ships = ships;
 	}
 	
-	public void dataFresh(){
+	public void dataFresh(){  //刷新本船的航行信息
 		System.out.println("RadarPanel -> dataFresh");
 		//显示组件的刷新
 		latitude.setText("LAT : " + ship.getParameter(1) + "  ");  //多加了空格看起来清除
@@ -237,7 +241,8 @@ public class RadarPanel extends JPanel{   //显示主界面
 		course.setText("COS : " + ship.getParameter(3) + " T  ");
 		speed.setText("SPD : " + ship.getParameter(4) + "KT  ");
 	}
-	/*******************Repaint**************************************************************/
+	
+	/*******************Repaint绘图功能区**************************************************************/
 	@Override
 	public void paint(Graphics g) {  //需要根据量程重新绘制，这种方法不好，和信息面板一样，用组件，消耗更少的资源
 									//或者查阅资料，实现动画的局部刷新
@@ -312,21 +317,21 @@ public class RadarPanel extends JPanel{   //显示主界面
 	public void drawRange(Graphics2D g2) {
 		System.out.println("RadarPanel -> drawRange");
 		g2.setColor(Color.LIGHT_GRAY);
-		float diaVar = 0;  //每次变化的幅度
-		float diaStep = diameter/(range * 2);
+		float diaVar = 0;  //每次变化的幅度-->每次画圈的半径
+		diaStep = diameter/(range * 2);  //XX像素/海里
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 			if (range <= 3) {
-				diaVar += diaStep/2;
-			}
+				diaVar += diaStep*pc;  //pc代表每圈多少海里,每隔多少海里画一个圈
+			}							// *像素/海里 *pc =  一个环多少像素
 			else if(range <=6 ){
-				diaVar += diaStep;
+				diaVar += diaStep*pc;
 			}
 			else if (range <= 24) {
-				diaVar += diaStep*2;
+				diaVar += diaStep*pc;
 			}
 			else {
-				diaVar += diaStep*4;
+				diaVar += diaStep*pc;
 			}
 		}
 	}

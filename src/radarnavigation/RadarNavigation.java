@@ -137,10 +137,12 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     radarpanel.setBounds(0, 0, getWidth() * 7 / 9, getHeight() - 35);
                     //infopanel.setSize(getWidth()*2/9, getHeight()-35);
                     jsp.setBounds(radarpanel.getWidth(), 0, getWidth() * 2 / 9, getHeight() - 35);
+                    jsp.revalidate();
                 } else {
                     radarpanel.setBounds(0, 0, getWidth() * 7 / 9, getHeight());
                     //infopanel.setSize(getWidth()*2/9, getHeight());
                     jsp.setBounds(radarpanel.getWidth(), 0, getWidth() * 2 / 9, getHeight());
+                    jsp.revalidate();
                 }
                 revalidate();  //这个得了解清楚
                 repaint();  //如果不重绘,会出现刷新不及时的情况
@@ -161,7 +163,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         radarpanel = new RadarPanel();  //显示海里应当必能直接像素，像素扩大再显示，这样里的远一些，更实际
         radarpanel.setBounds(0, 0, getWidth() * 7 / 9, getHeight() - 35);
         contentPane.add(radarpanel);
-        radarpanel.getShip(ship, ships);
+        radarpanel.getShip(ship, ships);  //导入本船和他船的引用
         
         radarpanel.addMouseListener(new MouseAdapter() {
             @Override  //全屏功能
@@ -178,7 +180,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                                 System.out.println("get a ship : "+boat.toString());
                             }
                         }
-                        infopanel.addShip(test);  //测试，过后删掉
+                        //infopanel.addShip(test);  //测试，过后删掉
                     }
                     //这里会与选择对象冲突，所以去掉，还有，应该使用timer类进行，百度一下，可以避免多次单机后的错误
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -192,7 +194,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                             System.out.println("remove one: "+boat.toString());
                         }
                     }
-                    infopanel.removeShip(test);  //测试，过后删掉
+                    //infopanel.removeShip(test);  //测试，过后删掉
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //全屏
                     if (!isUndecorated()) {
