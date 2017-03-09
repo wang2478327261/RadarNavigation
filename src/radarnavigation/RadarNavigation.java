@@ -21,7 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import common.Ship;
-
+/**
+ * @author ERON
+ * 主类
+ */
 public class RadarNavigation extends JFrame{  //客户端的主类
 	//有一个问题不明白，将数据添加到多个链表的形式是什么，引用还是会复制一个新对象？测试过，不是新对象，但是赋值为null之后为何还是存在？？
     private static final long serialVersionUID = 4076498288039253119L;

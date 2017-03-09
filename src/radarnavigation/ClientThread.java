@@ -11,8 +11,16 @@ import java.util.List;
 import common.Ship;
 
 /**
- * @author ERON  
- * @see RadarNavigation  
+ * @author ERON<br>
+ * *********************************<br>
+ * 动作集合<hr>
+ * 登录--》船名，经度，纬度，方向，速度，船类型<br>
+ * 前进一步：go--》船名，go<br>
+ * 登出：logout--》船名，logout<br>
+ * 方向变化：船名，course，变化量<br>
+ * 速度变化：船名，speed，变化量<br>
+ * 
+ * @see RadarNavigation
  */
 public class ClientThread extends Thread{
 	
@@ -38,20 +46,25 @@ public class ClientThread extends Thread{
 	public void run() {
 		//super.run();
 		try {
-			socket = new Socket(InetAddress.getLocalHost(),8888);
+			socket = new Socket(InetAddress.getLocalHost(), 6000);
 			System.out.println(socket);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream());
 			System.out.println("ClientThread->run");
-			
 			logIn();
 			
 		} catch (IOException e) {
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
-			//System.exit(1);
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.exit(1);
 		}
-		new Thread(){  //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		new Thread(){
 			public void run() {
 				System.out.println("ClientThread-->Create new thread --> received data, and sendData");
 				while(!socket.isClosed()){

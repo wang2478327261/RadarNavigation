@@ -94,7 +94,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 							// TODO Auto-generated catch block
 							exception.printStackTrace();
 						}
-						
+						logout:
 						while (!socket.isClosed()) {  //本线程对应的客户端线程
 							try {
 								getData = input.readLine();  //拿到数据
@@ -118,7 +118,14 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 										break;
 									}
 								}
-								break;
+								Iterator<Socket> items = sockets.iterator();
+								while(items.hasNext()){  //检测有没有关闭的客户端
+									Socket it = items.next();
+									if (it.isClosed()) {
+										items.remove();  //移除当前指向
+									}
+								}
+								break logout;
 							} else if (change[1].equals("speed")) {
 								//speed通信格式
 								Iterator<Ship> s = clientShips.iterator();
@@ -151,6 +158,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 								}
 							}
 							//所有的动作都对本船无关，只需要发送到其他客户端即可,由客户端根据情况处理
+							
 							for (Socket sk : sockets) {
 								try {
 									sendData(sk, getData);
@@ -208,6 +216,7 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 			e.printStackTrace();
 		}
 	}
+	//登录信息可以作为大同步
 	public void bigSync(Socket socket, String name, double x,double y,double course, double speed){
 		//大同步，5秒一次
 		System.out.println("ServerThread -> BBBigsycn");

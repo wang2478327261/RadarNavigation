@@ -89,6 +89,8 @@ public class InfoPanel extends JPanel{
 	}
 	
 	/******************控制信息传递的方法群,更新数据**********************************/
+	//2017.3.9
+	//在添加时发现一个问题，点击同一对象可以多次添加，不和逻辑
 	public void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
 		System.out.println("InfoPanel -> addShip");
 		innerShips.add(ship);
