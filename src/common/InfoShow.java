@@ -92,6 +92,7 @@ public class InfoShow extends JTextArea {
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					//getParent().remove(InfoShow.this);
 					isExist = false;
+					System.out.println("removeShip by self-->infoShow");
 					getParent().repaint();
 				}
 			}

@@ -73,6 +73,14 @@ public class InfoPanel extends JPanel{
 		while(items.hasNext()){
 			InfoShow temp = items.next();
 			if (!temp.isExist) {
+				for(int i=0;i<innerShips.size();i++){  //当直接在组建上删除时，船舶数据没有更新，所以在这里更新
+					Ship del=innerShips.get(i);
+					if (temp.name.equals(del.getName())) {
+						innerShips.remove(i);
+						break;
+					}
+				}
+				System.out.println(innerShips);
 				this.remove(temp);  //面板移除组件
 				items.remove();
 			}
@@ -86,6 +94,7 @@ public class InfoPanel extends JPanel{
 		innerShips.add(ship);
 		infoPanes.add(new InfoShow(ship));
 		add(infoPanes.get(infoPanes.size()-1));
+		System.out.println(innerShips);
 	}
 	public void removeShip(Ship ship) {  //这个是在雷达界面点击的时候可以去除侧边栏对应的...
 		System.out.println("InfoPanel -> removeShip");
