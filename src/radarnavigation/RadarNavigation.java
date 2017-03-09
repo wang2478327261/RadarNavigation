@@ -178,7 +178,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                                 System.out.println("get a ship : "+boat.toString());
                             }
                         }
-                        infopanel.addShip(test);  //测试，过后删掉
+                        //infopanel.addShip(test);  //测试，过后删掉
                     }
                     //这里会与选择对象冲突，所以去掉，还有，应该使用timer类进行，百度一下，可以避免多次单机后的错误
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -192,7 +192,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                             System.out.println("remove one: "+boat.toString());
                         }
                     }
-                    infopanel.removeShip(test);  //测试，过后删掉
+                    //infopanel.removeShip(test);  //测试，过后删掉
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //全屏
                     if (!isUndecorated()) {

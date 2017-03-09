@@ -1,10 +1,12 @@
 package radarnavigation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -22,7 +24,7 @@ public class InfoPanel extends JPanel{
 		super();
 		System.out.println("InfoPanel -> infopanel");
 		//面板添加信息会随着添加数量而变化，想想制作的办法
-		innerShips.add(new Ship());
+		/*innerShips.add(new Ship());
 		innerShips.add(new Ship());
 		innerShips.add(new Ship());
 		innerShips.add(new Ship());
@@ -32,18 +34,18 @@ public class InfoPanel extends JPanel{
 		innerShips.add(new Ship());
 		for(int i=0;i<innerShips.size();i++){  //这个以后就不需要了
 			infoPanes.add(new InfoShow(innerShips.get(i)));
-		}
+		}*/
 		initComponents();
 	}
 	
 	private void initComponents() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));  //这个有点问题，但是可以运行
-		//setBorder(BorderFactory.createLineBorder(Color.RED));  //测试
-		//setBackground(Color.DARK_GRAY);
+		setBorder(BorderFactory.createLineBorder(Color.RED));  //测试
+		setBackground(Color.PINK);
 		
-		for(int i=0;i<infoPanes.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
+		/*for(int i=0;i<infoPanes.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
 			this.add(infoPanes.get(i));
-		}
+		}*/
 		repaint();
 	}
 	
@@ -77,7 +79,7 @@ public class InfoPanel extends JPanel{
 		}
 		updateUI();
 	}
-
+	
 	/******************控制信息传递的方法群,更新数据**********************************/
 	public void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
 		System.out.println("InfoPanel -> addShip");
