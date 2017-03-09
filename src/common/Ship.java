@@ -90,7 +90,7 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
 	
 	@Override
 	public String toString() {
-		return "name-->"+getName()+"\npx-->"+getParameter(1)+"\npy-->"+getParameter(2)
+		return "\nname-->"+getName()+"\npx-->"+getParameter(1)+"\npy-->"+getParameter(2)
 			+"\ncourse-->"+getParameter(3)+"\nspeed-->"+getParameter(4)
 			+"\ntype-->"+getType();
 	}

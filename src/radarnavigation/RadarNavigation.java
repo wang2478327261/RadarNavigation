@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import common.Ship;
 
 public class RadarNavigation extends JFrame{  //客户端的主类
-    
+	//有一个问题不明白，将数据添加到多个链表的形式是什么，引用还是会复制一个新对象？测试过，不是新对象，但是赋值为null之后为何还是存在？？
     private static final long serialVersionUID = 4076498288039253119L;
     
     private RadarPanel radarpanel;    //雷达显示面板
@@ -161,7 +161,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         radarpanel = new RadarPanel();  //显示海里应当必能直接像素，像素扩大再显示，这样里的远一些，更实际
         radarpanel.setBounds(0, 0, getWidth() * 7 / 9, getHeight() - 35);
         contentPane.add(radarpanel);
-        radarpanel.getShip(ship);
+        radarpanel.getShip(ship, ships);
         
         radarpanel.addMouseListener(new MouseAdapter() {
             @Override  //全屏功能

@@ -224,8 +224,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 	public float getRange() {
 		return range;
 	}
-	public void getShip(Ship ship){
+	public void getShip(Ship ship, List<Ship> ships){  //从主类中导入数据
 		this.ship = ship;
+		this.ships = ships;
 	}
 	
 	public void dataFresh(){

@@ -46,7 +46,7 @@ public class InfoPanel extends JPanel{
 		/*for(int i=0;i<infoPanes.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
 			this.add(infoPanes.get(i));
 		}*/
-		repaint();
+		//repaint();
 	}
 	
 	/******************刷新数据和面板*******************************************/
@@ -80,9 +80,9 @@ public class InfoPanel extends JPanel{
 						break;
 					}
 				}
-				System.out.println(innerShips);
+				System.out.println("信息面板船舶数量del-->"+innerShips.size());
 				this.remove(temp);  //面板移除组件
-				items.remove();
+				items.remove();  //infoshow链表移除
 			}
 		}
 		updateUI();
@@ -93,25 +93,35 @@ public class InfoPanel extends JPanel{
 		System.out.println("InfoPanel -> addShip");
 		innerShips.add(ship);
 		infoPanes.add(new InfoShow(ship));
-		add(infoPanes.get(infoPanes.size()-1));
-		System.out.println(innerShips);
+		add(infoPanes.get(infoPanes.size()-1));  //add to panel
+		System.out.println("信息面板船舶数量add-->"+innerShips.size());
 	}
 	public void removeShip(Ship ship) {  //这个是在雷达界面点击的时候可以去除侧边栏对应的...
 		System.out.println("InfoPanel -> removeShip");
-		/*for(int i=0;i<innerShips.size();i++){
-			if (innerShips.get(i).getName() == ship.getName()) {
-				innerShips.remove(i);
+		/*Iterator<Ship> inner = innerShips.iterator();  //出现多次移除的原因是这里，根据自我删除和外界删除，重复了
+		while(inner.hasNext()){
+			Ship it = inner.next();
+			if (it.getName().equals(ship.getName())) {
+				inner.remove();
 				break;
 			}
 		}*/
-		innerShips.remove(ship);
-		//ships.remove(ship);  //?可以直接删除对象吗？应该不可以，没有唯一识别符
-		for(int i=0;i<infoPanes.size();i++){
-			if (infoPanes.get(i).name == ship.getName()) {  //变换属性，不移除，在refresh里移除
-				infoPanes.get(i).isExist=false;
+		Iterator<InfoShow> info=infoPanes.iterator();  //在repaint里移除船舶对象
+		while(info.hasNext()){
+			InfoShow it=info.next();
+			if (it.name.equals(ship.getName())) {
+				it.isExist=false;
 				break;
 			}
 		}
+		//innerShips.remove(ship);  //这样也可以
+		//?可以直接删除对象吗？应该不可以，没有唯一识别符-->yes，内部原理是遍历吗？
+		/*for(int i=0;i<infoPanes.size();i++){
+			if ( infoPanes.get(i).name.equals(ship.getName()) ) {  //变换属性，不移除，在refresh里移除
+				infoPanes.get(i).isExist=false;
+				break;
+			}
+		}*/
 		repaint();
 	}
 	
