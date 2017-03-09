@@ -128,10 +128,12 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     ship.setValue(4, ship.getParameter(4) - 1);
                     command = ship.getName() + ",speed," + "reduce";
                 }
-                try {
-					client.sendData(command);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+                if (client.ok==0) {
+                	try {
+    					client.sendData(command);
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
 				}
                 repaint();
                 System.out.println("RadarNavigation -> keyPress" + command);

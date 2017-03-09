@@ -24,7 +24,8 @@ import common.Ship;
  */
 public class ClientThread extends Thread{
 	
-	private Socket socket;
+	public Socket socket;
+	public int ok=1;
 	private BufferedReader input;
 	private PrintWriter output;
 	private Ship ship = null;  //本船
@@ -51,8 +52,10 @@ public class ClientThread extends Thread{
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream());
 			System.out.println("ClientThread->run");
-			logIn();
-			
+			int ok = logIn();
+			if (ok!=0) {
+				interrupt();  //结束进程
+			}
 		} catch (IOException e) {
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
@@ -174,11 +177,12 @@ public class ClientThread extends Thread{
 		System.out.println("ClientThread->sycn");
 	}*/
 	
-	public void logIn() throws IOException{
+	public int logIn() throws IOException{
 		String command = ship.getName() + ",logIn," + ship.getParameter(1) +","+ ship.getParameter(2)
 						+ "," +ship.getParameter(3) +","+ ship.getParameter(4) +","+ ship.getType();
 		sendData(command);
 		System.out.println("ClientThread->logIn");
+		return 0;
 	}
 	
 	public void logOut() throws IOException{
