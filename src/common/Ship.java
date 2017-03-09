@@ -31,7 +31,7 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
 		this.name = "Default"+(i++);
 		this.Px = 0;
 		this.Py = 0;
-		this.course = 0;
+		this.course = 120;
 		this.speed = 3;
 		this.type = "Normal";
 	}

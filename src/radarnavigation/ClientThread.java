@@ -71,7 +71,7 @@ public class ClientThread extends Thread{
 					try {
 						String data = getData();
 						String[] change = data.split(",");
-						if (change[0].equals(ship.getName())) {
+						if (change[0].equals(ship.getName())) {  //如果是本船的信息，直接跳过
 							continue;
 						}
 						else{
@@ -94,12 +94,14 @@ public class ClientThread extends Thread{
 								case "speed":{
 									for (Ship vessel : ships) {
 										if (vessel.getName().equals(change[0])) {
-											if (change[2].equals("increase")) {
+											//这里不需要判断增加还是减少，增加传送正值，减少传送负值
+											/*if (change[2].equals("increase")) {
 												vessel.setValue(4, vessel.getParameter(4)+1);
 											}
 											else {
 												vessel.setValue(4, vessel.getParameter(4)-1);
-											}
+											}*/
+											vessel.setValue(4, vessel.getParameter(4)+Double.parseDouble(change[2]));
 											break;
 										}
 									}
@@ -107,13 +109,14 @@ public class ClientThread extends Thread{
 								}
 								case "course":{
 									for (Ship vessel : ships) {
-										if (vessel.getName().equals(change[0])) {
-											if (change[2].equals("port")) {
+										if (vessel.getName().equals(change[0])) {  //这里一样，左-右+
+											/*if (change[2].equals("port")) {
 												vessel.setValue(3, vessel.getParameter(3)-1);
 											}
 											else {
 												vessel.setValue(3, vessel.getParameter(3)+1);
-											}
+											}*/
+											vessel.setValue(3, vessel.getParameter(3)+Double.parseDouble(change[2]));
 											break;
 										}
 									}
@@ -137,12 +140,12 @@ public class ClientThread extends Thread{
 				}
 			}
 		}.start();
-		while(!socket.isClosed()){   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		while(!socket.isClosed()){   //
 			try {
 				System.out.println("ClientThread->Data receiveThread");
 				sleep(1000);
 				ship.goAhead();
-				sync();
+				sendData(ship.getName() + ",go");  //同步信号，向前走一步
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -165,11 +168,11 @@ public class ClientThread extends Thread{
 		return data;
 	}
 	
-	public void sync() throws IOException{
+	/*public void sync() throws IOException{
 		String command = ship.getName() + ",go";
 		sendData(command);
 		System.out.println("ClientThread->sycn");
-	}
+	}*/
 	
 	public void logIn() throws IOException{
 		String command = ship.getName() + ",logIn," + ship.getParameter(1) +","+ ship.getParameter(2)
