@@ -84,7 +84,7 @@ public class InfoShow extends JTextArea {
 			public void mouseExited(MouseEvent e) {
 				setBorder(BorderFactory.createEmptyBorder());
 			}
-			@Override
+			@Override  //这个先放一放，应该通过顶层删除，而不是自己删除自己
 			public void mouseClicked(MouseEvent e) {  //这样竟然可以！！！以后在研究吧
 				if (e.getButton() == MouseEvent.BUTTON3) {
 					getParent().remove(InfoShow.this);

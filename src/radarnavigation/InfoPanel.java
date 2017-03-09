@@ -22,15 +22,15 @@ public class InfoPanel extends JPanel{
 		super();
 		System.out.println("InfoPanel -> infopanel");
 		//面板添加信息会随着添加数量而变化，想想制作的办法
+		/*ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
-		ships.add(new Ship());
-		ships.add(new Ship());
-		for(int i=0;i<ships.size();i++){
+		ships.add(new Ship());*/
+		for(int i=0;i<ships.size();i++){  //这个以后就不需要了
 			infos.add(new InfoShow(ships.get(i)));
 		}
 		initComponents();
@@ -54,6 +54,7 @@ public class InfoPanel extends JPanel{
 		ships.add(ship);
 		System.out.println("InfoPanel -> addShip");
 		infos.add(new InfoShow(ship));
+		repaint();
 	}
 	public void removeShip(Ship ship) {
 		for(int i=0;i<ships.size();i++){
@@ -70,6 +71,7 @@ public class InfoPanel extends JPanel{
 				break;
 			}
 		}
+		repaint();
 	}
 	
 	public void changeMode(){
