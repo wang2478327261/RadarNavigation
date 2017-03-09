@@ -32,7 +32,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     private Ship ship;              //船舶对象，本船的对象
     
     private List<Ship> ships = new LinkedList<Ship>();   //其他船舶信息,应当传递绘制面板局部的，因为只能在圆内绘制
-    private List<Ship> innerShips = new LinkedList<>();  //雷达面板显示的船舶信息，再想想还有什么好办法
+    //private List<Ship> innerShips = new LinkedList<>();  //雷达面板显示的船舶信息，再想想还有什么好办法
     													//使用树结构怎么样？大于量程加入左子树，小于量程加入右子树
     ClientThread client;            //客户端通信线程
     
@@ -106,26 +106,19 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     ship.setValue(4, ship.getParameter(4) - 1);
                     command = ship.getName() + ",speed," + "reduce";
                 }
-                /*try {
+                try {
 					client.sendData(command);
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}*/
+				}
                 repaint();
                 System.out.println("RadarNavigation -> keyPress" + command);
                 //下面这段带码对总体没有意义，去掉2017.3.5 record
-                /*if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                	setBounds(20, 20, 1008, 735);
-                    dispose();
-                    setUndecorated(false);
-                    setVisible(true);
-                    radarpanel.setSize(getWidth() * 7 / 9, getHeight());
-				}*/
             }
         });
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent e) {  //判断是否连上服务端
                 try {
 					client.logOut();
 				} catch (IOException e1) {
@@ -190,7 +183,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                         Ship boat = index.next();
                         if (Math.abs(e.getX() - boat.getParameter(1)) < 10
                                 && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
-                            infopanel.removeShip(boat);
+                            infopanel.removeShip(boat);  //可以直接移除对象，以后弄清楚原理，好像也是通过索引,毕竟指向的是同一个对象
                             System.out.println("remove one: "+boat.toString());
                         }
                     }
