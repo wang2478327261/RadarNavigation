@@ -46,7 +46,7 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private HoverLable perCircle;  //当前量程下每个量程圈的大小，是多少海里
 	
 	private Ship ship;  //当前自己的对象
-	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象
+	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
 	
 	public RadarPanel() {
 		super();

@@ -35,7 +35,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     //private List<Ship> innerShips = new LinkedList<>();  //雷达面板显示的船舶信息，再想想还有什么好办法
     													//使用树结构怎么样？大于量程加入左子树，小于量程加入右子树
     ClientThread client;            //客户端通信线程
-    
+    public Ship test = new Ship("huawei",123,22,20,10,"Normal");  //测试使用.....................................
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -178,6 +178,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                                 System.out.println("get a ship : "+boat.toString());
                             }
                         }
+                        infopanel.addShip(test);  //测试，过后删掉
                     }
                     //这里会与选择对象冲突，所以去掉，还有，应该使用timer类进行，百度一下，可以避免多次单机后的错误
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
@@ -191,6 +192,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                             System.out.println("remove one: "+boat.toString());
                         }
                     }
+                    infopanel.removeShip(test);  //测试，过后删掉
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     //全屏
                     if (!isUndecorated()) {

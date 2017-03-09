@@ -18,7 +18,9 @@ public class InfoShow extends JTextArea {
 	private static final long serialVersionUID = -6736968308209642335L;
 	
 	private String info = null;
-	private String idName = null;
+	public boolean isExist = true;  //标志这个组件是否存在，这样就可以通过顶层实现控制了
+	public String name = null;  //删除时判断是不是这个
+	
 	public InfoShow() {
 		super();
 		addMouseAction();
@@ -56,15 +58,16 @@ public class InfoShow extends JTextArea {
 	public InfoShow(Ship ship){
 		super();
 		addMouseAction();
+		this.name = ship.getName();
 		//setBorder(BorderFactory.createLineBorder(Color.GREEN));
 		info = ship.getName() + "-->" + ship.getType()+"\ndbshjcvshacjvgacvghxccsa\ncnsjbsckd";
-		idName = ship.getName();
+		
 		this.setText(info);
 	}
-	
-	public String getID(){
-		return idName;
-	}
+	//isExist设置成public后就不需要方法了
+	/*public boolean isExist(){  //返回这个组件是否还存在
+		return isExist;
+	}*/
 	
 	public void addMouseAction(){
 		Font font = new Font("Default", Font.PLAIN, 14);
@@ -87,7 +90,9 @@ public class InfoShow extends JTextArea {
 			@Override  //这个先放一放，应该通过顶层删除，而不是自己删除自己
 			public void mouseClicked(MouseEvent e) {  //这样竟然可以！！！以后在研究吧
 				if (e.getButton() == MouseEvent.BUTTON3) {
-					getParent().remove(InfoShow.this);
+					//getParent().remove(InfoShow.this);
+					isExist = false;
+					getParent().repaint();
 				}
 			}
 		});
