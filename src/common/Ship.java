@@ -62,15 +62,6 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
 		return name;
 	}
 	
-	public void printShip() {
-		System.out.println(getName());
-		System.out.println(getParameter(1));
-		System.out.println(getParameter(2));
-		System.out.println(getParameter(3));
-		System.out.println(getParameter(4));
-		System.out.println(getType());
-	}
-	
 	public synchronized void setValue(int index, double newValue){
         switch(index){
             case 1: Px = newValue; break;
@@ -95,5 +86,12 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
         double stepy = speed*Math.cos(Math.toRadians(course));
         setValue(1, Px+stepx);
         setValue(2, Py-stepy);
+	}
+	
+	@Override
+	public String toString() {
+		return "name-->"+getName()+"\npx-->"+getParameter(1)+"\npy-->"+getParameter(2)
+			+"\ncourse-->"+getParameter(3)+"\nspeed-->"+getParameter(4)
+			+"\ntype-->"+getType();
 	}
 }

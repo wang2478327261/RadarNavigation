@@ -63,25 +63,29 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 System.exit(0);
             }
             JOptionPane.showMessageDialog(this, "you should input ship infoemation !", "Warning", JOptionPane.ERROR_MESSAGE);
-            customer = JOptionPane.showInputDialog(this, "Please input Ship name : ");
-        }
-        //String[] source = customer.split(",");
-        /*ship = new Ship(source[0], Double.parseDouble(source[1]),
-				Double.parseDouble(source[2]), 34,      //Double.parseDouble(source[3])
-				Double.parseDouble(source[4]), source[5]);
-		for(int i = 0; i < source.length; i++){
-			System.out.println(source[i]);
-		}*/
-        ship = new Ship();
+            customer = JOptionPane.showInputDialog(this, "Please input Ship name an position : ");
+        }  //输入的格式：船名，经度，纬度，航向，航速
+        String[] source = customer.split(",");  //这里需要判断完整性，暂时不做，没意思
+        if (source.length!=5) {
+			ship = new Ship();
+			System.out.println("信息不完整，创建默认船舶-->\n" + ship.toString());
+		}else{
+			ship = new Ship(source[0],
+	        		Double.parseDouble(source[1]),
+					Double.parseDouble(source[2]),
+					Double.parseDouble(source[3]),
+					Double.parseDouble(source[4]),
+	        		"Normal"
+					);
+			System.out.println(ship.toString());
+		}
+        initComponents();
+        
         /**
-         * *******************************************************************
+         * *****************开始通信**************************************************
          */
         client = new ClientThread(ship, ships);
         client.start();
-        /**
-         * ******************************************************************
-         */
-        initComponents();
     }
     
     private void initComponents() {
@@ -151,7 +155,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         Container contentPane = this.getContentPane();
         contentPane.setBackground(null);
         //contentPane.setBorder(BorderFactory.createEmptyBorder());
-        setContentPane(contentPane);
+        //setContentPane(contentPane);
         this.setLayout(null);
         
         radarpanel = new RadarPanel();  //显示海里应当必能直接像素，像素扩大再显示，这样里的远一些，更实际

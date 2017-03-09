@@ -31,11 +31,8 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private boolean rangeline = true;  //是否显示量程
 	private boolean headup = true;   //是否首向上
 	private boolean relative = true;  //是否相对运动
-	
 	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
 	double pc = 1;  //每圈代表的距离,跟随range变化
-	private Ship ship;  //当前自己的对象
-	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象
 	
 	private HoverLable showMode;  //首向上还是北向上
 	private HoverLable activeMode;  //相对运动还是绝对运动
@@ -47,6 +44,9 @@ public class RadarPanel extends JPanel{   //显示主界面
 	private HoverLable course;  //当前航向
 	private HoverLable speed;  //当前航速
 	private HoverLable perCircle;  //当前量程下每个量程圈的大小，是多少海里
+	
+	private Ship ship;  //当前自己的对象
+	private List<Ship> ships = new LinkedList<>();  //是在外部进行过滤还是在里面？当前显示的船舶对象
 	
 	public RadarPanel() {
 		super();

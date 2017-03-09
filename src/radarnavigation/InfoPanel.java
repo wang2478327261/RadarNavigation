@@ -22,17 +22,17 @@ public class InfoPanel extends JPanel{
 		super();
 		System.out.println("InfoPanel -> infopanel");
 		//面板添加信息会随着添加数量而变化，想想制作的办法
-		/*ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());
-		ships.add(new Ship());*/
-//		for(int i=0;i<ships.size();i++){
-//			infos.add(new InfoShow(ships.get(i)));
-//		}
+		ships.add(new Ship());
+		ships.add(new Ship());
+		for(int i=0;i<ships.size();i++){
+			infos.add(new InfoShow(ships.get(i)));
+		}
 		initComponents();
 	}
 	
