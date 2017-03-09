@@ -15,8 +15,8 @@ public class InfoPanel extends JPanel{
 	
 	private static final long serialVersionUID = -1344586063850816104L;
 	
-	public static List<Ship> ships = new LinkedList<Ship>();  //当前面板中的显示对象队列
-	private static List<InfoShow> infos = new LinkedList<InfoShow>();  //对应的组件列表，方便操作
+	public static List<Ship> innerShips = new LinkedList<Ship>();  //当前面板中的显示对象队列
+	private static List<InfoShow> infoPanes = new LinkedList<InfoShow>();  //对应的组件列表，方便操作
 	
 	public InfoPanel() {
 		super();
@@ -30,8 +30,8 @@ public class InfoPanel extends JPanel{
 		ships.add(new Ship());
 		ships.add(new Ship());
 		ships.add(new Ship());*/
-		for(int i=0;i<ships.size();i++){  //这个以后就不需要了
-			infos.add(new InfoShow(ships.get(i)));
+		for(int i=0;i<innerShips.size();i++){  //这个以后就不需要了
+			infoPanes.add(new InfoShow(innerShips.get(i)));
 		}
 		initComponents();
 	}
@@ -41,33 +41,35 @@ public class InfoPanel extends JPanel{
 		setBorder(BorderFactory.createLineBorder(Color.RED));  //测试
 		setBackground(Color.DARK_GRAY);
 		
-		for(int i=0;i<infos.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
-			this.add(infos.get(i));
+		for(int i=0;i<infoPanes.size();i++){  //这样添加组件是不是好一些？是否需要增加索引？
+			this.add(infoPanes.get(i));
 		}
 	}
 	
-	/******************绘制面板的重写方法*******************************************/
+	/******************刷新数据和面板*******************************************/
 	//以前是绘制出选择的信息，现在直接组件排版
-	
+	public void Refresh(){
+		//怎么实现面板的动态更新
+	}
 	/******************控制信息传递的方法群**********************************/
 	public void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
-		ships.add(ship);
+		innerShips.add(ship);
 		System.out.println("InfoPanel -> addShip");
-		infos.add(new InfoShow(ship));
+		infoPanes.add(new InfoShow(ship));
 		repaint();
 	}
-	public void removeShip(Ship ship) {
-		for(int i=0;i<ships.size();i++){
-			if (ships.get(i).getName() == ship.getName()) {
-				ships.remove(i);
+	public void removeShip(Ship ship) {  //这个是在雷达界面点击的时候可以去除侧边栏对应的...
+		for(int i=0;i<innerShips.size();i++){
+			if (innerShips.get(i).getName() == ship.getName()) {
+				innerShips.remove(i);
 				break;
 			}
 		}
 		//ships.remove(ship);  //?可以直接删除对象吗？应该不可以，没有唯一识别符
 		System.out.println("InfoPanel -> removeShip");
-		for(int i=0;i<infos.size();i++){
-			if (infos.get(i).getID() == ship.getName()) {
-				infos.remove(i);
+		for(int i=0;i<infoPanes.size();i++){
+			if (infoPanes.get(i).getID() == ship.getName()) {
+				infoPanes.remove(i);
 				break;
 			}
 		}
