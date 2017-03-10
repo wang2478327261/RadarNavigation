@@ -287,6 +287,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		}
 		
 		//**********************绘制量程*******************************
+		diaStep = diameter/(range * 2);  //XX像素/海里
 		if (rangeline) {
 			drawRange(g2);
 		}
@@ -343,8 +344,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	public void drawRange(Graphics2D g2) {
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //每次变化的幅度-->每次画圈的半径
-		diaStep = diameter/(range * 2);  //XX像素/海里
-		//System.out.println("diastep------>>>>>"+diaStep);
+		////在这里把像素与海里比例放在了外面
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 			if (range <= 3) {

@@ -237,11 +237,13 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 			}
 		}
 	}
-
+	
 	public void sendData(Socket socket, String data) throws IOException {
-		PrintWriter output = new PrintWriter(socket.getOutputStream());
-		output.println(data);
-		output.flush();
+		if (!socket.isClosed()) {
+			PrintWriter output = new PrintWriter(socket.getOutputStream());
+			output.println(data);
+			output.flush();
+		}
 	}
 	
 	public String getData(Socket socket) throws IOException {
