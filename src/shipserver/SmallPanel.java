@@ -114,12 +114,11 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 									try {
 										server.sendData(sockets.get(j), sh.getName()+",logOut");
 									} catch (IOException e1) {
-										// TODO Auto-generated catch block
 										e1.printStackTrace();
 									}
 								}
 							}
-							serverShips.clear();
+							serverShips.clear();  //本地清空
 							helpStr = "Clear All Ships --> No server ships";
 						}
 					} else {
@@ -138,9 +137,8 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 										e1.printStackTrace();
 									}
 								}
-								System.out.println(vessel.getName()+"->logOut");
-								helpStr = "Deleted a Ship --> Done";
 								shIt.remove();
+								helpStr = "Deleted a Ship --> Done";
 							}
 						}
 					}
@@ -154,33 +152,33 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 					releasex = e.getX();
 					releasey = e.getY();
 					double course = CaculateRatio(pressx, pressy, releasex, releasey); //计算方向
-					double differentx = releasex-pressx;  //newx - mousex;
-					double differenty = releasey-pressy;  //newy - mousey;
+					double differentx = releasex-pressx;
+					double differenty = releasey-pressy;
 					double speed = Math.sqrt(differentx*differentx + differenty*differenty)/10;
 					
-					String name = JOptionPane.showInputDialog("ship name");
+					String name = JOptionPane.showInputDialog("Input ship name");
 					adjust:
 					if (name != null && !name.equals("")) {
 						//查看名称是否与存在的名称相同
 						for(int i=0;i<serverShips.size();i++){
 							if (serverShips.get(i).getName().equals(name)) {
-								System.out.println("你创建了相同的船名,违反名称的唯一性");
-								break adjust;
+								JOptionPane.showMessageDialog(null, "你创建了相同的船名,违反名称的唯一性原则");
+								break adjust;  //这种最好少用，这里是为了方便，不需要标志变量
 							}
 						}
 						Ship ship = new Ship(name, mousex, mousey, course, speed, type);
 						serverShips.add(ship);
 						
 						nameStr = "Ship name : " + name;
-						positionStr = "Position : " + mousex + "," + mousey;
+						positionStr = "Position : " + pressx + "," + pressy;
 						courseStr = "Course : " + (int) course;
 						speedStr = "Speed : " + (int) speed;
-						typeStr = "Type : " + type;
+						typeStr = "Type : " + type;  //type自定义为Normal
 						
 						new Thread(SmallPanel.this).start();
 						
-						String command = name + ",logIn," + mousex +","+ mousey +","+ course +","+ speed +","+ type;
-						//server.logIn(command);  //登录信息多于登出信息，需要位置，速度...
+						String command = name + ",logIn," + pressx +","+ pressy +","+ course +","+ speed +","+ type;
+						//登录信息多于登出信息，需要位置，速度...
 						for(int i=0;i<sockets.size();i++){
 							try {
 								server.sendData(sockets.get(i), command);
@@ -197,23 +195,10 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		});
 		
 		setBorder(BorderFactory.createEmptyBorder());
-		//setOpaque(false);
+		//setOpaque(false);  //设置不透明
 		setBackground(Color.WHITE);
 		
 	}
-	//与通信线程的数据传递
-	/*public void newServerShip(Ship ship){
-		serverShips.add(ship);
-	}*/
-	/*public void addClientShip(Ship ship){
-		clientShips.add(ship);
-	}*/
-	/*public List<Ship> getServerShips(){
-		return serverShips;
-	}
-	public List<Ship> getClientShips(){
-		return clientShips;
-	}*/
 	/**
 	 * ***************根据起始点计算,这个我算了好久，最后才把所有的情况分类成功*****************************
 	 */
@@ -255,7 +240,7 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 			default:
 				System.err.println("calcute error!!");
 		}
-
+		
 		while (course < 0 || course >= 360) {
 			if (course < 0) {
 				course += 360;
@@ -281,10 +266,10 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		printString(g2);
 	}
 	
-	public void paintShips(Graphics2D g2) {
+	public void paintShips(Graphics2D g2) {  //这里采用creatingShip的绘图方式，更加简便
 		double Px, Py, course, speed;
-		g2.setColor(Color.RED);
 		if (pressed) { // 在创建新的船舶对象时能够显示创建过程
+			g2.setColor(Color.RED);
 			course = CaculateRatio(pressx, pressy, dragx, dragy);
 			double diffx = dragx - pressx;
 			double diffy = dragy - pressy;
@@ -292,35 +277,33 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 			g2.drawString("Course : " + (int) course, (int) dragx + 30, (int) dragy);
 			g2.drawString("Speed : " + (int) speed / 10, (int) dragx + 30, (int) dragy + 30);
 			
-			normalShip(g2, pressx, pressy, course, speed);
-			// creatingShip(g2, oldx, oldy, course, speed);
+			//normalShip(g2, pressx, pressy, course, speed);
+			creatingShip(g2, pressx, pressy, course, speed);
 		}
 		g2.setColor(Color.BLUE);
 		for (Ship vessel : clientShips) { // 客户端船舶
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
-			// course = Math.toRadians(vessel.getParameter(3));
 			course = vessel.getParameter(3);
 			speed = vessel.getParameter(4);
-
-			switch (vessel.getType()) {
-			}
-			normalShip(g2, Px, Py, course, speed);
+			/*switch (vessel.getType()) {
+			}*/
+			//normalShip(g2, Px, Py, course, speed);
+			creatingShip(g2, Px, Py, course, speed);
 		}
 		g2.setColor(Color.MAGENTA);
 		for (Ship vessel : serverShips) { // 服务端创建的船舶
 			Px = vessel.getParameter(1);
 			Py = vessel.getParameter(2);
-			//course = Math.toRadians(vessel.getParameter(3));
 			course = vessel.getParameter(3);
 			speed = vessel.getParameter(4);
-			normalShip(g2, Px, Py, course, speed);
+			//normalShip(g2, Px, Py, course, speed);
+			creatingShip(g2, Px, Py, course, speed);
 		}
 	}
 	
 	public void normalShip(Graphics2D g2, double Px, double Py, double course, double speed) { // 可以整体旋转
 		course = Math.toRadians(course);  //角度转换成弧度
-		
 		//AffineTransform af = g2.getTransform(); // 以后用这种方法更好,如果使用这个，那么后边画出来的就应该是朝向向上的船舶
 		//g2.rotate(course, Px, Py);
 		//计算画图时应该依据动态变化的点来
@@ -342,37 +325,38 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 				(int) (Py + 10 * Math.cos(course) - 7 * Math.cos(course + 3 * Math.PI / 2)),
 				(int) (Py - 7 * Math.cos(course + 3 * Math.PI / 2))
 		};
-		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
 		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
-		
 		//g2.setTransform(af);
 	}
 	// 试试用旋转创建-->试过了，是个好方法，但是还需要修改
 	public void creatingShip(Graphics2D g2, double Px, double Py, double course, double speed) { // 拖拽时创建船舶对象，不用绘制船舶首向
 		AffineTransform af = g2.getTransform(); // 以后用这种方法更好
-		double radiusCourse = Math.toRadians(course);
-		g2.rotate(Math.toRadians(radiusCourse), Px, Py);
-
-		int linestartx, linestarty;//, lineendx, lineendy;
-		linestartx = (int) (Px + 20 * Math.sin(radiusCourse));
-		linestarty = (int) (Py - 20 * Math.cos(radiusCourse));
-		/*
-		 * lineendx = (int) (linestartx + speed * Math.sin(course)); lineendy =
-		 * (int) (linestarty - speed * Math.cos(course));
-		 */
-		int[] trianglex = { linestartx, (int) (Px + 7 * Math.sin(radiusCourse + Math.PI / 2)),
-				(int) (Px - 10 * Math.sin(radiusCourse) + 7 * Math.sin(radiusCourse + Math.PI / 2)),
-				(int) (Px - 10 * Math.sin(radiusCourse) + 7 * Math.sin(radiusCourse + 3 * Math.PI / 2)),
-				(int) (Px + 7 * Math.sin(radiusCourse + 3 * Math.PI / 2)) };
-		int[] triangley = { linestarty, (int) (Py - 7 * Math.cos(radiusCourse + Math.PI / 2)),
-				(int) (Py + 10 * Math.cos(radiusCourse) - 7 * Math.cos(radiusCourse + Math.PI / 2)),
-				(int) (Py + 10 * Math.cos(radiusCourse) - 7 * Math.cos(radiusCourse + 3 * Math.PI / 2)),
-				(int) (Py - 7 * Math.cos(radiusCourse + 3 * Math.PI / 2)) };
+		course = Math.toRadians(course);
+		g2.rotate(course, Px, Py);
+		
+		int linestartx, linestarty, lineendx, lineendy;
+		linestartx = (int)Px;
+		linestarty = (int) (Py - 20);
+		lineendx = (int) linestartx;
+		lineendy = (int) (linestarty-speed);
+		
+		int[] trianglex = { linestartx,
+				(int) (Px + 7),
+				(int) (Px + 7),
+				(int) (Px - 7),
+				(int) (Px - 7)
+			};
+		int[] triangley = { linestarty,
+				(int) Py,
+				(int) Py+10,
+				(int) Py+10,
+				(int) Py
+			};
 		// drawbody and courseline
 		g2.drawPolygon(trianglex, triangley, 5);
-		// g2.drawLine(linestartx, linestarty, lineendx, lineendy);
-
+		g2.drawLine(linestartx, linestarty, lineendx, lineendy);
+		
 		g2.setTransform(af);
 	}
 
@@ -388,23 +372,20 @@ public class SmallPanel extends JPanel implements Runnable { // 船舶绘制有�
 		g2.drawString(speedStr, getWidth() - 300, 4 * h);
 		// Type
 	}
-
+	
 	@Override
 	public void run() { // 释放鼠标开始计时，5秒后更新数据
-		// TODO Auto-generated method stub
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		;
 		helpStr = "";
-		
 		nameStr = "";
 		positionStr = "";
 		speedStr = "";
 		courseStr = "";
+		System.gc();
 		repaint();
 	}
 

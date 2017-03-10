@@ -1,6 +1,9 @@
 package shipserver;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -32,6 +35,12 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 	 */
 	public ShipManager() {  //把通信部分放在这里有点不方便，需要从smallpanel获取数据，然后发送
 		initComponents();
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {  //判断是否连上服务端
+                smallpanel.server.serverClose();
+            }
+        });
 	}
 
 	private void initComponents() {

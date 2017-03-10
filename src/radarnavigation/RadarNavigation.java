@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import common.Ship;
+
 /**
  * @author ERON
  * 主类
@@ -45,21 +46,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 try {
                     RadarNavigation frame = new RadarNavigation();
                     frame.setVisible(true);
-                    
-                    /*frame.ships.add(new Ship());  //添加他船
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());*/
-                    
-                    //System.out.println(frame.ships);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

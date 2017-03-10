@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import common.Ship;
 
 /**
@@ -40,7 +42,6 @@ public class ClientThread extends Thread{
 		super();
 		this.ship = ship;
 		this.ships = ships;
-		System.out.println("ClientThread->clientthread");
 	}
 	
 	@Override
@@ -51,7 +52,7 @@ public class ClientThread extends Thread{
 			System.out.println(socket);
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream());
-			System.out.println("ClientThread->run");
+			
 			int ok = logIn();
 			if (ok!=0) {
 				interrupt();  //结束进程
@@ -59,8 +60,9 @@ public class ClientThread extends Thread{
 		} catch (IOException e) {
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
-			try {
-				Thread.sleep(60000);
+			JOptionPane.showMessageDialog(null, "Client Will exit after 6s!");
+			try {  //如果连接失败，就等6秒后关闭
+				Thread.sleep(6000);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -69,12 +71,18 @@ public class ClientThread extends Thread{
 		}
 		new Thread(){
 			public void run() {
-				System.out.println("ClientThread-->Create new thread --> received data, and sendData");
+				//接收信息
 				while(!socket.isClosed()){
 					try {
 						String data = getData();
 						String[] change = data.split(",");
-						if (change[0].equals(ship.getName())) {  //如果是本船的信息，直接跳过
+						if (change[0].equals(ship.getName())) {
+							if (change[1].equals("kickOut")) {
+								input.close();
+								output.close();
+								
+								socket.close();
+							}
 							continue;
 						}
 						else{
@@ -98,12 +106,6 @@ public class ClientThread extends Thread{
 									for (Ship vessel : ships) {
 										if (vessel.getName().equals(change[0])) {
 											//这里不需要判断增加还是减少，增加传送正值，减少传送负值
-											/*if (change[2].equals("increase")) {
-												vessel.setValue(4, vessel.getParameter(4)+1);
-											}
-											else {
-												vessel.setValue(4, vessel.getParameter(4)-1);
-											}*/
 											vessel.setValue(4, vessel.getParameter(4)+Double.parseDouble(change[2]));
 											break;
 										}
@@ -143,12 +145,11 @@ public class ClientThread extends Thread{
 				}
 			}
 		}.start();
-		while(!socket.isClosed()){   //
+		while(!socket.isClosed()){   //前进同步
 			try {
-				System.out.println("ClientThread->Data receiveThread");
-				sleep(1000);
 				ship.goAhead();
 				sendData(ship.getName() + ",go");  //同步信号，向前走一步
+				sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
