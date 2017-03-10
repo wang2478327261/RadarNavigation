@@ -13,8 +13,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.util.List;
-import java.util.Random;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -49,7 +47,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	
 	private Ship ship = null;  //当前自己的对象
 	private List<Ship> ships = null;  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
-	private Random rd = new Random();
+	//private Random rd = new Random();
 	
 	public RadarPanel() {
 		super();
@@ -262,22 +260,38 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.fillOval((int)startX, (int)startY, (int)diameter, (int)diameter);
 		//***********************刷新本船的显示数据**********************************
 		dataFresh();
-		
-		//**************绘制刻度***********************
-		if (headup) {
-			drawScale(g2, ship.getParameter(3));
+		//综合判断===================================================
+		if (headline) {
+			if (headup) {
+				drawScale(g2, -ship.getParameter(3));
+				drawHeadLine(g2, 0);
+				drawOwnShip(g2, 0);
+			}
+			else{
+				drawScale(g2, 0);
+				drawHeadLine(g2, ship.getParameter(3));
+				drawOwnShip(g2, ship.getParameter(3));
+			}
 		}
+		else {
+			if (headup) {
+				drawScale(g2, -ship.getParameter(3));
+				//drawHeadLine(g2, 0);
+				drawOwnShip(g2, 0);
+			}
+			else{
+				drawScale(g2, 0);
+				//drawHeadLine(g2, ship.getParameter(3));
+				drawOwnShip(g2, ship.getParameter(3));
+			}
+		}
+		
 		//**********************绘制量程*******************************
 		if (rangeline) {
 			drawRange(g2);
 		}
-		//******************绘制首向线********************************************
-		if (headline) {
-			drawHeadLine(g2, ship.getParameter(3));
-		}
-		//***********************************************************************
-		drawOwnShip(g2);
-		drawOtherShips(g2);
+		//drawOwnShip(g2, ship.getParameter(3));
+		drawOtherShips(g2, 0);
 	}
 	
 	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
@@ -346,15 +360,19 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.drawLine((int)(startX+diameter/2), (int)(startY+diameter/2), (int)(startX+diameter/2), (int)startY);
 		g2.setTransform(af);
 	}
-	public void drawOwnShip(Graphics2D g2){  //绘制客户端本船
-		drawBlur(g2, (int)(startX+diameter/2), (int)(startY+diameter/2), ship.getParameter(3));
+	public void drawOwnShip(Graphics2D g2, double theta){  //绘制客户端本船
+		drawBlur(g2, (int)(startX+diameter/2), (int)(startY+diameter/2), theta);
 	}
-	
-	public void drawOtherShips(Graphics2D g2){  //绘制他船之前需要计算相对位置或者绝对关系
+	//相对运动，绝对运动时计算出结果
+	public void drawOtherShips(Graphics2D g2, double theat){  //绘制他船之前需要计算相对位置或者绝对关系
 		//绘制他船的模糊对象
-		for(int i=0;i<ships.size();i++){
-			Ship other = ships.get(i);
-			drawBlur(g2, other.getParameter(1), other.getParameter(2), other.getParameter(3));
+		for(Ship other:ships){
+			float difx = (float) (ship.getParameter(1)-other.getParameter(1));
+			float dify = (float) (ship.getParameter(2)-other.getParameter(2));
+			float dif = (float) Math.sqrt(difx*difx+dify*dify);
+			if (dif<range*diaStep) {
+				drawBlur(g2, other.getParameter(1), other.getParameter(2), other.getParameter(3));
+			}
 		}
 	}
 	
@@ -364,7 +382,11 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.rotate(Math.toRadians(theta), Px, Py);  //以船心为中心，旋转theta角度---->theta对应船舶航向
 		g2.setColor(Color.ORANGE);
 		
-		int x[] = new int[(int) diaStep];
+		double width = 0.025*diaStep;  //除以2，计算一半，方便后边画图
+		double height = 0.05*diaStep;
+		g2.fillRoundRect((int)(Px-width/2), (int)(Py-height/2), (int)width, (int)height, 10, 10);
+		
+		/*int x[] = new int[(int) diaStep];
 		int y[] = new int[(int) diaStep];
 		int rangeX = (int) (0.025*diaStep);
 		int rangeY = (int) (0.5*diaStep);
@@ -382,7 +404,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		for(int j=0;j<(int)diaStep;j++){  //画点
 			//g2.drawOval((int)(Px+x[j]), (int)(Py+y[j]), 2, 2);
 			g2.drawRoundRect((int)(Px-x[j]), (int)(Py-y[j]), (int) (0.025*diaStep), (int) (0.05*diaStep)/4, 10, 10);
-		}
+		}*/
 		
 		g2.setTransform(af);
 	}

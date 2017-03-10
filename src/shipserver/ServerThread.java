@@ -73,7 +73,13 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 						}
 						loop=0;
 					}
-					
+					Iterator<Socket> items = sockets.iterator();
+					while(items.hasNext()){  //检测有没有关闭的客户端
+						Socket it = items.next();
+						if (it.isClosed()) {
+							items.remove();  //移除当前指向
+						}
+					}
 					smallpanel.repaint();
 					try {
 						sleep(1000);  //要和本地相同的刷新率

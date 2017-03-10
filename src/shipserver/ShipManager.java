@@ -3,12 +3,11 @@ package shipserver;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 
 public class ShipManager extends JFrame { // 注意界面结构的合理设计
-
+	
 	private static final long serialVersionUID = 5649146024506368826L;
 	
 	private SmallPanel smallpanel; // 做成全局定义可以方便以后外层调用方法

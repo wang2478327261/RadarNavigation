@@ -95,7 +95,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         /**
          * *****************开始通信**************************************************
          */
-        client = new ClientThread(ship, ships);
+        client = new ClientThread(radarpanel, ship, ships);
         client.start();
     }
     
@@ -107,21 +107,21 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 String command = "";
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     ship.setValue(3, ship.getParameter(3) + 2);
-                    command = ship.getName() + ",course," + "starboard";
+                    command = ship.getName() + ",course," + "2";
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     ship.setValue(3, ship.getParameter(3) - 2);
-                    command = ship.getName() + ",course," + "port";
+                    command = ship.getName() + ",course," + "-2";
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     ship.setValue(4, ship.getParameter(4) + 1);
-                    command = ship.getName() + ",speed," + "increase";
+                    command = ship.getName() + ",speed," + "1";
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     ship.setValue(4, ship.getParameter(4) - 1);
-                    command = ship.getName() + ",speed," + "reduce";
+                    command = ship.getName() + ",speed," + "-1";
                 }
-                if (client.ok==0) {
+                if (client.socket!=null) {
                 	try {
     					client.sendData(command);
     				} catch (IOException e1) {
@@ -136,7 +136,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {  //判断是否连上服务端
-            	if (!client.socket.isClosed()) {
+            	if (client.socket!=null) {
             		try {
     					client.logOut();
     				} catch (IOException e1) {

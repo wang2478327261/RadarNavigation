@@ -26,10 +26,11 @@ import common.Ship;
  */
 public class ClientThread extends Thread{
 	
-	public Socket socket;
-	public int ok=1;
+	public Socket socket = null;
 	private BufferedReader input;
 	private PrintWriter output;
+	
+	private RadarPanel radarpanel = null;
 	private Ship ship = null;  //本船
 	private List<Ship> ships = null;  //其他船舶
 	//public boolean logOut = false;
@@ -38,8 +39,9 @@ public class ClientThread extends Thread{
 	 * @param ships
 	 * @author ERON
 	 */
-	public ClientThread(Ship ship, List<Ship> ships) {
+	public ClientThread(RadarPanel radarpanel, Ship ship, List<Ship> ships) {
 		super();
+		this.radarpanel = radarpanel;
 		this.ship = ship;
 		this.ships = ships;
 	}
@@ -48,15 +50,10 @@ public class ClientThread extends Thread{
 	public void run() {
 		//super.run();
 		try {
-			socket = new Socket(InetAddress.getLocalHost(), 6000);
-			System.out.println(socket);
+			socket = new Socket(InetAddress.getLocalHost(), 6000);  //当连接不到服务端时，socket为null
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream());
-			
-			int ok = logIn();
-			if (ok!=0) {
-				interrupt();  //结束
-			}
+			logIn();
 		} catch (IOException e) {
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
@@ -135,6 +132,7 @@ public class ClientThread extends Thread{
 								}
 							}
 						}
+						radarpanel.repaint();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -144,6 +142,7 @@ public class ClientThread extends Thread{
 		}.start();
 		while(!socket.isClosed()){   //前进同步
 			try {
+				radarpanel.repaint();
 				ship.goAhead();
 				sendData(ship.getName() + ",go");  //同步信号，向前走一步
 				sleep(1000);
@@ -173,12 +172,10 @@ public class ClientThread extends Thread{
 		System.out.println("ClientThread->sycn");
 	}*/
 	
-	public int logIn() throws IOException{
+	public void logIn() throws IOException{
 		String command = ship.getName() + ",logIn," + ship.getParameter(1) +","+ ship.getParameter(2)
 						+ "," +ship.getParameter(3) +","+ ship.getParameter(4) +","+ ship.getType();
 		sendData(command);
-		System.out.println("ClientThread->logIn");
-		return 0;
 	}
 	
 	public void logOut() throws IOException{
