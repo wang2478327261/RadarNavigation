@@ -24,6 +24,10 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
 		this.Py = Py;
 		this.course = course;
 		this.speed = speed;
+		if (this.speed < 0 || this.speed > 20) {
+			System.err.println("Ship->setValue: your speed is : " + speed + "\nPlease get normal speed!");
+			this.speed = 5;
+		}
 		this.type = type;
 	}
 	
