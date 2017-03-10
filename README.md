@@ -219,7 +219,9 @@ public class Snow extends JFrame{//图片路径问题待解决
 30. 2017.3.9 12:03  
 侧边信息栏完成面板的动态更新  
 加下来就是通信和雷达面板的绘制了  
-31. 
+31. good  
+[GUN Free Software](https://www.gnu.org/philosophy/categories.html)  
+
 
 
 

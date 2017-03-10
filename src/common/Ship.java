@@ -75,7 +75,7 @@ public class Ship implements Serializable{  //下一个版本中需要加入船�
             if(this.course<0) this.course+=360;
             if(this.course>=360) this.course-=360;
         }
-        if (speed < 0 || speed > 30) {
+        if (speed < 0 || speed > 20) {
 			System.err.println("Ship->setValue: your speed is : " + speed + "\nPlease get normal speed!");
 			speed = 5;
 		}

@@ -46,7 +46,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     RadarNavigation frame = new RadarNavigation();
                     frame.setVisible(true);
                     
-                    frame.ships.add(new Ship());  //添加他船
+                    /*frame.ships.add(new Ship());  //添加他船
                     frame.ships.add(new Ship());
                     frame.ships.add(new Ship());
                     frame.ships.add(new Ship());
@@ -57,7 +57,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                     frame.ships.add(new Ship());
                     frame.ships.add(new Ship());
                     frame.ships.add(new Ship());
-                    frame.ships.add(new Ship());
+                    frame.ships.add(new Ship());*/
                     
                     //System.out.println(frame.ships);
                 } catch (Exception e) {
