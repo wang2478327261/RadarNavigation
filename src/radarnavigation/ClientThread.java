@@ -55,14 +55,14 @@ public class ClientThread extends Thread{
 			
 			int ok = logIn();
 			if (ok!=0) {
-				interrupt();  //结束进程
+				interrupt();  //结束
 			}
 		} catch (IOException e) {
 			//e.printStackTrace();
 			System.out.println("Server is not Exist OR is not Connected!");
 			JOptionPane.showMessageDialog(null, "Client Will exit after 6s!");
 			try {  //如果连接失败，就等6秒后关闭
-				Thread.sleep(6000);
+				Thread.sleep(60000);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -74,7 +74,10 @@ public class ClientThread extends Thread{
 				//接收信息
 				while(!socket.isClosed()){
 					try {
-						String data = getData();
+						String data = input.readLine();
+						if (data==null) {
+							continue;
+						}
 						String[] change = data.split(",");
 						if (change[0].equals(ship.getName())) {
 							if (change[1].equals("kickOut")) {
@@ -115,12 +118,6 @@ public class ClientThread extends Thread{
 								case "course":{
 									for (Ship vessel : ships) {
 										if (vessel.getName().equals(change[0])) {  //这里一样，左-右+
-											/*if (change[2].equals("port")) {
-												vessel.setValue(3, vessel.getParameter(3)-1);
-											}
-											else {
-												vessel.setValue(3, vessel.getParameter(3)+1);
-											}*/
 											vessel.setValue(3, vessel.getParameter(3)+Double.parseDouble(change[2]));
 											break;
 										}
@@ -167,8 +164,6 @@ public class ClientThread extends Thread{
 	
 	public String getData() throws IOException{
 		String data = input.readLine();
-		
-		System.out.println("ClientThread ->getData");
 		return data;
 	}
 	

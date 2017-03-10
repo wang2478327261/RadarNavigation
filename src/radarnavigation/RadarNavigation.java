@@ -60,6 +60,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
      * @throws IOException
      */
     public RadarNavigation() throws IOException {  //录取客户端船舶信息，暂时录入名称和位置信息
+    	
         String customer = JOptionPane.showInputDialog(this, "Please input Ship name and position : ");
         while (customer == null || customer.equals("")) {
             if (customer == null) {
@@ -73,7 +74,14 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         if (source.length!=5) {
 			ship = new Ship();
 			System.out.println("信息不完整，创建默认船舶-->" + ship.toString());
-		}else{
+		}
+        else{
+			for(Ship ship:ships){
+				if (source[0].equals(ship.getName())) {
+					JOptionPane.showMessageDialog(null, "your name had exist!");
+					System.exit(0);
+				}
+			}
 			ship = new Ship(source[0],
 	        		Double.parseDouble(source[1]),
 					Double.parseDouble(source[2]),
@@ -81,7 +89,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
 					Double.parseDouble(source[4]),
 	        		"Normal"
 					);
-			System.out.println(ship.toString());
 		}
         initComponents();
         
@@ -129,10 +136,12 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {  //判断是否连上服务端
-                try {
-					client.logOut();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+            	if (!client.socket.isClosed()) {
+            		try {
+    					client.logOut();
+    				} catch (IOException e1) {
+    					e1.printStackTrace();
+    				}
 				}
             }
         });

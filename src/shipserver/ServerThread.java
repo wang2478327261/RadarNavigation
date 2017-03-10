@@ -113,7 +113,6 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 						} catch (IOException exception) {
 							exception.printStackTrace();
 						}
-						logout:
 						while (!socket.isClosed()) {  //本线程对应的客户端线程
 							try {
 								getData = input.readLine();  //拿到数据
@@ -213,18 +212,6 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 				e.printStackTrace();
 			}
 		}
-		/*for(Ship ship:clientShips){  //应该让客户端具有离线运行的能力
-			for(Socket sk:sockets){
-				if (!sk.isClosed()) {
-					try {
-						sendData(sk, ship.getName()+"kickOut");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}*/
 	}
 	
 	public void serverClose(){
