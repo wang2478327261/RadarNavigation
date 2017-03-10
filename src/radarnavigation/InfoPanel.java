@@ -63,7 +63,7 @@ public class InfoPanel extends JPanel{
 						break;
 					}
 				}
-				System.out.println("信息面板船舶数量del-->"+innerShips.size());
+				//System.out.println("信息面板船舶数量del-->"+innerShips.size());
 				this.remove(temp);  //面板移除组件
 				items.remove();  //infoshow链表移除
 			}
@@ -75,22 +75,12 @@ public class InfoPanel extends JPanel{
 	//2017.3.9
 	//在添加时发现一个问题，点击同一对象可以多次添加，不和逻辑
 	public void addShip(Ship ship) {  //这里的两个链表，ships和infos应该异步更新--考虑代理的做法
-		System.out.println("InfoPanel -> addShip");
 		innerShips.add(ship);
 		infoPanes.add(new InfoShow(ship));
 		add(infoPanes.get(infoPanes.size()-1));  //add to panel
-		System.out.println("信息面板船舶数量add-->"+innerShips.size());
+		//System.out.println("信息面板船舶数量add-->"+innerShips.size());
 	}
 	public void removeShip(Ship ship) {  //这个是在雷达界面点击的时候可以去除侧边栏对应的...
-		System.out.println("InfoPanel -> removeShip");
-		/*Iterator<Ship> inner = innerShips.iterator();  //出现多次移除的原因是这里，根据自我删除和外界删除，重复了
-		while(inner.hasNext()){
-			Ship it = inner.next();
-			if (it.getName().equals(ship.getName())) {
-				inner.remove();
-				break;
-			}
-		}*/
 		Iterator<InfoShow> info=infoPanes.iterator();  //在repaint里移除船舶对象
 		while(info.hasNext()){
 			InfoShow it=info.next();

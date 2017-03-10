@@ -14,6 +14,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -29,14 +31,14 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	private boolean headline = true;  //是否显示船首线
 	private boolean rangeline = true;  //是否显示量程
 	private boolean headup = true;   //是否首向上，还是北向上
-	private boolean relative = true;  //是否相对运动，还是绝对运动
+	//private boolean relative = true;  //是否相对运动，还是绝对运动
 	
-	private float startX, startY, diameter;  //中间圆的左上角坐标，直径
+	public float startX, startY, diameter;  //中间圆的左上角坐标，直径
 	private double pc = 1;  //每圈代表的距离,跟随range变化
 	private double diaStep=0;  //像素/海里
 	
 	private HoverLable showMode;  //首向上还是北向上
-	private HoverLable activeMode;  //相对运动还是绝对运动
+	//private HoverLable activeMode;  //相对运动还是绝对运动
 	private HoverLable lineUp;  //是否显示船首线
 	private HoverLable rangeSwitch;  //是否打开显示 量程
 	private HoverLable showRange;  //显示当前的量程是多少
@@ -48,7 +50,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	
 	private Ship ship = null;  //当前自己的对象
 	private List<Ship> ships = null;  //是在外部进行过滤还是在里面？当前显示的船舶对象2017.3.9:不过滤
-	//private Random rd = new Random();
+	private Random rd = new Random();
 	
 	public RadarPanel() {
 		super();
@@ -99,7 +101,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 				lineUp.setBounds(0, 4, (int)(diameter*0.3), h);
 				rangeSwitch.setBounds(0, lineUp.getY()+lineUp.getHeight(), (int)(diameter*0.3), h);
 				showMode.setBounds(0, rangeSwitch.getY()+rangeSwitch.getHeight(), (int)(diameter*0.25), h);
-				activeMode.setBounds(0, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
+				//activeMode.setBounds(0, showMode.getY()+showMode.getHeight(), (int)(diameter*0.2), h);
 				
 				showRange.setBounds(0, (int) (getHeight()*0.9), (int)(diameter*0.25), h);
 				perCircle.setBounds(0, showRange.getY()+showRange.getHeight(), (int)(diameter*0.35), h);
@@ -113,7 +115,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 				rangeSwitch.setFont(font);
 				showMode.setFont(font);
 				perCircle.setFont(font);
-				activeMode.setFont(font);
+				//activeMode.setFont(font);
 				showRange.setFont(font);
 				latitude.setFont(font);
 				longitude.setFont(font);
@@ -176,8 +178,8 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		});
 		add(showMode);
 		
-		activeMode = new HoverLable("RELATIVE");
-		activeMode.addMouseListener(new MouseAdapter() {
+		//activeMode = new HoverLable("RELATIVE");
+		/*activeMode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (relative) {
@@ -191,7 +193,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 			}
 		});
 		
-		add(activeMode);
+		add(activeMode);*/
 		showRange = new HoverLable("RANGE : " + range + " KN ");
 		add(showRange);
 		perCircle = new HoverLable("PER CIRCLE : " + pc + " KN/PC ");
@@ -290,8 +292,21 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		}
 		//drawOwnShip(g2, ship.getParameter(3));
 		drawOtherShips(g2, 0);
+		youna(g2);
 	}
 	
+	public void youna(Graphics2D g2){
+		int[] x = new int[600];
+		int[] y = new int[600];
+		for (int i = 0; i < 600; i++) {
+			x[i] = (int) (rd.nextInt((int)diameter)+startX);
+			y[i] = (int) (rd.nextInt((int)diameter)+startY);
+		}
+		for (int i = 0; i < 600; i++) {
+			g2.setColor(Color.YELLOW);
+			g2.fillOval(x[i], y[i], rd.nextInt(2) + 1, rd.nextInt(2) + 1);
+		}
+	}
 	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
 		//圆心坐标
 		float xCircle = startX + diameter/2;  //圆心x坐标
@@ -329,7 +344,7 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //每次变化的幅度-->每次画圈的半径
 		diaStep = diameter/(range * 2);  //XX像素/海里
-		System.out.println("diastep------>>>>>"+diaStep);
+		//System.out.println("diastep------>>>>>"+diaStep);
 		while(diaVar < diameter/2){
 			g2.drawOval((int)(startX+diameter/2-diaVar), (int)(startY+diameter/2-diaVar), (int)(diaVar*2), (int)(diaVar*2));
 			if (range <= 3) {
@@ -361,12 +376,13 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	//相对运动，绝对运动时计算出结果
 	public void drawOtherShips(Graphics2D g2, double theat){  //绘制他船之前需要计算相对位置或者绝对关系
 		//绘制他船的模糊对象
-		for(Ship other:ships){
-			float difx = (float) (ship.getParameter(1)-other.getParameter(1));
-			float dify = (float) (ship.getParameter(2)-other.getParameter(2));
+		for(Ship other:ships){  //相对运动和绝对运动-->显示在他船方向上的变化
+			float difx = (float) (other.getParameter(1)-ship.getParameter(1));
+			float dify = (float) (other.getParameter(2)-ship.getParameter(2));
 			float dif = (float) Math.sqrt(difx*difx+dify*dify);
 			if (dif<range*diaStep) {
-				drawBlur(g2, other.getParameter(1), other.getParameter(2), other.getParameter(3));
+				drawBlur(g2, (int)(startX+diameter/2+difx), (int)(startY+diameter/2+dify), other.getParameter(3));
+				//g2.drawLine((int)(startX+diameter/2+difx), (int)(startY+diameter/2+dify), (int)(startX+diameter/2+difx+ship.getParameter(4)), (int)(startY+diameter/2+dify+ship.getParameter(4)));
 			}
 		}
 	}

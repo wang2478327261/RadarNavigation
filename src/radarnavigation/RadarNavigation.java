@@ -12,13 +12,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -79,7 +76,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         if (source.length!=5) {
 			ship = new Ship();
 			ship.setName(Calendar.getInstance().getTimeInMillis()+"");
-			System.out.println("信息不完整，创建默认船舶-->" + ship.toString());
+			//System.out.println("信息不完整，创建默认船舶-->" + ship.toString());
 		}
         else{
 			for(Ship ship:ships){
@@ -109,7 +106,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {  //更改客户端信息
-            	System.out.println("keyCode");
                 String command = "";
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     ship.setValue(3, ship.getParameter(3) + 2);
@@ -135,7 +131,6 @@ public class RadarNavigation extends JFrame{  //客户端的主类
     				}
 				}
                 repaint();
-                System.out.println("RadarNavigation -> keyPress" + command);
                 //下面这段带码对总体没有意义，去掉2017.3.5 record
             }
         });
@@ -195,8 +190,10 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                         Iterator<Ship> index = ships.iterator();
                         while (index.hasNext()) {
                             Ship boat = index.next();
-                            if (Math.abs(e.getX() - boat.getParameter(1)) < 10
-                                    && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
+                            int clickX = (int) (e.getX()-radarpanel.startX-radarpanel.diameter/2+ship.getParameter(1));
+                            int clicky = (int) (e.getY()-radarpanel.startY-radarpanel.diameter/2+ship.getParameter(2));
+                            if (Math.abs(clickX - boat.getParameter(1)) < 10
+                                    && Math.abs(clicky - boat.getParameter(2)) < 10) {
                                 infopanel.addShip(boat);
                                 System.out.println("get a ship : "+boat.toString());
                             }
@@ -209,8 +206,10 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 	Iterator<Ship> index = ships.iterator();
                     while (index.hasNext()) {
                         Ship boat = index.next();
-                        if (Math.abs(e.getX() - boat.getParameter(1)) < 10
-                                && Math.abs(e.getY() - boat.getParameter(2)) < 10) {
+                        int clickx = (int) (e.getX()-radarpanel.startX-radarpanel.diameter/2+ship.getParameter(1));
+                        int clicky = (int) (e.getY()-radarpanel.startY-radarpanel.diameter/2+ship.getParameter(2));
+                        if (Math.abs(clickx - boat.getParameter(1)) < 10
+                                && Math.abs(clicky - boat.getParameter(2)) < 10) {
                             infopanel.removeShip(boat);  //可以直接移除对象，以后弄清楚原理，好像也是通过索引,毕竟指向的是同一个对象
                             System.out.println("remove one: "+boat.toString());
                         }
