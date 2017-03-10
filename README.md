@@ -221,7 +221,9 @@ public class Snow extends JFrame{//图片路径问题待解决
 加下来就是通信和雷达面板的绘制了  
 31. good  
 [GUN Free Software](https://www.gnu.org/philosophy/categories.html)  
-
+32. 现在通信没有什么大问题，客户端绘制雷达影像有点问题，需要进一步...  
+33. 这个项目完成后，开始假如硬件制作，同时避碰算法也要跟上  
+34. 
 
 
 
