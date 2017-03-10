@@ -46,6 +46,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
                 try {
                     RadarNavigation frame = new RadarNavigation();
                     frame.setVisible(true);
+                    //frame.ships.add(new Ship());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

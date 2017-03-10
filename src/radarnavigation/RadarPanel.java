@@ -64,7 +64,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 				if(e.getWheelRotation() < 0){  //增大量程
 					setRange("increase");
 				}
-				//System.out.println(((radarPanel) radarpanel).getRange());
 				showRange.setText("RANGE : " + range + " KN ");
 				//更新显示信息
 				if (range <= 3) {
@@ -220,7 +219,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 				range = (float) 0.75;
 			}
 		}
-		System.out.println("RadarPanel -> setRange");
 	}
 	public float getRange() {  //不需要吧，range在本类中可以直接引用
 		return range;
@@ -231,7 +229,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	}
 	
 	public void dataFresh(){  //刷新本船的航行信息
-		System.out.println("RadarPanel -> dataFresh");
 		//显示组件的刷新
 		latitude.setText("LAT : " + ship.getParameter(1) + "  ");  //多加了空格看起来清除
 		longitude.setText("LOG : " + ship.getParameter(2) + "  ");
@@ -295,7 +292,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	}
 	
 	public void drawScale(Graphics2D g2, double theta){  //角度的刻度  theta rotate
-		System.out.println("RadarPanel -> drawScale");
 		//圆心坐标
 		float xCircle = startX + diameter/2;  //圆心x坐标
 		float yCircle = startY + diameter/2;  //圆心y坐标
@@ -329,7 +325,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	}
 	//绘制量程
 	public void drawRange(Graphics2D g2) {
-		System.out.println("RadarPanel -> drawRange");
 		g2.setColor(Color.LIGHT_GRAY);
 		float diaVar = 0;  //每次变化的幅度-->每次画圈的半径
 		diaStep = diameter/(range * 2);  //XX像素/海里
@@ -352,7 +347,6 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 	}
 	
 	public void drawHeadLine(Graphics2D g2, double theta) {  //theta -> rotate degree
-		System.out.println("RadarPanel -> drawHeadline");
 		AffineTransform af = g2.getTransform();  //这里应该是存储当前坐标系的变换
 		g2.rotate(Math.toRadians(theta), startX+diameter/2, startY+diameter/2);  //以圆心为中心，旋转theta角度
 		

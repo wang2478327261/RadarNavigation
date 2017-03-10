@@ -11,7 +11,7 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 	private static final long serialVersionUID = 5649146024506368826L;
 	
 	private SmallPanel smallpanel; // 做成全局定义可以方便以后外层调用方法
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -28,7 +28,7 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */

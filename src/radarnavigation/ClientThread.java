@@ -181,10 +181,9 @@ public class ClientThread extends Thread{
 	public void logOut() throws IOException{
 		String command = ship.getName() + ",logOut";
 		sendData(command);
-		System.out.println("ClientThread->logOut");
 		
 		input.close();
 		output.close();
-		socket.close();
+		//socket.close();
 	}
 }
