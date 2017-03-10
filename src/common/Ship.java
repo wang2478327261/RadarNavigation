@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author ERON
  */
 public class Ship implements Serializable{  //下一个版本中需要加入船舶的静态属性和动态属性，动态属性重新写一个类，增加灵活度
-	private static int i=0;  //保证每次创建的船名不同
+	public static int i=0;  //保证每次创建的船名不同
 	private static final long serialVersionUID = -3576425321740625846L;
 	
 	private String name = null;

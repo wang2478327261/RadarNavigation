@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -227,13 +228,13 @@ public class RadarPanel extends JPanel{   //显示主界面,假设客户端的�
 		this.ship = ship;
 		this.ships = ships;
 	}
-	
+	DecimalFormat df = new DecimalFormat("#.00");
 	public void dataFresh(){  //刷新本船的航行信息
 		//显示组件的刷新
-		latitude.setText("LAT : " + ship.getParameter(1) + "  ");  //多加了空格看起来清除
-		longitude.setText("LOG : " + ship.getParameter(2) + "  ");
+		latitude.setText("LAT : " + df.format(ship.getParameter(1)) + "  ");  //多加了空格看起来清除
+		longitude.setText("LOG : " + df.format(ship.getParameter(2)) + "  ");
 		course.setText("COS : " + ship.getParameter(3) + " T  ");
-		speed.setText("SPD : " + ship.getParameter(4) + "KT  ");
+		speed.setText("SPD : " + ship.getParameter(4) + " KN  ");
 	}
 	
 	/*******************Repaint绘图功能区**************************************************************/

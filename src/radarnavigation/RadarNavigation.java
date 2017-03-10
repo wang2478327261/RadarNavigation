@@ -12,9 +12,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -74,6 +78,7 @@ public class RadarNavigation extends JFrame{  //客户端的主类
         String[] source = customer.split(",");  //这里需要判断完整性，暂时不做，没意思
         if (source.length!=5) {
 			ship = new Ship();
+			ship.setName(Calendar.getInstance().getTimeInMillis()+"");
 			System.out.println("信息不完整，创建默认船舶-->" + ship.toString());
 		}
         else{

@@ -85,7 +85,7 @@ public class ClientThread extends Thread{
 							}
 							continue;
 						}
-						else{
+						else{  //可以在前面求得数组长度，然后i++
 							switch(change[1]){
 								case "logIn":{
 									ships.add(new Ship(change[0], Double.parseDouble(change[2]), 
@@ -158,7 +158,6 @@ public class ClientThread extends Thread{
 	public synchronized void sendData(String data) throws IOException{
 		output.println(data);
 		output.flush();
-		System.out.println("ClientThread->sendData");
 	}
 	
 	public String getData() throws IOException{

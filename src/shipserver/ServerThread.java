@@ -126,6 +126,9 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
+							if (getData==null) {
+								continue;
+							}
 							change = getData.split(",");  //将接收的数据分离，并准备解析
 							name=change[0];
 							if (change[1].equals("logIn")) {  //这里处理本地的事情
@@ -239,13 +242,11 @@ public class ServerThread extends Thread {  //1秒小同步，5秒一大同步
 		PrintWriter output = new PrintWriter(socket.getOutputStream());
 		output.println(data);
 		output.flush();
-		System.out.println("ServerThread.sendData()");
 	}
 	
 	public String getData(Socket socket) throws IOException {
 		BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String data = input.readLine();
-		System.out.println("ServerThread.getData()");
 		return data;
 	}
 	//单个对象进行同步
