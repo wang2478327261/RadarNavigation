@@ -52,3 +52,9 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 	}
 
 }
+
+
+
+
+
+
