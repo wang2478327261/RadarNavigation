@@ -15,6 +15,7 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -29,9 +30,11 @@ public class ShipManager extends JFrame { // 注意界面结构的合理设计
 		});
 	}
 	
+	
 	/**
 	 * Create the frame.
 	 */
+	
 	public ShipManager() {  //把通信部分放在这里有点不方便，需要从smallpanel获取数据，然后发送
 		initComponents();
 		addWindowListener(new WindowAdapter() {
